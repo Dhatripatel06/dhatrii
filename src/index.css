@@ -1,0 +1,195 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --shell-x: clamp(20px, 4vw, 48px);
+    color-scheme: dark;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Lenis (smooth scrolling). Native smooth-behaviour must stay off while it
+     runs, or the two fight each other. */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+  .lenis.lenis-smooth iframe {
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    /* Lenis is not initialised in this mode, so restore native anchor jumps. */
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+
+  body {
+    @apply bg-bg font-sans text-text antialiased;
+    text-rendering: optimizeLegibility;
+    /* `clip` rather than `hidden`: hidden would make body a scroll container
+       and break the sticky-stacked project cards. */
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display font-semibold;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background: #4cc9ff;
+    color: #111111;
+  }
+
+  :focus-visible {
+    outline: 2px solid #4cc9ff;
+    outline-offset: 3px;
+    border-radius: 8px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #111111;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #232323;
+    border-radius: 99px;
+    border: 3px solid #111111;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #333;
+  }
+}
+
+@layer components {
+  /* The reference runs a narrow, centred single column — measured at ~640px
+     of content across the navbar, journey, project and testimonial cards,
+     regardless of viewport width. 736 = 640 + 2x48 gutter. */
+  .shell {
+    width: 100%;
+    max-width: 736px;
+    margin-inline: auto;
+    padding-inline: var(--shell-x);
+  }
+
+  /* Section rhythm: 64px mobile / 88px tablet / 120px desktop. */
+  .section {
+    padding-block: 64px;
+  }
+  @media (min-width: 768px) {
+    .section {
+      padding-block: 88px;
+    }
+  }
+  @media (min-width: 1024px) {
+    .section {
+      padding-block: 120px;
+    }
+  }
+
+  .glass {
+    background: rgba(26, 26, 26, 0.55);
+    backdrop-filter: blur(8px) saturate(130%);
+    -webkit-backdrop-filter: blur(8px) saturate(130%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* Blur deepens once the page scrolls past 20px. */
+  .glass-scrolled {
+    background: rgba(26, 26, 26, 0.72);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .card {
+    @apply rounded-card border border-line bg-surface shadow-card;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full border border-line bg-surface/60 px-3.5 py-1.5 font-display text-[0.72rem] font-bold uppercase tracking-[0.18em] text-muted backdrop-blur;
+  }
+
+  .chip {
+    @apply inline-flex items-center rounded-full border border-line bg-white/[0.03] px-3 py-1 text-[0.78rem] font-medium text-muted;
+  }
+
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .link-underline:hover {
+    background-size: 100% 1px;
+  }
+
+  /* Section headings are two-tone: light first word, bold second. */
+  .h-light {
+    @apply font-display font-light text-text;
+  }
+  .h-bold {
+    @apply font-display font-bold text-text;
+  }
+
+  /* Accent pill button with a circular arrow badge on the right. */
+  .pill-accent {
+    @apply inline-flex items-center gap-3 rounded-full bg-accent py-2 pl-7 pr-2 font-medium text-bg transition-colors duration-300;
+  }
+
+  /* Vertical pinstripe texture behind the pricing card. */
+  .pinstripe {
+    background-image: repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.045) 0px,
+      rgba(255, 255, 255, 0.045) 1px,
+      transparent 1px,
+      transparent 7px
+    );
+  }
+}
+
+@layer utilities {
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  .grain {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 26px 26px;
+  }
+
+  .mask-fade-x {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  }
+}
