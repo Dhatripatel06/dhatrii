@@ -90,6 +90,8 @@ export default function FAQ() {
           <p className="text-muted">{faqs.footerNote}</p>
           <a
             href={faqs.footerCta.href}
+            target="_blank"
+            rel="noopener noreferrer"
             className="mt-3 inline-flex items-center gap-2.5 font-medium text-text underline underline-offset-4 transition-colors duration-300 hover:text-accent"
           >
             <ArrowRight size={17} strokeWidth={2.2} aria-hidden="true" />

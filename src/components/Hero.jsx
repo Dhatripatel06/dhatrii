@@ -68,7 +68,10 @@ export default function Hero() {
                   tint="accent"
                   eager
                   sizes="(min-width: 640px) 640px, 100vw"
-                  className="h-full w-full object-cover"
+                  /* The portrait is far taller than the 4:5 slot, so the crop
+                     is anchored at 32% rather than centre — that clears the
+                     empty ground above the head without clipping it. */
+                  className="h-full w-full object-cover object-[center_32%]"
                 />
               </motion.div>
 
@@ -83,7 +86,7 @@ export default function Hero() {
                 initial={reduce ? false : { opacity: 0, x: -14 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ ...SPRING_ENTER, delay: 0.6 }}
-                className="absolute left-7 top-7 flex items-center gap-2 font-display text-lg font-semibold text-text"
+                className="absolute left-6 top-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/30 px-3.5 py-1.5 font-display text-sm font-semibold text-text backdrop-blur-sm"
               >
                 <span aria-hidden="true">👋</span>
                 {hero.hello}
@@ -96,9 +99,8 @@ export default function Hero() {
                 {[profile.firstName, profile.lastName].map((word, index) => (
                   <motion.span
                     key={word}
-                    className={`block pb-[0.05em] text-[clamp(2.75rem,9.5vw,5.25rem)] ${
-                      index === 0 ? 'font-bold' : 'font-light'
-                    }`}
+                    className={`block pb-[0.05em] text-[clamp(2.75rem,9.5vw,5.25rem)] ${index === 0 ? 'font-bold' : 'font-light'
+                      }`}
                     initial={
                       reduce ? false : { opacity: HIDDEN_OPACITY, y: index === 0 ? -20 : 20 }
                     }
@@ -124,14 +126,16 @@ export default function Hero() {
                 className="mx-auto h-[5px] w-36 rounded-full bg-white/85"
               />
 
-              {/* Role, then socials stacked beneath it */}
-              <div className="flex flex-col gap-6">
+              {/* Role left, socials right on one row — the reference pairs them
+                  side by side. Stacked below sm so the row cannot overflow a
+                  narrow phone. */}
+              <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
                 <p className="text-[1.05rem] leading-snug text-text">
                   {hero.roleLead} <span className="font-semibold">{hero.roleBold}</span>
                   <br />
                   {hero.roleTail}
                 </p>
-                <ul className="flex gap-2.5">
+                <ul className="flex shrink-0 gap-2.5">
                   {socials.slice(0, 3).map((social) => {
                     const Icon = ICONS[social.icon] ?? Github
                     return (
@@ -173,6 +177,8 @@ export default function Hero() {
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                 <ArrowButton
                   href={hero.primaryCta.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="justify-between sm:justify-start"
                 >
                   {hero.primaryCta.label}
@@ -193,6 +199,8 @@ export default function Hero() {
                 </span>
                 <a
                   href={hero.contactLink.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="link-underline inline-flex items-center gap-1.5 font-medium text-text"
                 >
                   {hero.contactLink.label}

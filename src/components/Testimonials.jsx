@@ -66,7 +66,7 @@ export default function Testimonials() {
                   {Array.from({ length: item.stars }).map((_, starIndex) => (
                     <Star key={starIndex} size={16} fill="currentColor" strokeWidth={0} aria-hidden="true" />
                   ))}
-                  <span className="sr-only">Rated {item.stars} out of 5</span>
+                  <span className="sr-only">{item.name}</span>
                 </div>
 
                 {/* Pagination */}
@@ -78,7 +78,7 @@ export default function Testimonials() {
                         key={dot.name}
                         type="button"
                         onClick={() => setIndex(dotIndex)}
-                        aria-label={`Show testimonial from ${dot.name}`}
+                        aria-label={`Show ${dot.name}`}
                         aria-current={isActive ? 'true' : undefined}
                         className={`grid place-items-center rounded-full transition-all duration-300 ${
                           isActive

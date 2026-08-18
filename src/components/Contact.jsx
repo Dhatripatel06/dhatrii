@@ -9,7 +9,7 @@ import {
   Github,
   Linkedin,
 } from 'lucide-react'
-import { contact, profile, socials } from '../data/content'
+import { contact, profile, socials, whatsappHref } from '../data/content'
 import ArrowButton from './ui/ArrowButton'
 import Reveal from './ui/Reveal'
 import { EASE } from './ui/motion'
@@ -23,10 +23,6 @@ export default function Contact() {
   const [form, setForm] = useState(EMPTY)
   const [errors, setErrors] = useState({})
   const [sent, setSent] = useState(false)
-
-  const whatsappHref = `https://wa.me/${profile.whatsapp}?text=${encodeURIComponent(
-    contact.whatsappMessage,
-  )}`
 
   const update = (field) => (event) => {
     setForm((previous) => ({ ...previous, [field]: event.target.value }))

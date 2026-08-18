@@ -7,7 +7,6 @@ import Journey from './components/Journey'
 import Projects from './components/Projects'
 import Experience from './components/Experience'
 import Services from './components/Services'
-import ActionCards from './components/ActionCards'
 import Tools from './components/Tools'
 import WorkProcess from './components/WorkProcess'
 import Testimonials from './components/Testimonials'
@@ -33,7 +32,6 @@ export default function App() {
         <Projects />
         <Experience />
         <Services />
-        <ActionCards />
         <Tools />
         <WorkProcess />
         <Testimonials />

@@ -57,14 +57,20 @@ export default function Projects() {
                     </h3>
                     <p className="mt-1.5 text-sm text-muted">{project.tags}</p>
                   </div>
-                  <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full border border-line text-text transition-colors duration-500 group-hover:border-accent group-hover:bg-accent group-hover:text-bg sm:h-16 sm:w-16">
+                  <a
+                    href={project.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Open the ${project.title} project`}
+                    className="grid h-14 w-14 shrink-0 place-items-center rounded-full border border-line text-text transition-colors duration-500 group-hover:border-accent group-hover:bg-accent group-hover:text-bg sm:h-16 sm:w-16"
+                  >
                     <ArrowUpRight
                       size={24}
                       strokeWidth={1.8}
                       aria-hidden="true"
                       className="transition-transform duration-500 motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5"
                     />
-                  </span>
+                  </a>
                 </div>
               </motion.article>
             </li>

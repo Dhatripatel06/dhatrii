@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Globe, ArrowUpRight } from 'lucide-react'
-import { pricing } from '../data/content'
+import { pricing, whatsappHref } from '../data/content'
 import TwoTone from './ui/TwoTone'
 import ArrowButton from './ui/ArrowButton'
 import Reveal from './ui/Reveal'
@@ -64,7 +64,9 @@ export default function Pricing() {
 
         {/* Card */}
         <Reveal delay={0.08} className="mt-10">
-          <div className="mx-auto max-w-3xl">
+          {/* pt-5 absorbs the priced panel's -mt-5 lift, so the section keeps
+              its original vertical rhythm. */}
+          <div className="mx-auto max-w-3xl pt-5">
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={plan.key}
@@ -76,57 +78,73 @@ export default function Pricing() {
                 exit={reduce ? { opacity: 0 } : { opacity: 0, y: -12 }}
                 transition={{ duration: 0.35, ease: EASE }}
               >
-                <div className="pinstripe relative overflow-hidden rounded-card border border-accent/45 bg-sunken p-8 shadow-card sm:p-11">
-                  <div
-                    aria-hidden="true"
-                    className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-accent/[0.08] blur-3xl"
-                  />
+                {/* Outer sheet. The priced panel below is inset by this
+                    padding and pulled up past the top edge, so the sheet reads
+                    as a card stacked behind it — the reference's layering. */}
+                <div className="rounded-card border border-line bg-sunken p-3 pt-0 shadow-card sm:p-4 sm:pt-0">
+                  <div className="pinstripe relative -mt-5 overflow-hidden rounded-[26px] border border-accent/45 bg-surface p-8 shadow-card sm:p-11">
+                    <div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-accent/[0.08] blur-3xl"
+                    />
 
-                  <h3 className="relative font-display text-[clamp(2rem,4.4vw,3rem)] font-bold tracking-[-0.03em]">
-                    {plan.name}
-                  </h3>
-                  <p className="relative mt-3 text-muted">{plan.tagline}</p>
+                    <h3 className="relative font-display text-[clamp(2rem,4.4vw,3rem)] font-bold tracking-[-0.03em]">
+                      {plan.name}
+                    </h3>
+                    <p className="relative mt-3 text-muted">{plan.tagline}</p>
 
-                  <p className="relative mt-8 flex items-baseline gap-2">
-                    <span className="font-display text-[clamp(3rem,8vw,5rem)] font-bold leading-none tracking-[-0.04em]">
-                      {plan.price}
-                    </span>
-                    <span className="font-display text-2xl font-light text-muted">{plan.unit}</span>
-                  </p>
+                    {/* Unit rides at the cap height of the numerals rather than
+                        their baseline, as in the reference. */}
+                    <p className="relative mt-8 flex items-start gap-2">
+                      <span className="font-display text-[clamp(3rem,8vw,5rem)] font-bold leading-none tracking-[-0.04em]">
+                        {plan.price}
+                      </span>
+                      <span className="mt-1 font-display text-2xl font-light text-muted">
+                        {plan.unit}
+                      </span>
+                    </p>
 
-                  {/* Stacked and centred until the reference's ~810px tablet
-                      breakpoint, then split to opposite ends of the card. */}
-                  <div className="relative mt-10 flex flex-col items-center gap-4 min-[810px]:flex-row min-[810px]:justify-between">
-                    <ArrowButton href="#contact">{plan.cta}</ArrowButton>
-                    <span className="text-sm text-muted">{plan.delivery}</span>
+                    {/* Stacked and centred until the reference's ~810px tablet
+                        breakpoint, then split to opposite ends of the card. */}
+                    <div className="relative mt-10 flex flex-col items-center gap-4 min-[810px]:flex-row min-[810px]:justify-between">
+                      <ArrowButton href={whatsappHref} target="_blank" rel="noopener noreferrer">
+                        {plan.cta}
+                      </ArrowButton>
+                      <span className="text-sm font-semibold text-text">{plan.delivery}</span>
+                    </div>
                   </div>
-                </div>
 
-                {/* Features */}
-                {/* No border here — the reference's feature panel reads as a
-                    slightly lifted surface, not an outlined card. */}
-                <ul className="mt-4 flex flex-col gap-4 rounded-card bg-sunken p-8 sm:p-10">
-                  {plan.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-3 text-text/85">
-                      <span aria-hidden="true" className="mt-2 h-1 w-1 shrink-0 rounded-full bg-muted" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
+                  {/* Features */}
+                  {/* No border here — the reference's feature panel reads as a
+                      lifted surface on the darker sheet, not an outlined card. */}
+                  <ul className="mt-3 flex flex-col gap-4 rounded-[26px] bg-surface p-8 sm:p-10">
+                    {plan.features.map((feature) => (
+                      <li key={feature} className="flex items-start gap-3 text-text/85">
+                        <span
+                          aria-hidden="true"
+                          className="mt-2 h-1 w-1 shrink-0 rounded-full bg-muted"
+                        />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
 
-                {/* Footer row */}
-                <div className="mt-6 flex flex-wrap items-center justify-between gap-3 text-sm">
-                  <span className="inline-flex items-center gap-2 text-muted">
-                    <Globe size={15} strokeWidth={2} aria-hidden="true" />
-                    {pricing.note}
-                  </span>
-                  <a
-                    href="#contact"
-                    className="link-underline inline-flex items-center gap-1.5 font-medium text-accent"
-                  >
-                    Contact me
-                    <ArrowUpRight size={15} strokeWidth={2.2} aria-hidden="true" />
-                  </a>
+                  {/* Footer row, sitting on the sheet below the feature panel */}
+                  <div className="flex flex-wrap items-center justify-between gap-3 px-5 pb-2 pt-6 text-sm sm:px-6">
+                    <span className="inline-flex items-center gap-2 text-muted">
+                      <Globe size={15} strokeWidth={2} aria-hidden="true" />
+                      {pricing.note}
+                    </span>
+                    <a
+                      href={whatsappHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="link-underline inline-flex items-center gap-1.5 font-medium text-accent"
+                    >
+                      Contact me
+                      <ArrowUpRight size={15} strokeWidth={2.2} aria-hidden="true" />
+                    </a>
+                  </div>
                 </div>
               </motion.div>
             </AnimatePresence>

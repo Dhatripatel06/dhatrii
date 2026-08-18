@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
-import { services } from '../data/content'
+import { services, whatsappHref } from '../data/content'
+import ActionCards from './ActionCards'
+import Marquee from './ui/Marquee'
 import TwoTone from './ui/TwoTone'
 import Reveal from './ui/Reveal'
 import { EASE, SPRING } from './ui/motion'
@@ -17,8 +19,26 @@ export default function Services() {
   const active = services.tabs.find((tab) => tab.key === activeKey) ?? services.tabs[0]
 
   return (
-    <section id="services" aria-labelledby="services-heading" className="section">
-      <div className="shell">
+    <section id="services" aria-labelledby="services-heading" className="section relative">
+      {/* Oversized pixel wordmark drifting across the foot of the section.
+          Decorative only — the Marquee clips itself, so the page never gains
+          horizontal scroll. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 select-none"
+      >
+        <Marquee
+          items={[services.ghost]}
+          renderItem={(phrase) => (
+            <span className="whitespace-nowrap font-pixel text-[clamp(2.75rem,9vw,7rem)] font-bold leading-[0.8] tracking-tight text-white/[0.06]">
+              {phrase}
+            </span>
+          )}
+        />
+      </div>
+
+      {/* `relative` keeps the card above the absolutely-placed wordmark. */}
+      <div className="shell relative">
         <TwoTone
           id="services-heading"
           light={services.titleLight}
@@ -26,9 +46,10 @@ export default function Services() {
           lede={services.lede}
         />
 
-        {/* One card holding the tab group and the panel, as in the reference */}
+        {/* One card holding the tab group, the panel and the action buttons, as
+            in the reference */}
         <Reveal delay={0.08} className="mt-12">
-          <div className="relative overflow-hidden rounded-card border border-line bg-surface p-3 sm:p-4">
+          <div className="relative overflow-hidden rounded-card border border-line bg-sunken p-3 shadow-card sm:p-4">
             {/* Tab group: stacked full-width on mobile, one row from sm up */}
             <div
               role="tablist"
@@ -63,8 +84,10 @@ export default function Services() {
               })}
             </div>
 
-            {/* Panel */}
-            <div className="px-5 pb-6 pt-10 sm:px-8 sm:pb-10 sm:pt-14">
+            {/* Panel reads as a lifted surface inside the darker card, with the
+                action buttons sharing the card beneath it — the reference's
+                composition. */}
+            <div className="mt-3 rounded-[26px] bg-surface px-5 pb-6 pt-10 sm:px-8 sm:pb-10 sm:pt-14">
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={active.key}
@@ -95,8 +118,10 @@ export default function Services() {
                       {active.number}
                     </span>
                     <a
-                      href="#contact"
-                      aria-label={`Enquire about ${active.title}`}
+                      href={whatsappHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Enquire about ${active.title} on WhatsApp`}
                       className="group shrink-0 text-text transition-colors duration-300 hover:text-accent"
                     >
                       <ArrowUpRight
@@ -110,6 +135,8 @@ export default function Services() {
                 </motion.div>
               </AnimatePresence>
             </div>
+
+            <ActionCards />
           </div>
         </Reveal>
       </div>

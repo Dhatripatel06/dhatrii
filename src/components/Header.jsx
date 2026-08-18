@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Menu, X, Send } from 'lucide-react'
-import { nav, profile, socials } from '../data/content'
+import { nav, profile, socials, whatsappHref } from '../data/content'
 import { EASE, SPRING, SPRING_ENTER, HIDDEN_OPACITY } from './ui/motion'
 
 /**
@@ -141,8 +141,9 @@ export default function Header() {
               </ul>
 
               <a
-                href="#contact"
-                onClick={(event) => go(event, 'contact')}
+                href={whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="ml-2 hidden items-center gap-2 rounded-full bg-accent px-6 py-2.5 text-[0.95rem] font-medium text-bg transition-colors duration-300 hover:bg-text md:inline-flex"
               >
                 Contact
@@ -178,23 +179,27 @@ export default function Header() {
           >
             <div className="shell flex h-full flex-col justify-center pt-28">
               <ul className="flex flex-col">
-                {[...nav, { id: 'contact', label: 'Contact' }].map((item, index) => (
-                  <motion.li
-                    key={item.id}
-                    initial={reduce ? false : { opacity: 0, y: 18 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.45, delay: 0.05 + index * 0.08, ease: EASE }}
-                  >
-                    <a
-                      href={`#${item.id}`}
-                      onClick={(event) => go(event, item.id)}
-                      className="block border-b border-line py-5 font-display text-4xl font-light transition-colors duration-300 hover:text-accent"
+                {[...nav, { id: 'contact', label: 'Contact', external: whatsappHref }].map(
+                  (item, index) => (
+                    <motion.li
+                      key={item.id}
+                      initial={reduce ? false : { opacity: 0, y: 18 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.45, delay: 0.05 + index * 0.08, ease: EASE }}
                     >
-                      {item.label}
-                    </a>
-                  </motion.li>
-                ))}
+                      <a
+                        href={item.external ?? `#${item.id}`}
+                        target={item.external ? '_blank' : undefined}
+                        rel={item.external ? 'noopener noreferrer' : undefined}
+                        onClick={item.external ? () => setOpen(false) : (event) => go(event, item.id)}
+                        className="block border-b border-line py-5 font-display text-4xl font-light transition-colors duration-300 hover:text-accent"
+                      >
+                        {item.label}
+                      </a>
+                    </motion.li>
+                  ),
+                )}
               </ul>
               <ul className="mt-10 flex flex-wrap gap-2">
                 {socials.map((social) => (

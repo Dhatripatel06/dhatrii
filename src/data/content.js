@@ -8,12 +8,20 @@ export const profile = {
   wordmark: 'Dhatri',
   firstName: 'Dhatri',
   lastName: 'Patel',
-  role: 'Flutter & Web Developer',
+  role: 'Flutter Developer | UI/UX-Focused Mobile App Developer',
   email: 'dhatripatel67@gmail.com',
-  whatsapp: '919000000000', // country code + number, digits only
-  location: 'Available Worldwide',
-  portrait: '/images/portrait.jpg',
+  whatsapp: '916355506411', // country code + number, digits only
+  location: 'Bhavnagar / Ahmedabad, Gujarat, India',
+  portrait: '/images/portrait-illustration.png',
 }
+
+/* Every contact CTA on the page opens WhatsApp with this message already
+   typed, so there is a single place to change the wording. */
+const WHATSAPP_MESSAGE = "Hi Dhatri! I found your portfolio and I'd like to talk about a project."
+
+export const whatsappHref = `https://wa.me/${profile.whatsapp}?text=${encodeURIComponent(
+  WHATSAPP_MESSAGE,
+)}`
 
 export const nav = [
   { id: 'top', label: 'Home' },
@@ -26,38 +34,43 @@ export const hero = {
   hello: 'Hello',
   roleLead: "I'm a",
   roleBold: 'Flutter Developer',
-  roleTail: 'and Designer',
-  quote:
-    '“I design and build beautifully simple products, and I love what I do”',
-  rating: { stars: 5, label: '50+ clients' },
-  primaryCta: { label: 'Get Started', href: '#contact' },
+  roleTail: 'focused on UI/UX',
+  quote: '“I build beautiful and scalable mobile apps”',
+  rating: { stars: 5, label: '6 featured projects' },
+  primaryCta: { label: 'Get Started', href: whatsappHref },
   secondaryCta: { label: 'My Works', href: '#work' },
-  contactLink: { label: 'Contact me', href: '#contact' },
+  contactLink: { label: 'Contact me', href: whatsappHref },
 }
 
 export const brands = {
-  title: "Trusted by the industry's leading brands",
-  logos: ['Nenjam', 'MindHeal', 'SmartEcom', 'KCT Cafe', 'Helve Neue'],
+  title: 'Certifications and programmes behind the work',
+  logos: [
+    'Oracle Generative AI Professional',
+    'Oracle AI Foundations Associate',
+    'Summer Analytics 2025',
+    'Salesforce Certified',
+    'dASHMESH Software Solutions',
+  ],
 }
 
 export const journey = {
-  eyebrow: 'My clients and me',
+  eyebrow: 'My work so far',
   titleLight: 'My journey in',
   titleBold: 'Numbers',
-  note: 'Great products come from great collaboration',
-  avatars: ['AM', 'SR', 'VS'],
+  note: 'Every project below is designed, built and shipped end to end',
+  avatars: ['MH', 'AC', 'SL'],
   /* Two tiles side by side: a wide accent-filled one and a narrow dark one. */
   stats: [
     {
-      eyebrow: 'Client retention',
-      title: 'Clients who come back in 2026',
-      value: '98%',
+      eyebrow: 'Technology',
+      title: 'Technologies across mobile, web and AI',
+      value: '20+',
       featured: true,
     },
     {
       eyebrow: 'Work',
       title: 'Projects Done',
-      value: '30',
+      value: '6',
       featured: false,
     },
   ],
@@ -66,68 +79,82 @@ export const journey = {
 export const work = {
   titleLight: 'Projects',
   titleBold: 'Done',
-  lede: 'A showcase of the products I have designed and shipped, highlighting my skills and experience.',
-  cta: { label: 'View All Projects', href: '#contact' },
+  lede: 'A selection of the mobile and web products I have designed, built and shipped.',
+  cta: { label: 'View All Projects', href: 'https://github.com/Dhatripatel06' },
 }
 
 export const projects = [
   {
-    slug: 'nenjam-matrimony',
-    title: 'Nenjam Matrimony',
-    tags: 'flutter, firebase',
-    image: '/images/nenjam-matrimony.jpg',
-    tint: 'accent',
-  },
-  {
     slug: 'mindheal',
     title: 'MindHeal',
-    tags: 'ai, mobile app',
-    image: '/images/mindheal.jpg',
+    tags: 'ai mental health companion · flutter, onnx, ml kit',
+    image: '/images/mindheal.png',
     tint: 'violet',
+    href: 'https://github.com/Dhatripatel06/MindHeal_org',
   },
   {
-    slug: 'smartecom',
-    title: 'SmartEcom',
-    tags: 'react, commerce',
-    image: '/images/smartecom.jpg',
+    slug: 'agreecare',
+    title: 'AgreeCare',
+    tags: 'smart agriculture iot · flutter, firebase, getx',
+    image: '/images/agreecare.jpg',
     tint: 'emerald',
+    href: 'https://github.com/hetvidudhela/Agricare',
   },
   {
-    slug: 'kct-cafe',
-    title: 'KCT Cafe',
-    tags: 'branding, web',
-    image: '/images/kct-cafe.jpg',
+    slug: 'shiftly',
+    title: 'Shiftly',
+    tags: 'shift management platform · flutter, firestore, hive',
+    image: '/images/shiftly.jpg',
+    tint: 'accent',
+    href: 'https://github.com/Dhatripatel06/shift_manager',
+  },
+  {
+    slug: 'jobzee',
+    title: 'JobZee',
+    tags: 'full-stack job portal · react, node, socket.io',
+    image: '/images/jobzee.jpg',
     tint: 'indigo',
+    href: 'https://jobzee-two.vercel.app/',
+  },
+  {
+    slug: 'learnnova',
+    title: 'LearnNova',
+    tags: 'elearning platform · react, tailwind, rest apis',
+    image: '/images/learnnova.jpg',
+    tint: 'neutral',
+    href: 'https://github.com/isha-gohel181/Learn_nova',
+  },
+  {
+    slug: 'masjid',
+    title: 'Masjid',
+    tags: 'interactive 3d simulation · c++, opengl, glut',
+    image: '/images/masjid.jpg',
+    tint: 'violet',
+    href: 'https://github.com/ubeduk/masjid-e-aqsa',
   },
 ]
 
 export const experience = {
-  startYear: '2021',
+  startYear: '2023',
   endLabel: 'Present',
   entries: [
     {
+      period: 'Jan 2026 - Feb 2026',
+      role: 'Intern',
+      title: 'Front-End Developer',
+      company: 'dASHMESH',
+    },
+    {
       period: '2024 - Present',
       role: 'Independent',
-      title: 'Product Developer',
+      title: 'Flutter Developer',
       company: 'Freelance',
     },
     {
-      period: '2023 - 2024',
-      role: 'Senior',
-      title: 'Flutter Developer',
-      company: 'Helve Neue Agency',
-    },
-    {
-      period: '2022 - 2023',
-      role: 'Mid-level',
-      title: 'Mobile Developer',
-      company: 'Atlas Neue Studio',
-    },
-    {
-      period: '2021 - 2022',
-      role: 'Junior',
-      title: 'Frontend Developer',
-      company: 'Northwind Labs',
+      period: '2023 - 2026',
+      role: 'Undergraduate',
+      title: 'BCA',
+      company: 'SSCCS, Bhavnagar',
     },
   ],
 }
@@ -135,30 +162,32 @@ export const experience = {
 export const services = {
   titleLight: 'What I',
   titleBold: 'Do',
-  lede: 'Pick a track and see how I work inside it.',
+  lede: 'Cross-platform mobile apps, responsive web interfaces and on-device AI features.',
+  /* Oversized wordmark that drifts across the foot of the section. */
+  ghost: 'Explore my services',
   tabs: [
     {
       key: 'mobile',
       label: 'Mobile Apps',
-      badge: '4 Years Exp',
+      badge: 'Flutter · Dart',
       title: 'Mobile Apps',
-      body: 'Cross-platform iOS and Android apps in Flutter — one codebase, native feel, shipped to both stores.',
+      body: 'Cross-platform Android and iOS apps built in Flutter, with scalable state management in BLoC, GetX, Riverpod or Provider and full Firebase and REST API integration.',
       number: '01',
     },
     {
       key: 'web',
-      label: 'Web Design',
-      badge: '4 Years Exp',
-      title: 'Web Design',
-      body: 'Marketing sites and web apps hand-built in React. Fast, accessible, and fully yours to own.',
+      label: 'Web Development',
+      badge: 'React · Next.js',
+      title: 'Web Development',
+      body: 'Responsive, pixel-accurate interfaces hand-built in React, Next.js and Tailwind CSS, wired to REST APIs and shipped deployment-ready.',
       number: '02',
     },
     {
       key: 'ai',
-      label: 'AI Products',
-      badge: '2 Years Exp',
-      title: 'AI Products',
-      body: 'Chat assistants, smart search and document Q&A wired into your product — practical AI that saves real time.',
+      label: 'AI Features',
+      badge: 'On-device ML',
+      title: 'AI Features',
+      body: 'Emotion, voice and image models running on-device with ONNX Runtime, TensorFlow Lite and Google ML Kit, plus Generative AI assistants inside your app.',
       number: '03',
     },
   ],
@@ -166,21 +195,21 @@ export const services = {
 
 /* Two stacked action cards that sit directly below the services panel. */
 export const actionCards = [
-  { icon: 'Rocket', label: 'Start Now', href: '#contact', outlined: false },
-  { icon: 'Phone', label: 'Contact Me', href: '#contact', outlined: true },
+  { icon: 'Rocket', label: 'Start Now', href: whatsappHref, outlined: false },
+  { icon: 'Phone', label: 'Contact Me', href: whatsappHref, outlined: true },
 ]
 
 export const tools = {
-  titleLight: 'Tools I',
-  titleBold: 'Use',
-  lede: 'Proficient in industry-standard design and development tools.',
+  titleLight: 'Mastered',
+  titleBold: 'Tools',
+  lede: 'The stack I reach for across mobile, web and machine learning work.',
   items: [
     { name: 'Flutter', role: 'Mobile SDK', mark: '◈', color: '#42A5F5' },
-    { name: 'React', role: 'Web Library', mark: '⬡', color: '#61DAFB' },
+    { name: 'Dart', role: 'Language', mark: '⏦', color: '#0175C2' },
     { name: 'Firebase', role: 'Backend', mark: '▲', color: '#60A5FA' },
+    { name: 'React', role: 'Web Library', mark: '⬡', color: '#61DAFB' },
     { name: 'Figma', role: 'Design Tool', mark: '◉', color: '#F24E1E' },
-    { name: 'Supabase', role: 'Database', mark: '⏦', color: '#3ECF8E' },
-    { name: 'OpenAI', role: 'AI Platform', mark: '✳', color: '#F5F5F5' },
+    { name: 'TensorFlow', role: 'On-device ML', mark: '✳', color: '#F5F5F5' },
   ],
 }
 
@@ -197,32 +226,40 @@ export const workProcess = {
 }
 
 export const testimonials = {
-  titleLight: 'What',
-  titleBold: 'Clients Say',
-  lede: 'Building trust through client testimonials and positive feedback.',
+  titleLight: 'Awards &',
+  titleBold: 'Recognition',
+  lede: 'Work recognised at exhibitions, hackathons and an international conference.',
   items: [
     {
-      name: 'Arjun Mehta',
-      role: 'Founder, Nenjam',
-      score: '98%',
+      name: '2nd Place',
+      role: 'Flash@SSCCS IT Exhibition · MindHeal',
+      score: '2025',
       quote:
-        'Dhatri understood the product better than we had explained it. She cut two features we thought we needed and she was right — we launched a month earlier.',
+        'MindHeal placed second at the Flash@SSCCS IT Exhibition for its on-device facial emotion and voice sentiment analysis.',
       stars: 5,
     },
     {
-      name: 'Dr. Sneha Rao',
-      role: 'Co-founder, MindHeal',
-      score: '95%',
+      name: 'Runner-Up',
+      role: 'Flash@SSCCS IT Exhibition',
+      score: '2024',
       quote:
-        'The app felt finished from the very first build. Smooth, thoughtful, no rough edges. Users keep telling us how calm it feels to use.',
+        'Placed runner-up at the Flash@SSCCS IT Exhibition — one of two consecutive runner-up finishes across 2024 and 2025.',
       stars: 5,
     },
     {
-      name: 'Vikram Shah',
-      role: 'Director, SmartEcom',
-      score: '96%',
+      name: 'Research Paper',
+      role: 'Published · International Multidisciplinary Conference',
+      score: '2024',
       quote:
-        'We had been burned by an agency before. Working with one person who answers her own messages was faster and cheaper in every way.',
+        'Research behind the AgreeCare smart agriculture system was published at the International Multidisciplinary Conference in December 2024.',
+      stars: 5,
+    },
+    {
+      name: 'Hackathon Finalist',
+      role: 'Odoo x GVP Hackathon · LearnNova',
+      score: '2026',
+      quote:
+        'LearnNova, a responsive eLearning platform built in React and Tailwind CSS, reached the finals of the Odoo x GVP Hackathon.',
       stars: 5,
     },
   ],
@@ -275,7 +312,7 @@ export const faqs = {
   titleBold: 'Questions',
   lede: 'Helping you understand how I work and what you get.',
   footerNote: 'Do you have any concerns before we start?',
-  footerCta: { label: 'Contact me', href: '#contact' },
+  footerCta: { label: 'Contact me', href: whatsappHref },
   items: [
     {
       q: 'How long does a typical project take?',
@@ -283,7 +320,7 @@ export const faqs = {
     },
     {
       q: 'Do you work with clients outside India?',
-      a: 'Constantly. Most of my clients are in the US, UK, UAE and Australia. I keep flexible hours for calls and I am reachable on WhatsApp, Slack or email.',
+      a: 'Yes. I work remotely from Gujarat, India and keep flexible hours for calls across time zones. Email and WhatsApp are the quickest ways to reach me.',
     },
     {
       q: 'What do you need from me to get started?',
@@ -303,9 +340,9 @@ export const faqs = {
 export const contact = {
   titleLight: 'Contact',
   titleBold: 'For Work',
-  lede: 'Send a few lines about your idea and I will reply the same day, usually within a couple of hours.',
+  lede: 'Send a few lines about your idea and I will get back to you, usually within a day.',
   budgets: ['Under $2k', '$2k – $6k', '$6k – $15k', '$15k+ / retainer', 'Not sure yet'],
-  whatsappMessage: "Hi Dhatri! I found your portfolio and I'd like to talk about a project.",
+  whatsappMessage: WHATSAPP_MESSAGE,
 }
 
 /* Two closing cards that sit between the contact form and the footer. */
@@ -313,27 +350,29 @@ export const closing = {
   social: {
     label: 'Dhatri',
     titleLight: 'Explore',
-    titleBold: 'Instagram',
-    href: 'https://instagram.com/',
-    image: '/images/instagram.jpg',
+    titleBold: 'GitHub',
+    href: 'https://github.com/Dhatripatel06',
+    image: '/images/github.jpg',
   },
   whyChoose: {
     titleLight: 'Why Choose',
     titleBold: 'Dhatri',
     tags: [
-      'Clean code',
-      'Fast delivery',
+      'Flutter and Dart',
+      'Clean architecture',
+      'Pixel-perfect UI',
+      'Firebase and REST APIs',
+      'On-device AI',
       'Direct contact',
-      'Fixed pricing',
-      'SEO ready',
-      'Post-launch support',
     ],
   },
 }
 
 export const socials = [
-  { icon: 'Twitter', label: 'X', href: 'https://x.com/' },
-  { icon: 'Instagram', label: 'Instagram', href: 'https://instagram.com/' },
-  { icon: 'Github', label: 'GitHub', href: 'https://github.com/' },
-  { icon: 'Linkedin', label: 'LinkedIn', href: 'https://linkedin.com/in/' },
+  { icon: 'Github', label: 'GitHub', href: 'https://github.com/Dhatripatel06' },
+  {
+    icon: 'Linkedin',
+    label: 'LinkedIn',
+    href: 'https://www.linkedin.com/in/dhatri-patel-426846322',
+  },
 ]
