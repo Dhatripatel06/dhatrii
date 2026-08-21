@@ -1,5 +1,8 @@
+'use client'
+
 import { motion, useReducedMotion } from 'framer-motion'
-import { SPRING_ENTER, STAGGER, HIDDEN_OPACITY, VIEWPORT } from './motion'
+
+import { HIDDEN_OPACITY, SPRING_ENTER, STAGGER, VIEWPORT } from '@/lib/motion'
 
 /** Container revealing <StaggerItem> children a flat 0.2s apart. */
 export function Stagger({ children, className, delay = 0, gap = STAGGER, as = 'div', ...rest }) {
@@ -57,5 +60,3 @@ export function StaggerItem({ children, className, y = 20, as = 'div', ...rest }
     </Tag>
   )
 }
-
-export default Stagger

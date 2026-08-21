@@ -1,9 +1,15 @@
+'use client'
+
 import { useState } from 'react'
+import Image from 'next/image'
 
 /**
- * Lazy-loaded image that fades in once decoded. When the file is missing it
- * degrades to a labelled gradient tile instead of a broken-image icon, so the
- * layout stays intact before real assets are dropped in.
+ * next/image in `fill` mode that fades in once decoded. When the file is
+ * missing it degrades to a labelled gradient tile instead of a broken-image
+ * icon, so the layout stays intact before real assets are dropped in.
+ *
+ * The parent must be a positioned box with a definite height — every caller
+ * wraps it in either an aspect-ratio box or an inset-0 layer.
  */
 /* Kept deliberately low-contrast so a missing file reads as an empty photo
    area rather than a coloured block competing with the type over it. */
@@ -20,21 +26,19 @@ export default function SmartImage({
   alt,
   label,
   className = '',
-  wrapperClassName = '',
   tint = 'neutral',
   sizes,
   eager = false,
 }) {
   const [status, setStatus] = useState('loading')
+  const gradient = TINTS[tint] ?? TINTS.neutral
 
   if (status === 'error') {
     return (
       <div
         role="img"
         aria-label={alt}
-        className={`flex h-full w-full items-center justify-center bg-gradient-to-br ${
-          TINTS[tint] ?? TINTS.neutral
-        } ${wrapperClassName}`}
+        className={`flex h-full w-full items-center justify-center bg-gradient-to-br ${gradient}`}
       >
         <span className="px-6 text-center font-display text-xs uppercase tracking-[0.18em] text-white/25">
           {label ?? alt}
@@ -49,17 +53,15 @@ export default function SmartImage({
       {status === 'loading' && (
         <span
           aria-hidden="true"
-          className={`absolute inset-0 bg-gradient-to-br ${TINTS[tint] ?? TINTS.neutral}`}
+          className={`absolute inset-0 bg-gradient-to-br ${gradient}`}
         />
       )}
-      <img
+      <Image
         src={src}
         alt={alt}
+        fill
         sizes={sizes}
-        loading={eager ? 'eager' : 'lazy'}
-        // React 18 passes this through only in lowercase; camelCase warns.
-        fetchpriority={eager ? 'high' : undefined}
-        decoding="async"
+        priority={eager}
         onLoad={() => setStatus('ready')}
         onError={() => setStatus('error')}
         className={`${className} transition-opacity duration-700 ease-smooth ${

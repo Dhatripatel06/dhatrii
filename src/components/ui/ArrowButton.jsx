@@ -1,10 +1,11 @@
 import { ArrowUpRight } from 'lucide-react'
+
 import Magnetic from './Magnetic'
 
 /**
  * The reference's signature CTA: a pill with a circular arrow badge sitting
- * inside its right edge. `tone="accent"` is the accent fill on dark; `tone="outline"` is
- * a bordered dark pill.
+ * inside its right edge. `tone="accent"` is the accent fill on dark;
+ * `tone="outline"` is a bordered dark pill.
  */
 export default function ArrowButton({
   as = 'a',

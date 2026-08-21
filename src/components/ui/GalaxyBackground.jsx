@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useRef } from 'react'
 import { useReducedMotion } from 'framer-motion'
 
@@ -136,10 +138,6 @@ export default function GalaxyBackground() {
   }, [reduce])
 
   return (
-    <canvas
-      ref={canvasRef}
-      aria-hidden="true"
-      className="pointer-events-none fixed inset-0 -z-10"
-    />
+    <canvas ref={canvasRef} aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10" />
   )
 }

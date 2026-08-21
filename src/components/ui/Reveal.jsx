@@ -1,5 +1,8 @@
+'use client'
+
 import { motion, useReducedMotion } from 'framer-motion'
-import { SPRING_ENTER, HIDDEN_OPACITY, VIEWPORT } from './motion'
+
+import { HIDDEN_OPACITY, SPRING_ENTER, VIEWPORT } from '@/lib/motion'
 
 /**
  * Fade + slide up when scrolled into view, on the reference's entry spring

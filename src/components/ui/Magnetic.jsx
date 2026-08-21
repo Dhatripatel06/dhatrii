@@ -1,8 +1,13 @@
-import { useRef, useCallback } from 'react'
-import { motion, useSpring, useReducedMotion } from 'framer-motion'
-import { MAGNET_MAX } from './motion'
+'use client'
+
+import { useCallback, useRef } from 'react'
+import { motion, useReducedMotion, useSpring } from 'framer-motion'
+
+import { MAGNET_MAX } from '@/lib/motion'
 
 const clamp = (value, limit) => Math.max(-limit, Math.min(limit, value))
+
+const SPRING_CONFIG = { stiffness: 260, damping: 20, mass: 0.5 }
 
 /**
  * Subtle magnetic hover — the element drifts toward the cursor but never
@@ -19,9 +24,8 @@ export default function Magnetic({
 }) {
   const reduce = useReducedMotion()
   const ref = useRef(null)
-  const config = { stiffness: 260, damping: 20, mass: 0.5 }
-  const x = useSpring(0, config)
-  const y = useSpring(0, config)
+  const x = useSpring(0, SPRING_CONFIG)
+  const y = useSpring(0, SPRING_CONFIG)
 
   const onMove = useCallback(
     (event) => {
