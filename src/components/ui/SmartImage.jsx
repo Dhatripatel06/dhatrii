@@ -5,8 +5,9 @@ import Image from 'next/image'
 
 /**
  * next/image in `fill` mode that fades in once decoded. When the file is
- * missing it degrades to a labelled gradient tile instead of a broken-image
- * icon, so the layout stays intact before real assets are dropped in.
+ * missing — `src` is empty, or the request 404s — it degrades to a labelled
+ * gradient tile instead of a broken-image icon, so the layout stays intact
+ * before real assets are dropped in.
  *
  * The parent must be a positioned box with a definite height — every caller
  * wraps it in either an aspect-ratio box or an inset-0 layer.
@@ -33,7 +34,9 @@ export default function SmartImage({
   const [status, setStatus] = useState('loading')
   const gradient = TINTS[tint] ?? TINTS.neutral
 
-  if (status === 'error') {
+  /* A null src never reaches next/image: requesting a path that is not
+     there would 404 on every render and log an optimiser error. */
+  if (!src || status === 'error') {
     return (
       <div
         role="img"

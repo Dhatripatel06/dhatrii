@@ -249,7 +249,7 @@ export const projects = [
     slug: 'learnnova',
     title: 'LearnNova',
     tags: 'elearning platform · react, tailwind, rest apis',
-    image: '/images/learnnova.jpg',
+    image: null, // drop learnnova.jpg into /public/images and set the path here
     tint: 'neutral',
     href: 'https://github.com/isha-gohel181/Learn_nova',
     detail: {
@@ -547,11 +547,14 @@ export const contact = {
 /* Two closing cards that sit between the contact form and the footer. */
 export const closing = {
   social: {
+    icon: 'Instagram',
     label: 'Dhatri',
     titleLight: 'Explore',
-    titleBold: 'GitHub',
-    href: 'https://github.com/Dhatripatel06',
-    image: '/images/github.jpg',
+    titleBold: 'Instagram',
+    href: 'https://www.instagram.com/dhatrii.tech',
+    // Its own asset, not the hero portrait: two <Image>s sharing one src
+    // collide in next/image's LCP bookkeeping and mislabel the hero as lazy.
+    image: null,
   },
   whyChoose: {
     titleLight: 'Why Choose',
@@ -574,4 +577,5 @@ export const socials = [
     label: 'LinkedIn',
     href: 'https://www.linkedin.com/in/dhatri-patel-426846322',
   },
+  { icon: 'Instagram', label: 'Instagram', href: 'https://www.instagram.com/dhatrii.tech' },
 ]
