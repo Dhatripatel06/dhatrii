@@ -1,5 +1,7 @@
 'use client'
 
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { ArrowUp } from 'lucide-react'
 import { useReducedMotion } from 'framer-motion'
 import { socials, profile, nav } from '@/data/content'
@@ -10,9 +12,16 @@ import Magnetic from '@/components/ui/Magnetic'
 
 export default function Footer() {
   const reduce = useReducedMotion()
+  const pathname = usePathname()
   const year = new Date().getFullYear()
 
-  const toTop = () => scrollToSection('top', { reduce })
+  /* Same rule as the header: off the home page these anchors have to route
+     home first, and "back to top" becomes a plain scroll to 0. */
+  const onHome = pathname === '/'
+  const sectionHref = (id) => (onHome ? `#${id}` : `/#${id}`)
+
+  const toTop = () =>
+    onHome ? scrollToSection('top', { reduce }) : window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' })
 
   return (
     <footer className="relative overflow-hidden border-t border-line">
@@ -23,21 +32,24 @@ export default function Footer() {
 
       <div className="shell relative py-16">
         <Reveal className="flex flex-col items-center gap-8 text-center">
-          <a href="#top" className="font-display text-3xl font-bold tracking-tight text-accent">
+          <Link
+            href={sectionHref('top')}
+            className="font-display text-3xl font-bold tracking-tight text-accent"
+          >
             <span>.</span>
             {profile.wordmark}
-          </a>
+          </Link>
 
           <nav aria-label="Footer">
             <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
               {[...nav, { id: 'contact', label: 'Contact' }].map((item) => (
                 <li key={item.id}>
-                  <a
-                    href={`#${item.id}`}
+                  <Link
+                    href={sectionHref(item.id)}
                     className="link-underline text-muted transition-colors duration-300 hover:text-text"
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

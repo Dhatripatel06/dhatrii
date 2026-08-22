@@ -36,7 +36,7 @@ export const hero = {
   roleBold: 'Flutter Developer',
   roleTail: 'focused on UI/UX',
   quote: '“I build beautiful and scalable mobile apps”',
-  rating: { stars: 5, label: '6 featured projects' },
+  rating: { stars: 5, label: '5 featured projects' },
   primaryCta: { label: 'Get Started', href: whatsappHref },
   secondaryCta: { label: 'My Works', href: '#work' },
   contactLink: { label: 'Contact me', href: whatsappHref },
@@ -70,7 +70,7 @@ export const journey = {
     {
       eyebrow: 'Work',
       title: 'Projects Done',
-      value: '6',
+      value: '5',
       featured: false,
     },
   ],
@@ -80,10 +80,128 @@ export const work = {
   titleLight: 'Projects',
   titleBold: 'Done',
   lede: 'A selection of the mobile and web products I have designed, built and shipped.',
-  cta: { label: 'View All Projects', href: 'https://github.com/Dhatripatel06' },
+  cta: { label: 'View All Projects', href: '/projects' },
 }
 
+/* Copy for the /projects index and the shared furniture on every case study
+   at /projects/<slug>. The per-project writing lives on `projects` below. */
+export const projectsIndex = {
+  eyebrow: 'Case studies',
+  titleLight: 'Selected',
+  titleBold: 'Projects',
+  lede: 'Five products, each taken from a blank repository to something people can open. Pick one to read how it was built.',
+  meta: {
+    title: 'Projects',
+    description:
+      'Case studies from Dhatri Patel — Flutter, React and AI products taken from first sketch to shipped build.',
+  },
+}
+
+export const projectPage = {
+  backLabel: 'All projects',
+  nextLabel: 'Next project',
+  overviewLabel: 'Overview',
+  processLabel: 'How it was built',
+  detailsLabel: 'Project details',
+  cta: {
+    titleLight: 'Want something',
+    titleBold: 'like this built?',
+    lede: 'Tell me what you have in mind and I will come back with a plan, a timeline and a price.',
+    label: 'Start a project',
+    href: whatsappHref,
+  },
+}
+
+/* Scroll order is deliberate — the two shipped, most demo-able products lead.
+   Each entry doubles as the source for its case-study page at
+   /projects/<slug>, so nothing about a project is duplicated anywhere else. */
 export const projects = [
+  {
+    slug: 'jobzee',
+    title: 'JobZee',
+    tags: 'full-stack job portal · react, node, socket.io',
+    image: '/images/jobzeecover.png',
+    tint: 'indigo',
+    href: 'https://jobzee-two.vercel.app/',
+    detail: {
+      lede: 'A full-stack hiring platform where candidates and recruiters meet, apply and talk in real time.',
+      overview: {
+        eyebrow: 'Built for two audiences at once',
+        heading: 'A job portal that keeps both sides moving',
+        body: 'JobZee pairs a public job board with an authenticated dashboard for each role. Candidates search, filter and apply with a stored profile; recruiters post openings and move applicants through stages. Socket.IO carries the conversation between them, so an application never goes quiet while someone waits on email.',
+      },
+      phases: [
+        {
+          label: 'Discovery',
+          title: 'Mapping two journeys before writing a line',
+          body: 'Candidate and recruiter needs pull a product in opposite directions. I wrote both journeys out first — search to offer, post to hire — and let the shared screens fall out of the overlap instead of designing one flow and bolting the other on.',
+        },
+        {
+          label: 'Development',
+          title: 'Turning the flows into a working stack',
+          body: 'A React front end talks to a Node and Express API over REST, with authentication, role-based routing and file uploads for resumes. Socket.IO runs alongside it for messaging and application updates, so the interface reacts the moment something changes server-side.',
+        },
+        {
+          label: 'Strategy',
+          title: 'Shipping in slices, not in one drop',
+          body: 'Auth, listings, applications and messaging each landed as a self-contained slice that worked end to end before the next one started. The deployed build was never more than one feature away from being demonstrable.',
+        },
+      ],
+      meta: [
+        { label: 'Role', value: 'Design and full-stack development' },
+        { label: 'Type', value: 'Web application' },
+        { label: 'Stack', value: 'React, Node, Express, Socket.IO' },
+      ],
+      result: {
+        heading: 'The Result',
+        body: 'A deployed portal that handles the full hiring loop — search, apply, review, respond — with live messaging rather than a mailbox in the middle of it.',
+      },
+      links: [{ label: 'View Live Site', href: 'https://jobzee-two.vercel.app/' }],
+    },
+  },
+  {
+    slug: 'agreecare',
+    title: 'AgreeCare',
+    tags: 'smart agriculture iot · flutter, firebase, getx',
+    image: '/images/agreecarecover.png',
+    tint: 'emerald',
+    href: 'https://github.com/hetvidudhela/Agricare',
+    detail: {
+      lede: 'A smart-agriculture app that puts live field readings and irrigation control in a farmer’s pocket.',
+      overview: {
+        eyebrow: 'Sensors are only half the problem',
+        heading: 'Field data that reads clearly on a phone',
+        body: 'AgreeCare pulls sensor readings — soil moisture, temperature, humidity — into a Flutter app backed by Firebase, and turns them into a screen someone can act on standing in a field. Thresholds, alerts and irrigation controls sit one tap from the dashboard rather than behind a settings tree.',
+      },
+      phases: [
+        {
+          label: 'Discovery',
+          title: 'Designing for sunlight and one hand',
+          body: 'The app is used outdoors, often one-handed, often on a mid-range device. That set the constraints early: high-contrast type, large tap targets, and a dashboard that answers whether a field needs water right now before it answers anything else.',
+        },
+        {
+          label: 'Development',
+          title: 'Live data without a stuttering UI',
+          body: 'Firebase streams readings into the app while GetX keeps state, routing and dependency injection out of the widget tree. Incoming values update the dashboard reactively, so the interface stays responsive even as readings arrive continuously.',
+        },
+        {
+          label: 'Strategy',
+          title: 'One layer at a time',
+          body: 'Data model first, then the read-only dashboard, then control and alerting on top. Each layer was usable on its own, which kept the hardware side and the app side able to progress independently.',
+        },
+      ],
+      meta: [
+        { label: 'Role', value: 'Mobile design and development' },
+        { label: 'Type', value: 'IoT mobile application' },
+        { label: 'Stack', value: 'Flutter, Firebase, GetX' },
+      ],
+      result: {
+        heading: 'The Result',
+        body: 'A cross-platform app that turns a stream of raw sensor values into a single readable screen — and lets the person reading it act on what it says.',
+      },
+      links: [{ label: 'View on GitHub', href: 'https://github.com/hetvidudhela/Agricare' }],
+    },
+  },
   {
     slug: 'mindheal',
     title: 'MindHeal',
@@ -91,30 +209,41 @@ export const projects = [
     image: '/images/mindheal.png',
     tint: 'violet',
     href: 'https://github.com/Dhatripatel06/MindHeal_org',
-  },
-  {
-    slug: 'agreecare',
-    title: 'AgreeCare',
-    tags: 'smart agriculture iot · flutter, firebase, getx',
-    image: '/images/agreecare.jpg',
-    tint: 'emerald',
-    href: 'https://github.com/hetvidudhela/Agricare',
-  },
-  {
-    slug: 'shiftly',
-    title: 'Shiftly',
-    tags: 'shift management platform · flutter, firestore, hive',
-    image: '/images/shiftly.jpg',
-    tint: 'accent',
-    href: 'https://github.com/Dhatripatel06/shift_manager',
-  },
-  {
-    slug: 'jobzee',
-    title: 'JobZee',
-    tags: 'full-stack job portal · react, node, socket.io',
-    image: '/images/jobzee.jpg',
-    tint: 'indigo',
-    href: 'https://jobzee-two.vercel.app/',
+    detail: {
+      lede: 'An AI mental-health companion that reads emotion on the device, so nothing personal has to leave the phone.',
+      overview: {
+        eyebrow: 'Private by construction',
+        heading: 'On-device intelligence, not a cloud round trip',
+        body: 'MindHeal runs emotion recognition locally with ONNX Runtime and Google ML Kit, then wraps the result in mood tracking, journalling and guided support. Because inference happens on the device, the sensitive part of the experience works without shipping a face or a voice to a server.',
+      },
+      phases: [
+        {
+          label: 'Discovery',
+          title: 'Starting from what must never leave the phone',
+          body: 'Mental-health data is the kind you design around, not for. I drew the privacy line first — inference on-device, nothing sensitive synced — and every later decision had to fit inside it.',
+        },
+        {
+          label: 'Development',
+          title: 'Fitting a model into a mobile budget',
+          body: 'Getting an emotion model to run smoothly inside a Flutter app meant working within a real memory and latency budget: quantised ONNX models, ML Kit for camera-side detection, and inference kept off the UI thread so the interface never blocks while a frame is processed.',
+        },
+        {
+          label: 'Strategy',
+          title: 'A companion, not a diagnosis',
+          body: 'The product deliberately stays supportive rather than clinical. Model output feeds reflection and tracking, and the copy throughout is careful never to present a prediction as a verdict about the person using it.',
+        },
+      ],
+      meta: [
+        { label: 'Role', value: 'Product design and development' },
+        { label: 'Type', value: 'AI mobile application' },
+        { label: 'Stack', value: 'Flutter, ONNX Runtime, ML Kit' },
+      ],
+      result: {
+        heading: 'The Result',
+        body: 'A companion app where the AI work happens on the device it belongs to — responsive in the hand, and private without asking the user to trust a server.',
+      },
+      links: [{ label: 'View on GitHub', href: 'https://github.com/Dhatripatel06/MindHeal_org' }],
+    },
   },
   {
     slug: 'learnnova',
@@ -123,14 +252,84 @@ export const projects = [
     image: '/images/learnnova.jpg',
     tint: 'neutral',
     href: 'https://github.com/isha-gohel181/Learn_nova',
+    detail: {
+      lede: 'An e-learning platform built around the part that usually gets neglected: staying with a course to the end.',
+      overview: {
+        eyebrow: 'Courses are easy to start and easy to abandon',
+        heading: 'Structure that carries a learner through',
+        body: 'LearnNova organises catalogue, course detail, lesson playback and progress into one React interface. Progress is visible on every screen a learner touches, so picking a course back up after a week never starts with a hunt for where they left off.',
+      },
+      phases: [
+        {
+          label: 'Discovery',
+          title: 'Following one learner end to end',
+          body: 'Rather than designing screens in isolation, the flow was drawn as a single path — browse, enrol, learn, resume — and each screen judged by whether it moved someone along that path or stalled them.',
+        },
+        {
+          label: 'Development',
+          title: 'A component system that scales with the catalogue',
+          body: 'React and Tailwind CSS carry a small set of reusable primitives — cards, filters, players, progress — consumed by every view and fed from REST APIs. Adding a course category is a data change, not a new page.',
+        },
+        {
+          label: 'Strategy',
+          title: 'Responsive as a requirement, not a pass at the end',
+          body: 'Learners move between phone and laptop mid-course, so every layout was built fluid from the first commit instead of being retrofitted with breakpoints once the desktop view looked right.',
+        },
+      ],
+      meta: [
+        { label: 'Role', value: 'Front-end design and development' },
+        { label: 'Type', value: 'Web platform' },
+        { label: 'Stack', value: 'React, Tailwind CSS, REST APIs' },
+      ],
+      result: {
+        heading: 'The Result',
+        body: 'A learning interface that stays legible as the catalogue grows, and keeps a learner’s place visible on every screen they land on.',
+      },
+      links: [{ label: 'View on GitHub', href: 'https://github.com/isha-gohel181/Learn_nova' }],
+    },
   },
   {
-    slug: 'masjid',
-    title: 'Masjid',
-    tags: 'interactive 3d simulation · c++, opengl, glut',
-    image: '/images/masjid.jpg',
-    tint: 'violet',
-    href: 'https://github.com/ubeduk/masjid-e-aqsa',
+    slug: 'shiftly',
+    title: 'Shiftly',
+    tags: 'shift management platform · flutter, firestore, hive',
+    image: '/images/shiftlycover.png',
+    tint: 'accent',
+    href: 'https://github.com/Dhatripatel06/shift_manager',
+    detail: {
+      lede: 'A shift-management app for teams whose rota changes faster than a spreadsheet can be re-sent.',
+      overview: {
+        eyebrow: 'Rotas move; spreadsheets do not',
+        heading: 'One schedule everybody actually sees',
+        body: 'Shiftly keeps shifts, swaps and availability in a single Firestore-backed schedule, with Hive caching locally so the roster is readable the moment the app opens — and still readable when the signal drops mid-shift.',
+      },
+      phases: [
+        {
+          label: 'Discovery',
+          title: 'Watching where the schedule breaks down',
+          body: 'The failure is rarely the rota itself — it is the version of it someone is looking at. That pointed the product at a single shared source of truth, with changes propagating rather than being re-announced.',
+        },
+        {
+          label: 'Development',
+          title: 'Offline-first, then online',
+          body: 'Hive holds a local copy of the schedule and Firestore reconciles it, so the app opens straight into content instead of a spinner. Writes queue and settle when connectivity returns, which matters on a shop floor or a back-of-house network.',
+        },
+        {
+          label: 'Strategy',
+          title: 'Keeping the daily action one tap deep',
+          body: 'Managers and staff use the same app for different reasons. Roles change what the home screen offers, but both land on the thing they opened it for — the current shift — without navigating for it.',
+        },
+      ],
+      meta: [
+        { label: 'Role', value: 'Mobile design and development' },
+        { label: 'Type', value: 'Team scheduling application' },
+        { label: 'Stack', value: 'Flutter, Firestore, Hive' },
+      ],
+      result: {
+        heading: 'The Result',
+        body: 'A scheduling app that stays usable offline and keeps one version of the rota in front of everyone who depends on it.',
+      },
+      links: [{ label: 'View on GitHub', href: 'https://github.com/Dhatripatel06/shift_manager' }],
+    },
   },
 ]
 

@@ -1,11 +1,15 @@
 import { ArrowUpRight } from 'lucide-react'
 
 import Magnetic from './Magnetic'
+import MotionLink from './MotionLink'
 
 /**
  * The reference's signature CTA: a pill with a circular arrow badge sitting
  * inside its right edge. `tone="accent"` is the accent fill on dark;
  * `tone="outline"` is a bordered dark pill.
+ *
+ * Same-site hrefs render as next/link so routing stays client-side; external
+ * ones stay plain anchors.
  */
 export default function ArrowButton({
   as = 'a',
@@ -16,10 +20,11 @@ export default function ArrowButton({
   ...rest
 }) {
   const isAccent = tone === 'accent'
+  const isInternal = as === 'a' && typeof href === 'string' && href.startsWith('/')
 
   return (
     <Magnetic
-      as={as}
+      as={isInternal ? MotionLink : as}
       href={href}
       className={`group inline-flex items-center gap-3 rounded-full py-2 pl-7 pr-2 font-medium transition-colors duration-300 ${
         isAccent

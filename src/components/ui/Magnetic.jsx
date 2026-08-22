@@ -52,7 +52,8 @@ export default function Magnetic({
     )
   }
 
-  const Tag = motion[as] ?? motion.button
+  /* `as` may be a tag name or an already-motion component (MotionLink). */
+  const Tag = typeof as === 'string' ? (motion[as] ?? motion.button) : as
 
   return (
     <Tag

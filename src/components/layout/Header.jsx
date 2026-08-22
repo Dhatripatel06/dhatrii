@@ -1,6 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Menu, X, Send } from 'lucide-react'
 import { nav, profile, socials, whatsappHref } from '@/data/content'
@@ -14,9 +16,16 @@ import { EASE, SPRING, SPRING_ENTER, HIDDEN_OPACITY } from '@/lib/motion'
  */
 export default function Header() {
   const reduce = useReducedMotion()
+  const pathname = usePathname()
   const [scrolled, setScrolled] = useState(false)
   const [active, setActive] = useState('top')
   const [open, setOpen] = useState(false)
+
+  /* Sections only exist on the home page. Everywhere else the same links have
+     to navigate home first, so they become `/#id` and skip the Lenis handoff;
+     project routes still light up the Projects tab. */
+  const onHome = pathname === '/'
+  const sectionHref = (id) => (onHome ? `#${id}` : `/#${id}`)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -26,6 +35,10 @@ export default function Header() {
   }, [])
 
   useEffect(() => {
+    if (!onHome) {
+      setActive(pathname.startsWith('/projects') ? 'work' : '')
+      return
+    }
     const sections = nav.map(({ id }) => document.getElementById(id)).filter(Boolean)
     if (sections.length === 0) return
     const observer = new IntersectionObserver(
@@ -39,7 +52,7 @@ export default function Header() {
     )
     sections.forEach((section) => observer.observe(section))
     return () => observer.disconnect()
-  }, [])
+  }, [onHome, pathname])
 
   useEffect(() => {
     if (!open) return
@@ -55,8 +68,9 @@ export default function Header() {
   /* Hand anchor jumps to Lenis when it is running, so they share the same
      easing as wheel scrolling; fall back to native otherwise. */
   const go = (event, id) => {
-    event.preventDefault()
     setOpen(false)
+    if (!onHome) return // let the router navigate to /#id
+    event.preventDefault()
     scrollToSection(id, { reduce })
   }
 
@@ -80,37 +94,37 @@ export default function Header() {
         <div className="shell flex flex-col items-center gap-3 py-4">
           {/* Wordmark — sits above the pill on desktop only. On mobile it
               moves inside the pill, matching the reference's collapse. */}
-          <a
-            href="#top"
+          <Link
+            href={sectionHref('top')}
             onClick={(event) => go(event, 'top')}
             className="hidden font-display text-2xl font-bold tracking-tight text-accent md:block"
             aria-label={`${profile.name} — back to top`}
           >
             <span className="text-accent">.</span>
             {profile.wordmark}
-          </a>
+          </Link>
 
           {/* Pill nav */}
           <nav aria-label="Primary" className="w-full max-w-nav">
             <div className="glass flex h-nav-h items-center justify-between gap-2 rounded-full pl-5 pr-2 md:justify-center md:pl-6">
               {/* Mobile-only wordmark, left-aligned inside the pill */}
-              <a
-                href="#top"
+              <Link
+                href={sectionHref('top')}
                 onClick={(event) => go(event, 'top')}
                 className="font-display text-xl font-bold tracking-tight text-accent md:hidden"
                 aria-label={`${profile.name} — back to top`}
               >
                 <span>.</span>
                 {profile.wordmark}
-              </a>
+              </Link>
 
               <ul className="hidden items-center md:flex">
                 {nav.map((item) => {
                   const isActive = active === item.id
                   return (
                     <li key={item.id}>
-                      <a
-                        href={`#${item.id}`}
+                      <Link
+                        href={sectionHref(item.id)}
                         onClick={(event) => go(event, item.id)}
                         aria-current={isActive ? 'true' : undefined}
                         className={`relative block rounded-full px-6 py-2.5 text-[0.95rem] transition-colors duration-300 ${
@@ -125,7 +139,7 @@ export default function Header() {
                           />
                         )}
                         {item.label}
-                      </a>
+                      </Link>
                     </li>
                   )
                 })}
@@ -179,15 +193,25 @@ export default function Header() {
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.45, delay: 0.05 + index * 0.08, ease: EASE }}
                     >
-                      <a
-                        href={item.external ?? `#${item.id}`}
-                        target={item.external ? '_blank' : undefined}
-                        rel={item.external ? 'noopener noreferrer' : undefined}
-                        onClick={item.external ? () => setOpen(false) : (event) => go(event, item.id)}
-                        className="block border-b border-line py-5 font-display text-4xl font-light transition-colors duration-300 hover:text-accent"
-                      >
-                        {item.label}
-                      </a>
+                      {item.external ? (
+                        <a
+                          href={item.external}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => setOpen(false)}
+                          className="block border-b border-line py-5 font-display text-4xl font-light transition-colors duration-300 hover:text-accent"
+                        >
+                          {item.label}
+                        </a>
+                      ) : (
+                        <Link
+                          href={sectionHref(item.id)}
+                          onClick={(event) => go(event, item.id)}
+                          className="block border-b border-line py-5 font-display text-4xl font-light transition-colors duration-300 hover:text-accent"
+                        >
+                          {item.label}
+                        </Link>
+                      )}
                     </motion.li>
                   ),
                 )}
