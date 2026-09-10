@@ -117,7 +117,7 @@ export default async function ProjectPage({ params }) {
 
           <Reveal
             delay={0.15}
-            className="relative mt-12 aspect-[4/3] overflow-hidden rounded-card border border-line bg-surface shadow-card sm:aspect-[16/10]"
+            className="relative mt-12 aspect-[3/2] overflow-hidden rounded-card border border-line bg-surface shadow-card sm:aspect-[16/9]"
           >
             <SmartImage
               src={project.image}

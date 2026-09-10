@@ -34,7 +34,11 @@ export default function ProjectCard({ project, eager = false, headingLevel: Head
         aria-label={`Read the ${project.title} case study`}
         className="block"
       >
-        <div className="relative aspect-[4/3] overflow-hidden sm:aspect-[16/10]">
+        {/* 3:2 then 16:9 — the covers are 1.65:1 and 1.78:1, so 4:3 was
+            cropping a quarter of the width away on a phone. `max-h` only binds
+            on a short viewport, where it keeps the whole card on screen while
+            it is pinned rather than letting the title row fall off the bottom. */}
+        <div className="relative aspect-[3/2] max-h-[48vh] overflow-hidden sm:aspect-[16/9]">
           <SmartImage
             src={project.image}
             alt={`${project.title} — ${project.seoDescriptor.toLowerCase()} case study cover`}

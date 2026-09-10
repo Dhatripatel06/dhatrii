@@ -5,7 +5,18 @@
 @layer base {
   :root {
     --shell-x: clamp(20px, 4vw, 48px);
+    /* Where a sticky project card comes to rest. The header is ~96px tall
+       while the wordmark sits inside the nav pill, and ~144px from `md` up
+       where it moves above it — a single value tucks the card under one or
+       leaves a gap under the other. */
+    --card-stick: 6.5rem;
     color-scheme: dark;
+  }
+
+  @media (min-width: 768px) {
+    :root {
+      --card-stick: 9.75rem;
+    }
   }
 
   html {

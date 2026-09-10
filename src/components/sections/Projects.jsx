@@ -22,7 +22,7 @@ export default function Projects() {
             <li
               key={project.slug}
               className="sticky"
-              style={{ top: `calc(6.5rem + ${index * 1.25}rem)` }}
+              style={{ top: `calc(var(--card-stick) + ${index * 1.25}rem)` }}
             >
               <ProjectCard project={project} />
             </li>
