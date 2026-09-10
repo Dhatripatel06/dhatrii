@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { ArrowUpRight, Phone, Rocket } from 'lucide-react'
-import { actionCards, services, whatsappHref } from '@/data/content'
+import Link from 'next/link'
+import { actionCards, planFor, services } from '@/data/content'
 import Marquee from '@/components/ui/Marquee'
 import TwoTone from '@/components/ui/TwoTone'
 import Reveal from '@/components/ui/Reveal'
@@ -60,8 +61,11 @@ function ActionCards({ reduce }) {
  */
 export default function Services() {
   const reduce = useReducedMotion()
-  const [activeKey, setActiveKey] = useState(services.tabs[0].key)
-  const active = services.tabs.find((tab) => tab.key === activeKey) ?? services.tabs[0]
+  const [activeKey, setActiveKey] = useState(services.items[0].key)
+  const active = services.items.find((item) => item.key === activeKey) ?? services.items[0]
+  /* Only the timeline is read from the pricing table here — the figures stay
+     in the pricing section. */
+  const plan = planFor(active.planKey)
 
   return (
     <section id="services" aria-labelledby="services-heading" className="section relative">
@@ -99,9 +103,9 @@ export default function Services() {
             <div
               role="tablist"
               aria-label="Service areas"
-              className="flex flex-col gap-2 rounded-[26px] border border-line bg-bg/50 p-2 sm:flex-row sm:gap-1"
+              className="grid grid-cols-2 gap-2 rounded-[26px] border border-line bg-bg/50 p-2 sm:grid-cols-4 sm:gap-1"
             >
-              {services.tabs.map((tab) => {
+              {services.items.map((tab) => {
                 const isActive = tab.key === activeKey
                 return (
                   <button
@@ -112,7 +116,7 @@ export default function Services() {
                     aria-selected={isActive}
                     aria-controls={`panel-${tab.key}`}
                     onClick={() => setActiveKey(tab.key)}
-                    className={`relative flex-1 rounded-full px-6 py-3.5 text-[0.95rem] font-medium transition-colors duration-300 ${
+                    className={`relative rounded-full px-3 py-3.5 text-[0.9rem] font-medium transition-colors duration-300 sm:text-[0.95rem] ${
                       isActive ? 'text-bg' : 'text-text/80 hover:text-text'
                     }`}
                   >
@@ -148,13 +152,30 @@ export default function Services() {
                     {active.badge}
                   </span>
 
-                  <h3 className="mt-7 font-display text-[clamp(2rem,7vw,3.5rem)] font-bold tracking-[-0.03em]">
+                  <h3 className="mt-7 font-display text-[clamp(1.75rem,5.6vw,2.6rem)] font-bold leading-[1.06] tracking-[-0.03em]">
                     {active.title}
                   </h3>
 
                   <p className="mt-5 max-w-lede text-pretty text-muted">{active.body}</p>
 
-                  <div className="mt-12 flex items-end justify-between gap-6">
+                  {/* Timeline and stack only. Prices live in the pricing
+                      section and are not repeated across the site. */}
+                  <dl className="mt-8 grid grid-cols-1 gap-4 border-t border-line pt-7 sm:grid-cols-2">
+                    <div>
+                      <dt className="text-xs uppercase tracking-[0.18em] text-muted">
+                        Typical timeline
+                      </dt>
+                      <dd className="mt-2 font-display text-lg font-bold tracking-[-0.02em]">
+                        {plan.delivery}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="text-xs uppercase tracking-[0.18em] text-muted">Built with</dt>
+                      <dd className="mt-2 text-sm text-muted">{active.stack}</dd>
+                    </div>
+                  </dl>
+
+                  <div className="mt-10 flex items-end justify-between gap-6">
                     {/* Ghost numeral */}
                     <span
                       aria-hidden="true"
@@ -162,11 +183,9 @@ export default function Services() {
                     >
                       {active.number}
                     </span>
-                    <a
-                      href={whatsappHref}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`Enquire about ${active.title} on WhatsApp`}
+                    <Link
+                      href={services.cta.href}
+                      aria-label={`Read more about ${active.title}`}
                       className="group shrink-0 text-text transition-colors duration-300 hover:text-accent"
                     >
                       <ArrowUpRight
@@ -175,13 +194,23 @@ export default function Services() {
                         aria-hidden="true"
                         className="transition-transform duration-300 motion-safe:group-hover:translate-x-1 motion-safe:group-hover:-translate-y-1"
                       />
-                    </a>
+                    </Link>
                   </div>
                 </motion.div>
               </AnimatePresence>
             </div>
 
             <ActionCards reduce={reduce} />
+
+            <p className="px-2 pb-1 pt-6 text-center text-sm">
+              <Link
+                href={services.cta.href}
+                className="link-underline font-medium text-accent"
+              >
+                {services.cta.label}
+              </Link>
+              <span className="text-muted"> — what each one includes, and how long it takes.</span>
+            </p>
           </div>
         </Reveal>
       </div>

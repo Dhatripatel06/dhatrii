@@ -38,13 +38,15 @@ export default function Journey() {
             {/* Note + overlapping avatar stack */}
             <div className="relative mt-8 flex items-center justify-between gap-6">
               <p className="text-sm text-muted">{journey.note}</p>
-              <ul className="flex shrink-0 -space-x-3">
+              {/* Project initials, not people — labelled so an overlapping
+                  circle stack is not read as a row of client avatars. */}
+              <ul aria-label={journey.avatarsLabel} className="flex shrink-0 -space-x-3">
                 {journey.avatars.map((initials) => (
                   <li
                     key={initials}
                     className="grid h-10 w-10 place-items-center rounded-full border-2 border-surface bg-raised font-display text-[0.7rem] font-bold text-muted"
                   >
-                    {initials}
+                    <span aria-hidden="true">{initials}</span>
                   </li>
                 ))}
               </ul>

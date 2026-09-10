@@ -8,10 +8,11 @@ export const profile = {
   wordmark: 'Dhatri',
   firstName: 'Dhatri',
   lastName: 'Patel',
-  role: 'Flutter Developer | UI/UX-Focused Mobile App Developer',
+  role: 'Freelance Flutter & React Developer',
   email: 'dhatripatel67@gmail.com',
   whatsapp: '916355506411', // country code + number, digits only
-  location: 'Bhavnagar / Ahmedabad, Gujarat, India',
+  location: 'Bhavnagar, Gujarat, India',
+  serviceAreas: ['Bhavnagar', 'Rajkot', 'Ahmedabad', 'Remote worldwide'],
   portrait: '/images/portrait-illustration.png',
 }
 
@@ -23,27 +24,40 @@ export const whatsappHref = `https://wa.me/${profile.whatsapp}?text=${encodeURIC
   WHATSAPP_MESSAGE,
 )}`
 
+/* An item with an `href` is a route; one without is a section on the home page
+   that the header scrolls to. Home is reachable from the wordmark, so the pill
+   carries five links plus the Contact button inside its 640px width. */
 export const nav = [
-  { id: 'top', label: 'Home' },
-  { id: 'work', label: 'Projects' },
-  { id: 'services', label: 'Services' },
+  { id: 'work', label: 'Work', href: '/projects' },
+  { id: 'services', label: 'Services', href: '/services' },
+  { id: 'about', label: 'About', href: '/about' },
+  { id: 'blog', label: 'Blog', href: '/blog' },
   { id: 'pricing', label: 'Pricing' },
 ]
 
 export const hero = {
   hello: 'Hello',
-  roleLead: "I'm a",
-  roleBold: 'Flutter Developer',
-  roleTail: 'focused on UI/UX',
-  quote: '“I build beautiful and scalable mobile apps”',
-  rating: { stars: 5, label: '5 featured projects' },
-  primaryCta: { label: 'Get Started', href: whatsappHref },
-  secondaryCta: { label: 'My Works', href: '#work' },
-  contactLink: { label: 'Contact me', href: whatsappHref },
+  /* Role and base, so the first line answers "who" and "where" at a glance. */
+  eyebrow: 'Freelance Flutter & React Developer · Bhavnagar, India',
+  headline: 'I build mobile apps and websites that are ready to ship.',
+  lede: 'I help startups and growing businesses turn ideas into polished Flutter apps, React websites and Firebase-powered products — working directly with you from design to deployment.',
+  /* Replaces the old star rating. Both halves are countable from this file:
+     `projects` has five entries, and the stack names come from their meta. */
+  proof: {
+    lead: '5 shipped products',
+    stack: 'Flutter · React · Firebase · AI · UI/UX',
+  },
+  primaryCta: { label: 'Start a Project', href: '#contact' },
+  secondaryCta: { label: 'View My Work', href: '#work' },
+  availability: 'Bhavnagar, India — available worldwide',
+  contactLink: { label: 'WhatsApp me', href: whatsappHref },
 }
 
 export const brands = {
-  title: 'Certifications and programmes behind the work',
+  /* These are programmes and certifications, not clients. The heading has to
+     say so plainly — an unlabelled logo strip reads as a client list. */
+  title: 'Certifications & Training',
+  a11yLabel: 'Certifications and training completed',
   logos: [
     'Oracle Generative AI Professional',
     'Oracle AI Foundations Associate',
@@ -58,7 +72,10 @@ export const journey = {
   titleLight: 'My journey in',
   titleBold: 'Numbers',
   note: 'Every project below is designed, built and shipped end to end',
+  /* Project initials, not people. Labelled so the overlapping stack cannot
+     be mistaken for a row of client avatars. */
   avatars: ['MH', 'AC', 'SL'],
+  avatarsLabel: 'Featured projects: MindHeal, AgreeCare and Shiftly',
   /* Two tiles side by side: a wide accent-filled one and a narrow dark one. */
   stats: [
     {
@@ -86,14 +103,16 @@ export const work = {
 /* Copy for the /projects index and the shared furniture on every case study
    at /projects/<slug>. The per-project writing lives on `projects` below. */
 export const projectsIndex = {
-  eyebrow: 'Case studies',
+  eyebrow: 'Selected work',
   titleLight: 'Selected',
   titleBold: 'Projects',
   lede: 'Five products, each taken from a blank repository to something people can open. Pick one to read how it was built.',
+  /* States what these are, so the set is not read as a client roster. */
+  note: 'These are products I designed and built end to end — personal, academic and hackathon projects, some with collaborators. They are not client engagements.',
   meta: {
-    title: 'Projects',
+    title: 'Projects — Flutter & React Case Studies | Dhatri Patel',
     description:
-      'Case studies from Dhatri Patel — Flutter, React and AI products taken from first sketch to shipped build.',
+      'Five case studies from Dhatri Patel: Flutter apps, React web platforms and on-device AI, each taken from a blank repository to a working build.',
   },
 }
 
@@ -103,6 +122,13 @@ export const projectPage = {
   overviewLabel: 'Overview',
   processLabel: 'How it was built',
   detailsLabel: 'Project details',
+  problemLabel: 'The problem',
+  goalLabel: 'The goal',
+  featuresLabel: 'Key features',
+  challengesLabel: 'Challenges',
+  learnedLabel: 'What I learned',
+  relatedLabel: 'Related work',
+  serviceLabel: 'The service behind this build',
   cta: {
     titleLight: 'Want something',
     titleBold: 'like this built?',
@@ -118,6 +144,12 @@ export const projectPage = {
 export const projects = [
   {
     slug: 'jobzee',
+    seoDescriptor: 'Full-Stack Job Portal',
+    published: true,
+    schemaType: 'WebApplication',
+    applicationCategory: 'BusinessApplication',
+    related: ['learnnova', 'shiftly'],
+    serviceKey: 'web',
     title: 'JobZee',
     tags: 'full-stack job portal · react, node, socket.io',
     image: '/images/jobzeecover.png',
@@ -125,6 +157,29 @@ export const projects = [
     href: 'https://jobzee-two.vercel.app/',
     detail: {
       lede: 'A full-stack hiring platform where candidates and recruiters meet, apply and talk in real time.',
+      problem:
+        'Hiring breaks down in the gap between applying and hearing back. Candidates submit into silence, recruiters lose track of who is at which stage, and the whole conversation ends up scattered across inboxes.',
+      goal:
+        'Build one place where both sides of a hire can act — search and apply, post and review — with the conversation attached to the application rather than living in email.',
+      features: [
+        'Public job board with search and filtering',
+        'Separate authenticated dashboards for candidates and recruiters',
+        'Stored candidate profile and resume upload, so applying is not re-typing',
+        'Recruiters post openings and move applicants through stages',
+        'Real-time messaging and application updates over Socket.IO',
+      ],
+      challenges: [
+        {
+          title: 'Two audiences, one interface',
+          body: 'Candidate and recruiter needs pull a product in opposite directions. Designing either one first would have made the other an afterthought, so both journeys were written out before any screen was drawn and the shared screens fell out of the overlap.',
+        },
+        {
+          title: 'Keeping the interface in step with the server',
+          body: 'An application that changes state silently is the exact problem the product exists to solve. Socket.IO runs alongside the REST API so the interface reacts the moment something changes server-side, rather than waiting for a refresh.',
+        },
+      ],
+      learned:
+        'Designing two roles at once is far cheaper than retrofitting the second one. Writing both journeys end to end before building meant the shared screens were deliberate rather than compromises, and shipping in self-contained slices kept the deployed build demonstrable at every point instead of only at the end.',
       overview: {
         eyebrow: 'Built for two audiences at once',
         heading: 'A job portal that keeps both sides moving',
@@ -161,6 +216,12 @@ export const projects = [
   },
   {
     slug: 'agreecare',
+    seoDescriptor: 'Smart Agriculture IoT App',
+    published: true,
+    schemaType: 'CreativeWork',
+    applicationCategory: null,
+    related: ['mindheal', 'shiftly'],
+    serviceKey: 'flutter',
     title: 'AgreeCare',
     tags: 'smart agriculture iot · flutter, firebase, getx',
     image: '/images/agreecarecover.png',
@@ -168,6 +229,29 @@ export const projects = [
     href: 'https://github.com/hetvidudhela/Agricare',
     detail: {
       lede: 'A smart-agriculture app that puts live field readings and irrigation control in a farmer’s pocket.',
+      problem:
+        'Sensor hardware produces a stream of numbers. On its own that is not useful to the person standing in a field deciding whether to irrigate — the data exists, but the decision it should support does not.',
+      goal:
+        'Turn a raw feed of soil, temperature and humidity readings into a single screen someone can read outdoors, one-handed, and act on immediately.',
+      features: [
+        'Live soil moisture, temperature and humidity from Firebase',
+        'Dashboard that answers whether a field needs water before anything else',
+        'Configurable thresholds with alerts',
+        'Irrigation control one tap from the dashboard, not buried in settings',
+        'High-contrast type and large tap targets for outdoor use',
+      ],
+      challenges: [
+        {
+          title: 'Designing for sunlight and one hand',
+          body: 'The app is used outdoors, often one-handed, often on a mid-range device. That ruled out dense layouts and small controls early, and set the constraint that the primary question had to be answered without scrolling.',
+        },
+        {
+          title: 'Continuous data without a stuttering interface',
+          body: 'Readings arrive continuously. Keeping state, routing and dependency injection in GetX rather than in the widget tree meant incoming values could update the dashboard reactively without the UI becoming janky as the stream ran.',
+        },
+      ],
+      learned:
+        'Constraints from the environment turned out to be more useful than any feature list. Deciding it had to be readable in direct sunlight, one-handed, settled a dozen later design questions on its own — and building the data model, then the read-only dashboard, then control on top let the hardware and app sides progress independently.',
       overview: {
         eyebrow: 'Sensors are only half the problem',
         heading: 'Field data that reads clearly on a phone',
@@ -204,6 +288,12 @@ export const projects = [
   },
   {
     slug: 'mindheal',
+    seoDescriptor: 'On-Device AI Mental Health App',
+    published: true,
+    schemaType: 'CreativeWork',
+    applicationCategory: null,
+    related: ['agreecare', 'jobzee'],
+    serviceKey: 'flutter',
     title: 'MindHeal',
     tags: 'ai mental health companion · flutter, onnx, ml kit',
     image: '/images/mindheal.png',
@@ -211,6 +301,29 @@ export const projects = [
     href: 'https://github.com/Dhatripatel06/MindHeal_org',
     detail: {
       lede: 'An AI mental-health companion that reads emotion on the device, so nothing personal has to leave the phone.',
+      problem:
+        'Emotion recognition normally means sending a face or a voice to a server. For mental-health support that is exactly the wrong shape: the data most worth protecting is the data the feature needs.',
+      goal:
+        'Run the sensitive part of the experience entirely on the device, and wrap it in something supportive rather than clinical — so the product is useful without asking anyone to trust a server.',
+      features: [
+        'On-device emotion recognition with ONNX Runtime and Google ML Kit',
+        'Camera-side detection that never uploads a frame',
+        'Mood tracking over time',
+        'Journalling and guided support flows',
+        'Copy written to inform reflection, never to deliver a verdict',
+      ],
+      challenges: [
+        {
+          title: 'Fitting a model inside a mobile budget',
+          body: 'Running inference in a Flutter app meant working within a real memory and latency budget: quantised ONNX models, ML Kit handling camera-side detection, and inference kept off the UI thread so the interface never blocks while a frame is processed.',
+        },
+        {
+          title: 'Staying supportive rather than diagnostic',
+          body: 'A model output is a probability, not a fact about a person. The harder problem was linguistic — every string had to present a reading as something to reflect on rather than a conclusion about the user, which constrained the interface as much as the technical budget did.',
+        },
+      ],
+      learned:
+        'Drawing the privacy line first — inference on-device, nothing sensitive synced — made every later decision easier, because anything that did not fit inside it was simply not an option. The genuinely hard part was not the model; it was writing copy that stays honest about what a prediction is.',
       overview: {
         eyebrow: 'Private by construction',
         heading: 'On-device intelligence, not a cloud round trip',
@@ -247,6 +360,12 @@ export const projects = [
   },
   {
     slug: 'learnnova',
+    seoDescriptor: 'E-Learning Platform',
+    published: true,
+    schemaType: 'CreativeWork',
+    applicationCategory: null,
+    related: ['jobzee', 'mindheal'],
+    serviceKey: 'web',
     title: 'LearnNova',
     tags: 'elearning platform · react, tailwind, rest apis',
     image: null, // drop learnnova.jpg into /public/images and set the path here
@@ -254,6 +373,29 @@ export const projects = [
     href: 'https://github.com/isha-gohel181/Learn_nova',
     detail: {
       lede: 'An e-learning platform built around the part that usually gets neglected: staying with a course to the end.',
+      problem:
+        'Online courses are easy to start and easy to abandon. The failure is rarely the content — it is that returning after a week begins with a hunt for where you left off.',
+      goal:
+        'Organise catalogue, course detail, lesson playback and progress into one interface where a learner can always see where they are, and get back to it in one action.',
+      features: [
+        'Course catalogue with filtering',
+        'Course detail and lesson playback',
+        'Progress visible on every screen a learner touches',
+        'Reusable component set — cards, filters, players, progress — fed from REST APIs',
+        'Fluid layouts built responsive from the first commit',
+      ],
+      challenges: [
+        {
+          title: 'Designing the path, not the screens',
+          body: 'Screens designed in isolation produced a catalogue that looked fine and a journey that stalled. Drawing the flow as one path — browse, enrol, learn, resume — and judging each screen by whether it moved a learner along that path changed which screens were needed at all.',
+        },
+        {
+          title: 'Keeping it legible as the catalogue grows',
+          body: 'A small set of primitives consumed by every view means adding a course category is a data change rather than a new page — which is what stops an interface degrading as content is added to it.',
+        },
+      ],
+      learned:
+        'Building responsive from the first commit was cheaper than retrofitting breakpoints once a desktop view already looked right. And the component system paid for itself the moment the catalogue grew: the constraint that everything reuse the same primitives is what kept the interface coherent.',
       overview: {
         eyebrow: 'Courses are easy to start and easy to abandon',
         heading: 'Structure that carries a learner through',
@@ -290,6 +432,12 @@ export const projects = [
   },
   {
     slug: 'shiftly',
+    seoDescriptor: 'Shift Management App',
+    published: true,
+    schemaType: 'CreativeWork',
+    applicationCategory: null,
+    related: ['agreecare', 'mindheal'],
+    serviceKey: 'flutter',
     title: 'Shiftly',
     tags: 'shift management platform · flutter, firestore, hive',
     image: '/images/shiftlycover.png',
@@ -297,6 +445,29 @@ export const projects = [
     href: 'https://github.com/Dhatripatel06/shift_manager',
     detail: {
       lede: 'A shift-management app for teams whose rota changes faster than a spreadsheet can be re-sent.',
+      problem:
+        'A rota is not usually wrong — the version someone is looking at is. Re-sending a spreadsheet creates another version rather than replacing the last one, and shop-floor connectivity is exactly where a cloud-only app stops working.',
+      goal:
+        'Keep one shared schedule that propagates changes instead of re-announcing them, and stays readable when the signal drops mid-shift.',
+      features: [
+        'Single Firestore-backed schedule for shifts, swaps and availability',
+        'Hive local cache, so the app opens into content rather than a spinner',
+        'Writes queue offline and settle when connectivity returns',
+        'Role-aware home screen for managers and staff',
+        'The current shift reachable without navigating for it',
+      ],
+      challenges: [
+        {
+          title: 'Offline-first, then online',
+          body: 'Treating the local copy as the source the interface reads from — and Firestore as what reconciles it — is the opposite of the usual order, and it is what makes the roster readable on a back-of-house network instead of showing a loading state.',
+        },
+        {
+          title: 'One app, two reasons to open it',
+          body: 'Managers and staff need different things from the same data. Rather than building two apps or one cluttered one, roles change what the home screen offers while both land on the thing they actually opened it for.',
+        },
+      ],
+      learned:
+        'The useful reframe was that the problem was version control, not scheduling. Once the goal became one propagating source of truth rather than a better way to send a rota around, the offline-first architecture followed naturally from where the app is actually used.',
       overview: {
         eyebrow: 'Rotas move; spreadsheets do not',
         heading: 'One schedule everybody actually sees',
@@ -333,64 +504,166 @@ export const projects = [
   },
 ]
 
+/**
+ * The only project list any public surface may render.
+ *
+ * Publication is explicit in both directions: `published` must be a literal
+ * true or false on every entry. A missing flag is a build error rather than a
+ * default, because either default is wrong — silently publishing an unfinished
+ * case study exposes work that is not ready, and silently hiding one loses
+ * real work with no signal. Forcing the author to say which removes the guess.
+ *
+ * Draft entries stay in `projects` so their structure is version-controlled
+ * and reviewable while they are still unpublishable.
+ */
+const undeclared = projects.filter((project) => typeof project.published !== 'boolean')
+if (undeclared.length > 0) {
+  throw new Error(
+    `Project(s) missing an explicit "published" boolean: ${undeclared
+      .map((project) => project.slug)
+      .join(', ')}. Set published: true to make a case study public, or published: false to keep it a draft.`,
+  )
+}
+
+export const publishedProjects = projects.filter((project) => project.published === true)
+
 export const experience = {
+  aboutLink: 'More about how I work with clients',
   startYear: '2023',
   endLabel: 'Present',
+  /* Current role first, so the carousel opens on what is true today.
+     `role` is the light line, `title` the bold one, `company` the pill. */
   entries: [
     {
-      period: 'Jan 2026 - Feb 2026',
-      role: 'Intern',
-      title: 'Front-End Developer',
-      company: 'dASHMESH',
+      period: 'Jun 2026 — Present',
+      role: 'Current role',
+      title: 'Application Developer',
+      company: 'Grow Spark Consulting',
+      location: 'Remote',
     },
     {
-      period: '2024 - Present',
+      period: '2025 — Present',
       role: 'Independent',
-      title: 'Flutter Developer',
-      company: 'Freelance',
+      title: 'Freelance Developer',
+      company: 'Self-employed',
+      location: 'Bhavnagar, Gujarat · remote worldwide',
     },
     {
-      period: '2023 - 2026',
+      period: 'Jan 2026 — Feb 2026',
+      role: 'Internship',
+      title: 'Front-End Developer',
+      company: 'dASHMESH Software Solutions',
+      location: 'Gujarat, India',
+    },
+    {
+      period: '2023 — 2026',
       role: 'Undergraduate',
       title: 'BCA',
       company: 'SSCCS, Bhavnagar',
+      location: 'Bhavnagar, Gujarat',
     },
   ],
 }
 
+/* Four services, each answering the questions a buyer actually asks before
+   enquiring: what it is, who it is for, what lands, how long, what it costs.
+   Deliberately written without framework names in the body copy — `stack` is
+   there for the developers who look, `body` is for the person paying. */
 export const services = {
   titleLight: 'What I',
-  titleBold: 'Do',
-  lede: 'Cross-platform mobile apps, responsive web interfaces and on-device AI features.',
+  titleBold: 'Build',
+  lede: 'Four ways I work with clients — from a single business website to a full cross-platform app.',
   /* Oversized wordmark that drifts across the foot of the section. */
   ghost: 'Explore my services',
-  tabs: [
+  cta: { label: 'See all services', href: '/services' },
+  items: [
     {
-      key: 'mobile',
-      label: 'Mobile Apps',
-      badge: 'Flutter · Dart',
-      title: 'Mobile Apps',
-      body: 'Cross-platform Android and iOS apps built in Flutter, with scalable state management in BLoC, GetX, Riverpod or Provider and full Firebase and REST API integration.',
+      key: 'flutter',
+      /* Short label for the tab strip; `title` is the full service name. */
+      label: 'Flutter Apps',
+      badge: 'Android & iOS',
+      title: 'Flutter App Development',
       number: '01',
+      body: 'One app can serve both Android and iPhone, so you do not need to maintain two separate native codebases. A change you ask for lands on both at once rather than being built twice.',
+      forWho:
+        'Founders who need a real mobile app in the stores, and businesses whose customers expect to book, order or track something from their phone.',
+      deliverables: [
+        'A working app on both Android and iPhone',
+        'Sign-in, user accounts and secure data storage',
+        'Screens that keep working when the signal drops',
+        'Submission to the Play Store and App Store',
+        'Every account and the source code in your name',
+      ],
+      stack: 'Flutter · Dart · Firebase · REST APIs',
+      planKey: 'app',
+      caseStudies: ['shiftly', 'mindheal', 'agreecare'],
     },
     {
       key: 'web',
-      label: 'Web Development',
-      badge: 'React · Next.js',
+      label: 'Web Apps',
+      badge: 'Web platforms',
       title: 'Web Development',
-      body: 'Responsive, pixel-accurate interfaces hand-built in React, Next.js and Tailwind CSS, wired to REST APIs and shipped deployment-ready.',
       number: '02',
+      body: 'Software that runs in a browser — dashboards, portals, booking systems, internal tools. The kind of thing that replaces a spreadsheet several people are emailing back and forth.',
+      forWho:
+        'Businesses running an operation on shared spreadsheets, and startups whose product is the website itself rather than an app.',
+      deliverables: [
+        'User accounts with different access for different roles',
+        'An admin area where you manage everything yourself',
+        'Your data in a proper database, backed up',
+        'Connections to services you already pay for',
+        'Deployed live, on hosting you own',
+      ],
+      stack: 'React · Next.js · Node · Firebase',
+      planKey: 'mvp',
+      caseStudies: ['jobzee', 'learnnova'],
     },
     {
-      key: 'ai',
-      label: 'AI Features',
-      badge: 'On-device ML',
-      title: 'AI Features',
-      body: 'Emotion, voice and image models running on-device with ONNX Runtime, TensorFlow Lite and Google ML Kit, plus Generative AI assistants inside your app.',
+      key: 'design',
+      label: 'Websites',
+      badge: 'Design & build',
+      title: 'Website Design',
       number: '03',
+      body: 'The website a customer finds when they search for you and decide whether to get in touch. Designed and built as one job, so there is no handover gap between a picture of a website and a working one.',
+      forWho:
+        'Local businesses in Bhavnagar, Rajkot and Ahmedabad with no website or an outdated one, and anyone whose current site does not work properly on a phone.',
+      deliverables: [
+        'Four to six pages, designed around what you sell',
+        'Reads correctly on phones, tablets and desktops',
+        'An enquiry form and a WhatsApp button',
+        'Set up so Google can find and list you',
+        'Live on your own domain, with a short handover call',
+      ],
+      stack: 'Next.js · Tailwind CSS · Figma',
+      planKey: 'website',
+      caseStudies: ['learnnova', 'jobzee'],
+    },
+    {
+      key: 'mvp',
+      label: 'MVPs',
+      badge: 'First version',
+      title: 'MVP Development',
+      number: '04',
+      body: 'The smallest version of your idea that real people can actually use. We agree what the first release must do, cut everything that can wait, and build that — so you learn from users instead of from guesses.',
+      forWho:
+        'Founders validating an idea, and anyone who needs something working to show investors, a first cohort of users or a pilot client.',
+      deliverables: [
+        'A scoped feature list agreed before any code is written',
+        'A working product people outside the team can use',
+        'Something demoable at the end of every stage',
+        'Analytics, so you can see what people actually do',
+        'A clear list of what comes next, and what it costs',
+      ],
+      stack: 'React · Flutter · Firebase · Node',
+      planKey: 'mvp',
+      caseStudies: ['jobzee', 'mindheal'],
     },
   ],
 }
+
+/** Price and timeline for a service come from the pricing table, never from a
+    second copy of the numbers — the two can then never disagree on the page. */
+export const planFor = (key) => pricing.plans.find((plan) => plan.key === key)
 
 /* Two stacked action cards that sit directly below the services panel. */
 export const actionCards = [
@@ -435,7 +708,6 @@ export const testimonials = {
       score: '2025',
       quote:
         'MindHeal placed second at the Flash@SSCCS IT Exhibition for its on-device facial emotion and voice sentiment analysis.',
-      stars: 5,
     },
     {
       name: 'Runner-Up',
@@ -443,7 +715,6 @@ export const testimonials = {
       score: '2024',
       quote:
         'Placed runner-up at the Flash@SSCCS IT Exhibition — one of two consecutive runner-up finishes across 2024 and 2025.',
-      stars: 5,
     },
     {
       name: 'Research Paper',
@@ -451,7 +722,6 @@ export const testimonials = {
       score: '2024',
       quote:
         'Research behind the AgreeCare smart agriculture system was published at the International Multidisciplinary Conference in December 2024.',
-      stars: 5,
     },
     {
       name: 'Hackathon Finalist',
@@ -459,52 +729,108 @@ export const testimonials = {
       score: '2026',
       quote:
         'LearnNova, a responsive eLearning platform built in React and Tailwind CSS, reached the finals of the Odoo x GVP Hackathon.',
-      stars: 5,
     },
   ],
 }
 
+/* Prices are stored as numbers and formatted for display, so the structured
+   data and the visible card are the same figures by construction — schema can
+   never quote a price the page does not show. `en-IN` gives the lakh grouping
+   (1,80,000) that Indian visitors expect. */
+const INR = new Intl.NumberFormat('en-IN')
+const USD = new Intl.NumberFormat('en-US')
+const inrRange = (min, max) =>
+  min === max ? `₹${INR.format(min)}` : `₹${INR.format(min)} – ₹${INR.format(max)}`
+const usdRange = (min, max) =>
+  min === max ? `$${USD.format(min)}` : `$${USD.format(min)} – $${USD.format(max)}`
+
+/* Each plan carries its numeric bounds plus the strings derived from them. */
+const PLANS = [
+  {
+    key: 'website',
+    name: 'Business Website',
+    tagline: 'A credible online presence for a business that does not have one yet.',
+    inr: [18000, 40000],
+    usd: [400, 900],
+    delivery: 'About 2 weeks',
+    cta: 'Start a Project',
+    features: [
+      '4–6 sections, designed and built',
+      'Responsive across phone, tablet and desktop',
+      'Contact form and WhatsApp button',
+      'Basic on-page SEO and metadata',
+      'Deployed live, on your own hosting',
+    ],
+  },
+  {
+    key: 'mvp',
+    name: 'Web App / MVP',
+    tagline: 'A first working version of your product, built to be shown and tested.',
+    inr: [75000, 180000],
+    usd: [1500, 4000],
+    delivery: 'About 5–6 weeks',
+    cta: 'Start a Project',
+    features: [
+      'User accounts and authentication',
+      'Database and API integration',
+      'Admin panel for managing content',
+      'Deployment and handover of every account',
+      'Built in slices, so there is always something to demo',
+    ],
+  },
+  {
+    key: 'app',
+    name: 'Flutter App',
+    tagline: 'One codebase, Android and iOS, ready for the stores.',
+    inr: [120000, 300000],
+    usd: [2500, 6000],
+    delivery: 'About 6–10 weeks',
+    cta: 'Start a Project',
+    features: [
+      'Cross-platform Android and iOS from one codebase',
+      'Firebase or REST API integration',
+      'Offline handling and state management',
+      'Play Store and App Store submission',
+      'Source code and store accounts in your name',
+    ],
+  },
+  {
+    key: 'care',
+    name: 'Maintenance',
+    tagline: 'Ongoing support once the product is live.',
+    inr: [25000, 25000],
+    usd: [500, 500],
+    unit: '/ month',
+    delivery: 'Monthly · cancel any time',
+    cta: 'Start a Project',
+    features: [
+      'Bug fixes and dependency updates',
+      'Small feature and content changes',
+      'Store and platform compliance updates',
+      'Uptime and crash monitoring',
+      'Priority reply on email and WhatsApp',
+    ],
+  },
+]
+
 export const pricing = {
   titleLight: 'Pricing',
-  titleBold: 'Plan',
-  lede: 'Choose the plan that fits your project.',
-  note: 'For Custom Requests',
-  plans: [
-    {
-      key: 'basic',
-      name: 'Basic',
-      tagline: 'Have a design ready to build? Or a small budget?',
-      price: '$40',
-      unit: '/ hours',
-      delivery: 'Done in 2 weeks',
-      cta: 'Get Started',
-      features: [
-        'Design with Figma',
-        'Single platform build',
-        'Support for 3 months',
-        'Weekly progress builds',
-        'Work on business days',
-      ],
-    },
-    {
-      key: 'premium',
-      name: 'Premium',
-      tagline: 'Need the whole product designed and shipped?',
-      price: '$60',
-      unit: '/ hours',
-      delivery: 'Done in 1 week',
-      cta: 'Get Started',
-      features: [
-        'Design with Figma, Framer',
-        'iOS, Android and Web',
-        'Support for 12 months',
-        'Build and automate advanced workflows',
-        'Work on business days and weekends',
-        'Unlock every tool and premium module',
-      ],
-    },
-  ],
+  titleBold: 'Plans',
+  lede: 'Fixed-scope packages rather than an hourly rate, so you know the number before the work starts.',
+  /* Shown under every card. The ranges are starting points, not quotes — the
+     copy has to say that everywhere the numbers appear. */
+  note: 'Starting ranges · firm quote after scoping',
+  disclaimer:
+    'These are starting ranges based on typical scope. Your final quote depends on screens, integrations and content, and I confirm it in writing — with a timeline — before any work begins.',
+  currency: { inr: 'INR', usd: 'USD' },
+  plans: PLANS.map((plan) => ({
+    ...plan,
+    priceInr: inrRange(plan.inr[0], plan.inr[1]),
+    priceUsd: usdRange(plan.usd[0], plan.usd[1]),
+  })),
 }
+
+
 
 export const faqs = {
   titleLight: 'Common',
@@ -515,7 +841,7 @@ export const faqs = {
   items: [
     {
       q: 'How long does a typical project take?',
-      a: 'A landing page runs about two weeks. A full app or web product is usually five to ten weeks depending on screens and integrations. You get a firm timeline in writing before we start.',
+      a: 'A business website runs about two weeks. A web app or MVP is usually five to six weeks, and a full Flutter app six to ten weeks, depending on screens and integrations. You get a firm timeline in writing before we start.',
     },
     {
       q: 'Do you work with clients outside India?',
@@ -537,10 +863,26 @@ export const faqs = {
 }
 
 export const contact = {
-  titleLight: 'Contact',
-  titleBold: 'For Work',
-  lede: 'Send a few lines about your idea and I will get back to you, usually within a day.',
-  budgets: ['Under $2k', '$2k – $6k', '$6k – $15k', '$15k+ / retainer', 'Not sure yet'],
+  titleLight: 'Tell me what',
+  titleBold: "you're building",
+  /* No response-time promise here. The FAQ describes what happens after a
+     project starts; how fast an enquiry gets answered is not something the
+     repository can evidence, so the copy does not claim it. */
+  lede: 'Share a little about the project and timeline. I will review it and get back to you.',
+  projectTypes: [
+    'Business website',
+    'Web app or MVP',
+    'Mobile app (Android + iOS)',
+    'Redesign of something existing',
+    'Ongoing maintenance',
+    'Something else',
+  ],
+  timelines: [
+    'As soon as possible',
+    'Within 1–2 months',
+    'In 3+ months',
+    'Just exploring for now',
+  ],
   whatsappMessage: WHATSAPP_MESSAGE,
 }
 
@@ -568,6 +910,169 @@ export const closing = {
       'Direct contact',
     ],
   },
+}
+
+/* ---------------------------------------------------------------- /about --
+   Written as an introduction to a working relationship, not a CV. Everything
+   here is either verifiable from this file (projects, stack, experience) or a
+   statement about how I work, which is mine to make. No invented biography. */
+export const about = {
+  meta: {
+    title: 'About Dhatri Patel | Freelance Flutter & React Developer, Bhavnagar',
+    description:
+      'Freelance Flutter and React developer based in Bhavnagar, Gujarat. How I work with startups, growing businesses and local businesses — direct, fixed-scope and remote-friendly.',
+  },
+  eyebrow: 'About',
+  titleLight: 'Work directly with',
+  titleBold: 'the person building it',
+  lede: 'I am Dhatri Patel, a freelance Flutter and React developer based in Bhavnagar, Gujarat. I build mobile apps, websites and first product versions for startups, growing businesses and local businesses — and remotely for clients anywhere.',
+  intro: [
+    'Most of what I build starts the same way: someone has been describing an idea to people for months and needs it to exist. That might be an app their customers can book from, a website that finally works on a phone, or a first version of a product they want to put in front of real users.',
+    'I take that from the first conversation through to a live build. Design, development and deployment are one job rather than three handovers, which is usually the difference between a project that ships and one that stalls between contractors.',
+    'I am early in my career and straightforward about it. What that means in practice is that you get the person writing the code on every call, a scope agreed in writing before anything starts, and pricing that reflects where I am rather than what an agency would charge.',
+  ],
+  audience: {
+    title: 'Who I work with',
+    lede: 'Three kinds of projects come up most often.',
+    groups: [
+      {
+        icon: 'Rocket',
+        name: 'Startups',
+        body: 'Founders who need a first version built and shipped — something real to test with users, show investors or run a pilot on.',
+      },
+      {
+        icon: 'TrendingUp',
+        name: 'Growing businesses',
+        body: 'Teams who have outgrown spreadsheets and manual processes and need a proper tool their staff and customers can actually use.',
+      },
+      {
+        icon: 'Store',
+        name: 'Local businesses',
+        body: 'Shops, clinics, cafés and services in Bhavnagar, Rajkot and Ahmedabad who need a website customers can find, read on a phone and contact from.',
+      },
+    ],
+    remote: {
+      title: 'Working remotely',
+      body: 'I am based in Bhavnagar and work with clients across Gujarat and internationally. Calls happen on whatever you already use, and I keep flexible hours so a time-zone gap does not turn a quick question into a two-day wait.',
+    },
+  },
+  working: {
+    title: 'How working together goes',
+    points: [
+      {
+        title: 'You talk to me, not an account manager',
+        body: 'There is no team to pass your project between. The person you brief is the person building it, so nothing is lost in translation and answers do not need a meeting first.',
+      },
+      {
+        title: 'Scope and price agreed up front',
+        body: 'Before any work starts you get what is being built, what it costs and when it lands, in writing. If the scope changes later, we agree the change before I build it — no surprise invoices.',
+      },
+      {
+        title: 'You see it while it is being built',
+        body: 'Work goes out in stages you can open and click through, not one reveal at the end. If something is heading the wrong way, we find out in week two rather than week six.',
+      },
+      {
+        title: 'You own everything',
+        body: 'Repositories, hosting, Firebase projects, store listings and domains are set up in your name or transferred at handover. Nothing stays locked to me, and you are free to take it in-house at any point.',
+      },
+      {
+        title: 'Plain language, not jargon',
+        body: 'You should not need to know what a framework is to make good decisions about your own product. I explain trade-offs in terms of cost, time and what your users will notice.',
+      },
+    ],
+  },
+  process: {
+    title: 'How a project runs',
+    lede: 'The same five stages whether it is a two-week website or a ten-week app.',
+    steps: [
+      {
+        number: '01',
+        title: 'First conversation',
+        body: 'A call or a WhatsApp thread about what you are trying to do and who for. Free, and it usually takes half an hour.',
+      },
+      {
+        number: '02',
+        title: 'Scope and quote',
+        body: 'I write down what the build includes, what it does not, the timeline and a fixed price. You approve it before anything begins.',
+      },
+      {
+        number: '03',
+        title: 'Design',
+        body: 'Screens and flows first, so we are agreeing on something you can look at rather than a description. Changes are cheap at this stage — that is the point of doing it here.',
+      },
+      {
+        number: '04',
+        title: 'Build',
+        body: 'Built in slices that work end to end, with something you can open at the end of each one. You see progress weekly rather than waiting for a reveal.',
+      },
+      {
+        number: '05',
+        title: 'Launch and handover',
+        body: 'Deployed live, accounts transferred to you, and a walkthrough of how to run it. Thirty days of bug fixes are included after launch.',
+      },
+    ],
+  },
+  stack: {
+    title: 'What I build with',
+    lede: 'Chosen to keep your build cost down and your options open — not because a tool is fashionable.',
+    groups: [
+      {
+        name: 'Mobile apps',
+        tools: 'Flutter, Dart',
+        why: 'One codebase serves both Android and iPhone, so there are not two separate native apps to build and keep in step.',
+      },
+      {
+        name: 'Websites and web apps',
+        tools: 'React, Next.js, Tailwind CSS',
+        why: 'Fast to load and easy for Google to read, which is most of what makes a site findable.',
+      },
+      {
+        name: 'Data and accounts',
+        tools: 'Firebase, Firestore, Node, REST APIs',
+        why: 'Handles sign-in, storage and scaling without a server you have to pay for and babysit from day one.',
+      },
+      {
+        name: 'On-device AI',
+        tools: 'ONNX Runtime, TensorFlow Lite, ML Kit',
+        why: 'Runs the model on the phone itself, so sensitive data never has to leave the user’s device.',
+      },
+      {
+        name: 'Design',
+        tools: 'Figma',
+        why: 'Where screens get agreed before they get built, when changes still cost minutes instead of days.',
+      },
+    ],
+  },
+  experienceIntro: {
+    title: 'Where I work now',
+    lede: 'Alongside freelance projects I work as an application developer, and I studied computer applications in Bhavnagar.',
+  },
+  cta: {
+    titleLight: 'Have an idea',
+    titleBold: 'you want to build?',
+    lede: 'Tell me what you are working on and I will come back with a plan, a timeline and a price.',
+  },
+}
+
+/* --------------------------------------------------------------- /services */
+export const servicesPage = {
+  meta: {
+    title: 'Services | Flutter Apps, Web Development & MVPs | Dhatri Patel',
+    description:
+      'Flutter app development, web development, website design and MVP builds for startups, growing businesses and local businesses in Gujarat — with starting prices and realistic timelines.',
+  },
+  eyebrow: 'Services',
+  titleLight: 'What I can',
+  titleBold: 'build for you',
+  lede: 'Four fixed-scope services, each with a realistic timeline and a clear list of what lands. Every project starts the same way — a conversation about what you actually need.',
+  labels: {
+    forWho: 'Who it is for',
+    deliverables: 'What you get',
+    timeline: 'Typical timeline',
+    stack: 'Built with',
+    caseStudies: 'Related work',
+  },
+  note: 'Not sure which one fits? Describe the problem and I will tell you which of these it is — or that you do not need me at all.',
 }
 
 export const socials = [

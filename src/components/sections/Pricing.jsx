@@ -10,12 +10,15 @@ import Reveal from '@/components/ui/Reveal'
 import { EASE, SPRING } from '@/lib/motion'
 
 /**
- * Basic / Premium toggle above a single plan card with an accent hairline border,
+ * A package toggle above a single plan card with an accent hairline border,
  * pinstripe texture, oversized price and a feature list below it.
+ *
+ * Pricing is per fixed scope, never per hour, and INR leads the USD line —
+ * most enquiries come from Gujarat, so that is the number they are comparing.
  */
 export default function Pricing() {
   const reduce = useReducedMotion()
-  const [activeKey, setActiveKey] = useState(pricing.plans[1].key)
+  const [activeKey, setActiveKey] = useState(pricing.plans[0].key)
   const plan = pricing.plans.find((item) => item.key === activeKey) ?? pricing.plans[0]
 
   return (
@@ -33,7 +36,7 @@ export default function Pricing() {
           <div
             role="tablist"
             aria-label="Pricing plans"
-            className="inline-flex items-center gap-1 rounded-full border border-line bg-surface p-1.5"
+            className="flex max-w-full flex-wrap items-center justify-center gap-1 rounded-[28px] border border-line bg-surface p-1.5"
           >
             {pricing.plans.map((item) => {
               const isActive = item.key === activeKey
@@ -46,7 +49,7 @@ export default function Pricing() {
                   aria-selected={isActive}
                   aria-controls={`price-panel-${item.key}`}
                   onClick={() => setActiveKey(item.key)}
-                  className={`relative rounded-full px-8 py-2.5 font-medium transition-colors duration-300 ${
+                  className={`relative rounded-full px-4 py-2.5 text-[0.9rem] font-medium transition-colors duration-300 sm:px-6 sm:text-base ${
                     isActive ? 'text-bg' : 'text-text/80 hover:text-text'
                   }`}
                 >
@@ -95,16 +98,24 @@ export default function Pricing() {
                     </h3>
                     <p className="relative mt-3 text-muted">{plan.tagline}</p>
 
-                    {/* Unit rides at the cap height of the numerals rather than
-                        their baseline, as in the reference. */}
-                    <p className="relative mt-8 flex items-start gap-2">
-                      <span className="font-display text-[clamp(3rem,8vw,5rem)] font-bold leading-none tracking-[-0.04em]">
-                        {plan.price}
-                      </span>
-                      <span className="mt-1 font-display text-2xl font-light text-muted">
-                        {plan.unit}
-                      </span>
-                    </p>
+                    {/* INR carries the display size; USD sits under it for
+                        overseas enquiries. A `unit` only exists on the retainer. */}
+                    <div className="relative mt-8">
+                      <p className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                        <span className="font-display text-[clamp(1.9rem,5.6vw,3rem)] font-bold leading-[1.05] tracking-[-0.035em]">
+                          {plan.priceInr}
+                        </span>
+                        {plan.unit && (
+                          <span className="font-display text-xl font-light text-muted">
+                            {plan.unit}
+                          </span>
+                        )}
+                      </p>
+                      <p className="mt-2 font-display text-lg font-light text-muted">
+                        {plan.priceUsd}
+                        {plan.unit ? ` ${plan.unit}` : ''}
+                      </p>
+                    </div>
 
                     {/* Stacked and centred until the reference's ~810px tablet
                         breakpoint, then split to opposite ends of the card. */}
@@ -131,8 +142,14 @@ export default function Pricing() {
                     ))}
                   </ul>
 
+                  {/* These are ranges, and the card has to say so where the
+                      numbers are, not only in the section lede. */}
+                  <p className="px-5 pt-6 text-sm leading-relaxed text-muted sm:px-6">
+                    {pricing.disclaimer}
+                  </p>
+
                   {/* Footer row, sitting on the sheet below the feature panel */}
-                  <div className="flex flex-wrap items-center justify-between gap-3 px-5 pb-2 pt-6 text-sm sm:px-6">
+                  <div className="flex flex-wrap items-center justify-between gap-3 px-5 pb-2 pt-5 text-sm sm:px-6">
                     <span className="inline-flex items-center gap-2 text-muted">
                       <Globe size={15} strokeWidth={2} aria-hidden="true" />
                       {pricing.note}

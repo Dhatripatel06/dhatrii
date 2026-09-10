@@ -13,8 +13,12 @@ import { SPRING } from '@/lib/motion'
  *
  * The whole card is the link — the circular arrow is decorative, so there is
  * a single tab stop per project rather than two overlapping ones.
+ *
+ * The title level is a prop because the card sits at different depths: under a
+ * section h2 on the home page, but directly under the page h1 on /projects,
+ * where a hardcoded h3 would skip a level.
  */
-export default function ProjectCard({ project, eager = false }) {
+export default function ProjectCard({ project, eager = false, headingLevel: Heading = 'h3' }) {
   const reduce = useReducedMotion()
 
   return (
@@ -33,11 +37,11 @@ export default function ProjectCard({ project, eager = false }) {
         <div className="relative aspect-[4/3] overflow-hidden sm:aspect-[16/10]">
           <SmartImage
             src={project.image}
-            alt={project.title}
+            alt={`${project.title} — ${project.seoDescriptor.toLowerCase()} case study cover`}
             label={project.title}
             tint={project.tint}
             eager={eager}
-            sizes="(min-width: 1024px) 1200px, 100vw"
+            sizes="(min-width: 736px) 640px, 100vw"
             className="h-full w-full object-cover transition-transform duration-700 ease-smooth motion-safe:group-hover:scale-[1.04]"
           />
           <div
@@ -48,9 +52,9 @@ export default function ProjectCard({ project, eager = false }) {
 
         <div className="flex items-center justify-between gap-6 p-7 sm:p-9">
           <div className="min-w-0">
-            <h3 className="truncate font-display text-2xl font-bold tracking-tight sm:text-4xl">
+            <Heading className="truncate font-display text-2xl font-bold tracking-tight sm:text-4xl">
               {project.title}
-            </h3>
+            </Heading>
             <p className="mt-1.5 text-sm text-muted">{project.tags}</p>
           </div>
           <span

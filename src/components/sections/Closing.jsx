@@ -15,10 +15,16 @@ import { SPRING } from '@/lib/motion'
  * and the wordmark, then an accent panel listing what you get, as tag pills.
  * The grid stretches both to a common height.
  */
+
+/* Resolved once at module scope. `closing.social.icon` is static content, so
+   binding the component inside render created a fresh component type on every
+   pass — which resets its state and is what react-hooks/static-components
+   flags. Nothing about the rendered output changes. */
+const SocialIcon = socialIcon(closing.social.icon)
+
 export default function Closing() {
   const reduce = useReducedMotion()
   const { social, whyChoose } = closing
-  const SocialIcon = socialIcon(social.icon)
 
   return (
     <section aria-label="More about working together" className="pb-16">

@@ -9,7 +9,17 @@ import ArrowButton from '@/components/ui/ArrowButton'
 import Reveal from '@/components/ui/Reveal'
 import { EASE } from '@/lib/motion'
 
-const EMPTY = { name: '', email: '', budget: '', message: '' }
+/* Five fields plus a details box — enough to understand and schedule a project
+   without turning an enquiry into a form-filling exercise. No budget field:
+   pricing is presented in the pricing section, not asked for here. */
+const EMPTY = {
+  name: '',
+  email: '',
+  company: '',
+  projectType: '',
+  timeline: '',
+  message: '',
+}
 
 export default function Contact() {
   const reduce = useReducedMotion()
@@ -41,7 +51,9 @@ export default function Contact() {
     const body = [
       `Name: ${form.name}`,
       `Email: ${form.email}`,
-      `Budget: ${form.budget || 'Not specified'}`,
+      `Business: ${form.company || 'Not specified'}`,
+      `Wants to build: ${form.projectType || 'Not specified'}`,
+      `Timeline: ${form.timeline || 'Not specified'}`,
       '',
       form.message,
     ].join('\n')
@@ -186,20 +198,59 @@ export default function Contact() {
                     </div>
                   </div>
 
+                  <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                    <div>
+                      <label htmlFor="company" className="mb-2 block text-sm font-medium">
+                        Business or company{' '}
+                        <span className="font-normal text-muted">(optional)</span>
+                      </label>
+                      <input
+                        id="company"
+                        type="text"
+                        autoComplete="organization"
+                        placeholder="Where you work"
+                        value={form.company}
+                        onChange={update('company')}
+                        className={fieldClass('company')}
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="projectType" className="mb-2 block text-sm font-medium">
+                        What do you want to build?
+                      </label>
+                      <select
+                        id="projectType"
+                        value={form.projectType}
+                        onChange={update('projectType')}
+                        className={`${fieldClass('projectType')} appearance-none`}
+                      >
+                        <option value="">Pick one</option>
+                        {contact.projectTypes.map((type) => (
+                          <option key={type} value={type}>
+                            {type}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Full width, not half of a two-up row: the budget selector
+                      that used to sit beside it is gone, and pricing belongs in
+                      the pricing section rather than in an enquiry form. */}
                   <div>
-                    <label htmlFor="budget" className="mb-2 block text-sm font-medium">
-                      Rough budget <span className="font-normal text-muted">(optional)</span>
+                    <label htmlFor="timeline" className="mb-2 block text-sm font-medium">
+                      Timeline <span className="font-normal text-muted">(optional)</span>
                     </label>
                     <select
-                      id="budget"
-                      value={form.budget}
-                      onChange={update('budget')}
-                      className={`${fieldClass('budget')} appearance-none`}
+                      id="timeline"
+                      value={form.timeline}
+                      onChange={update('timeline')}
+                      className={`${fieldClass('timeline')} appearance-none`}
                     >
-                      <option value="">Pick a range</option>
-                      {contact.budgets.map((budget) => (
-                        <option key={budget} value={budget}>
-                          {budget}
+                      <option value="">When do you need it?</option>
+                      {contact.timelines.map((timeline) => (
+                        <option key={timeline} value={timeline}>
+                          {timeline}
                         </option>
                       ))}
                     </select>
@@ -207,12 +258,12 @@ export default function Contact() {
 
                   <div>
                     <label htmlFor="message" className="mb-2 block text-sm font-medium">
-                      About the project
+                      A bit more about it
                     </label>
                     <textarea
                       id="message"
                       rows={5}
-                      placeholder="What are you building, who is it for, and when do you need it live?"
+                      placeholder="What problem does it solve, and who is it for?"
                       value={form.message}
                       onChange={update('message')}
                       aria-invalid={Boolean(errors.message)}

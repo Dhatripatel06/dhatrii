@@ -34,6 +34,13 @@ export default function SmartImage({
   const [status, setStatus] = useState('loading')
   const gradient = TINTS[tint] ?? TINTS.neutral
 
+  /* Eager images are the above-the-fold ones — the hero portrait and a case
+     study's cover, which is usually the LCP element. Fading those in from
+     opacity 0 delays the largest paint by however long the transition runs,
+     for no benefit: a priority image is not going to pop in late. Below the
+     fold, where the fade actually hides a load, it stays. */
+  const fade = !eager
+
   /* A null src never reaches next/image: requesting a path that is not
      there would 404 on every render and log an optimiser error. */
   if (!src || status === 'error') {
@@ -53,7 +60,7 @@ export default function SmartImage({
   return (
     <>
       {/* Placeholder tone underneath prevents a white flash on dark surfaces. */}
-      {status === 'loading' && (
+      {fade && status === 'loading' && (
         <span
           aria-hidden="true"
           className={`absolute inset-0 bg-gradient-to-br ${gradient}`}
@@ -67,8 +74,12 @@ export default function SmartImage({
         priority={eager}
         onLoad={() => setStatus('ready')}
         onError={() => setStatus('error')}
-        className={`${className} transition-opacity duration-700 ease-smooth ${
-          status === 'ready' ? 'opacity-100' : 'opacity-0'
+        className={`${className} ${
+          fade
+            ? `transition-opacity duration-700 ease-smooth ${
+                status === 'ready' ? 'opacity-100' : 'opacity-0'
+              }`
+            : ''
         }`}
       />
     </>

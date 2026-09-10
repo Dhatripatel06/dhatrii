@@ -9,9 +9,10 @@ export const SITE_URL = 'https://www.dhatrii.me'
 
 export const GOOGLE_SITE_VERIFICATION = 'v_Wz9FnZe4mZ1Y4I6yH0K_Yt5OOSX-gA0soFBzoJAV4'
 
-export const SITE_TITLE = 'Dhatri Patel | Freelance Flutter & Web Developer'
+export const SITE_TITLE = 'Freelance Flutter & React Developer in Bhavnagar | Dhatri Patel'
 
 export const SITE_DESCRIPTION =
-  'Freelance Flutter and React developer building mobile apps, websites, web apps and AI-powered products with Firebase. Independent, senior-level product work for startups and growing businesses.'
+  'Freelance Flutter and React developer in Bhavnagar, Gujarat. I build mobile apps, websites and MVPs for startups, growing businesses and local businesses across Gujarat — and remotely, worldwide.'
 
-export const OG_IMAGE = '/images/og-cover.jpg'
+// The social card is generated at build time by app/opengraph-image.js rather
+// than being served from /public, so there is no OG image path to export.

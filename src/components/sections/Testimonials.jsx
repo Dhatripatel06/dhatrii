@@ -2,15 +2,16 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
-import { Star } from 'lucide-react'
 import { testimonials } from '@/data/content'
 import TwoTone from '@/components/ui/TwoTone'
 import Reveal from '@/components/ui/Reveal'
 import { EASE } from '@/lib/motion'
 
 /**
- * One testimonial at a time: name and role top-left, an accent pixel score block
- * top-right, then the quote, stars and dot pagination — the reference layout.
+ * One award at a time: title and awarding body top-left, an accent pixel year
+ * block top-right, then the citation and dot pagination — the reference layout.
+ *
+ * These are awards, not reviews, so nothing here renders a star rating.
  */
 export default function Testimonials() {
   const reduce = useReducedMotion()
@@ -63,16 +64,8 @@ export default function Testimonials() {
                   </p>
                 </blockquote>
 
-                {/* Stars */}
-                <div className="flex justify-center gap-1 pt-6 text-accent">
-                  {Array.from({ length: item.stars }).map((_, starIndex) => (
-                    <Star key={starIndex} size={16} fill="currentColor" strokeWidth={0} aria-hidden="true" />
-                  ))}
-                  <span className="sr-only">{item.name}</span>
-                </div>
-
                 {/* Pagination */}
-                <div className="flex justify-center gap-2 p-7 sm:p-9">
+                <div className="flex justify-center gap-2 p-7 pt-9 sm:p-9 sm:pt-10">
                   {items.map((dot, dotIndex) => {
                     const isActive = dotIndex === index
                     return (

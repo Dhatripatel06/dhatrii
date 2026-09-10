@@ -1,3 +1,10 @@
+import JsonLd from '@/components/JsonLd'
+import {
+  faqSchema,
+  personSchema,
+  professionalServiceSchema,
+  webSiteSchema,
+} from '@/lib/schema'
 import Brands from '@/components/sections/Brands'
 import Closing from '@/components/sections/Closing'
 import Contact from '@/components/sections/Contact'
@@ -15,6 +22,14 @@ import WorkProcess from '@/components/sections/WorkProcess'
 export default function HomePage() {
   return (
     <>
+      {/* The identity graph lives here rather than in the layout: stamping a
+          Person onto every case study describes the wrong entity for that page.
+          FAQPage is here and only here, because the FAQ accordion it mirrors is
+          rendered on this page and nowhere else. */}
+      <JsonLd
+        schema={[webSiteSchema(), personSchema(), professionalServiceSchema({ includePricing: true }), faqSchema()]}
+      />
+
       <Hero />
       <Brands />
       <Journey />

@@ -9,6 +9,14 @@ import { nav, profile, socials, whatsappHref } from '@/data/content'
 import { scrollToSection } from '@/lib/lenis'
 import { EASE, SPRING, SPRING_ENTER, HIDDEN_OPACITY } from '@/lib/motion'
 
+/* The nav is static, so split it once rather than on every render. Routes are
+   sorted longest-href-first so /projects/<slug> matches Work rather than some
+   shorter prefix that happens to be listed earlier. */
+const ROUTE_ITEMS = nav
+  .filter((item) => item.href)
+  .sort((a, b) => b.href.length - a.href.length)
+const SECTION_ITEMS = nav.filter((item) => !item.href)
+
 /**
  * Reference header: a centred wordmark sitting above a centred pill nav that
  * carries the links plus an accent Contact button on its right edge. Collapses to
@@ -18,7 +26,10 @@ export default function Header() {
   const reduce = useReducedMotion()
   const pathname = usePathname()
   const [scrolled, setScrolled] = useState(false)
-  const [active, setActive] = useState('top')
+  /* Only the scrollspy needs state. Which route is active is a pure function
+     of the pathname, so it is derived during render rather than synced in an
+     effect — deriving it avoids a cascading render on every navigation. */
+  const [sectionActive, setSectionActive] = useState('top')
   const [open, setOpen] = useState(false)
 
   /* Sections only exist on the home page. Everywhere else the same links have
@@ -26,6 +37,12 @@ export default function Header() {
      project routes still light up the Projects tab. */
   const onHome = pathname === '/'
   const sectionHref = (id) => (onHome ? `#${id}` : `/#${id}`)
+  /* Route items link straight to their page; section items resolve to an
+     anchor that first navigates home when we are not already there. */
+  const hrefFor = (item) => item.href ?? sectionHref(item.id)
+
+  const routeActive = ROUTE_ITEMS.find((item) => pathname.startsWith(item.href))?.id ?? ''
+  const active = onHome ? sectionActive : routeActive
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -35,24 +52,23 @@ export default function Header() {
   }, [])
 
   useEffect(() => {
-    if (!onHome) {
-      setActive(pathname.startsWith('/projects') ? 'work' : '')
-      return
-    }
-    const sections = nav.map(({ id }) => document.getElementById(id)).filter(Boolean)
+    /* Sections only exist on the home page; elsewhere the derived route match
+       above is already the answer. */
+    if (!onHome) return
+    const sections = SECTION_ITEMS.map(({ id }) => document.getElementById(id)).filter(Boolean)
     if (sections.length === 0) return
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries
           .filter((entry) => entry.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
-        if (visible) setActive(visible.target.id)
+        if (visible) setSectionActive(visible.target.id)
       },
       { rootMargin: '-45% 0px -50% 0px', threshold: [0, 0.25, 0.5, 1] },
     )
     sections.forEach((section) => observer.observe(section))
     return () => observer.disconnect()
-  }, [onHome, pathname])
+  }, [onHome])
 
   useEffect(() => {
     if (!open) return
@@ -67,11 +83,12 @@ export default function Header() {
 
   /* Hand anchor jumps to Lenis when it is running, so they share the same
      easing as wheel scrolling; fall back to native otherwise. */
-  const go = (event, id) => {
+  const go = (event, item) => {
     setOpen(false)
+    if (item.href) return // a real route — let the router handle it
     if (!onHome) return // let the router navigate to /#id
     event.preventDefault()
-    scrollToSection(id, { reduce })
+    scrollToSection(item.id, { reduce })
   }
 
   return (
@@ -96,7 +113,7 @@ export default function Header() {
               moves inside the pill, matching the reference's collapse. */}
           <Link
             href={sectionHref('top')}
-            onClick={(event) => go(event, 'top')}
+            onClick={(event) => go(event, { id: 'top' })}
             className="hidden font-display text-2xl font-bold tracking-tight text-accent md:block"
             aria-label={`${profile.name} — back to top`}
           >
@@ -110,7 +127,7 @@ export default function Header() {
               {/* Mobile-only wordmark, left-aligned inside the pill */}
               <Link
                 href={sectionHref('top')}
-                onClick={(event) => go(event, 'top')}
+                onClick={(event) => go(event, { id: 'top' })}
                 className="font-display text-xl font-bold tracking-tight text-accent md:hidden"
                 aria-label={`${profile.name} — back to top`}
               >
@@ -124,17 +141,17 @@ export default function Header() {
                   return (
                     <li key={item.id}>
                       <Link
-                        href={sectionHref(item.id)}
-                        onClick={(event) => go(event, item.id)}
+                        href={hrefFor(item)}
+                        onClick={(event) => go(event, item)}
                         aria-current={isActive ? 'true' : undefined}
-                        className={`relative block rounded-full px-6 py-2.5 text-[0.95rem] transition-colors duration-300 ${
+                        className={`relative block rounded-full px-4 py-2.5 text-[0.95rem] transition-colors duration-300 ${
                           isActive ? 'text-accent' : 'text-text/85 hover:text-text'
                         }`}
                       >
                         {isActive && (
                           <motion.span
                             layoutId="nav-dot"
-                            className="absolute inset-x-6 -bottom-0.5 h-px bg-accent"
+                            className="absolute inset-x-4 -bottom-0.5 h-px bg-accent"
                             transition={reduce ? { duration: 0 } : SPRING}
                           />
                         )}
@@ -149,7 +166,7 @@ export default function Header() {
                 href={whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="ml-2 hidden items-center gap-2 rounded-full bg-accent px-6 py-2.5 text-[0.95rem] font-medium text-bg transition-colors duration-300 hover:bg-text md:inline-flex"
+                className="ml-2 hidden shrink-0 items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-[0.95rem] font-medium text-bg transition-colors duration-300 hover:bg-text md:inline-flex"
               >
                 Contact
                 <Send size={15} strokeWidth={2.2} aria-hidden="true" />
@@ -205,8 +222,8 @@ export default function Header() {
                         </a>
                       ) : (
                         <Link
-                          href={sectionHref(item.id)}
-                          onClick={(event) => go(event, item.id)}
+                          href={hrefFor(item)}
+                          onClick={(event) => go(event, item)}
                           className="block border-b border-line py-5 font-display text-4xl font-light transition-colors duration-300 hover:text-accent"
                         >
                           {item.label}

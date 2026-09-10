@@ -1,19 +1,15 @@
-import { projects, projectsIndex, projectPage } from '@/data/content'
+import { publishedProjects, projectsIndex, projectPage } from '@/data/content'
+import { buildMetadata } from '@/lib/seo'
 import ProjectCard from '@/components/ui/ProjectCard'
 import ArrowButton from '@/components/ui/ArrowButton'
 import Reveal from '@/components/ui/Reveal'
 import TwoTone from '@/components/ui/TwoTone'
 
-export const metadata = {
-  title: `${projectsIndex.meta.title} | Dhatri Patel`,
+export const metadata = buildMetadata({
+  title: projectsIndex.meta.title,
   description: projectsIndex.meta.description,
-  alternates: { canonical: '/projects' },
-  openGraph: {
-    title: `${projectsIndex.meta.title} | Dhatri Patel`,
-    description: projectsIndex.meta.description,
-    url: '/projects',
-  },
-}
+  path: '/projects',
+})
 
 /**
  * Index of every case study. Same card as the home section, listed plainly
@@ -34,16 +30,21 @@ export default function ProjectsIndexPage() {
 
           <TwoTone
             id="projects-heading"
+            as="h1"
             className="mt-5"
             light={projectsIndex.titleLight}
             bold={projectsIndex.titleBold}
             lede={projectsIndex.lede}
           />
 
+          <Reveal delay={0.12} className="mx-auto mt-8 max-w-xl">
+            <p className="text-pretty text-center text-sm text-muted">{projectsIndex.note}</p>
+          </Reveal>
+
           <ul className="mt-14 flex flex-col gap-8 sm:mt-16">
-            {projects.map((project, index) => (
+            {publishedProjects.map((project, index) => (
               <li key={project.slug}>
-                <ProjectCard project={project} eager={index === 0} />
+                <ProjectCard project={project} eager={index === 0} headingLevel="h2" />
               </li>
             ))}
           </ul>

@@ -2,9 +2,10 @@
 
 import { useRef } from 'react'
 import { motion, useScroll, useTransform, useSpring, useReducedMotion } from 'framer-motion'
-import { Star, Globe, ArrowUpRight } from 'lucide-react'
+import { MapPin, ArrowUpRight } from 'lucide-react'
 import { hero, profile, socials } from '@/data/content'
 import { socialIcon } from '@/lib/icons'
+import { scrollToSection } from '@/lib/lenis'
 import SmartImage from '@/components/ui/SmartImage'
 import ArrowButton from '@/components/ui/ArrowButton'
 import { SPRING_ENTER, HIDDEN_OPACITY, HERO_PARALLAX } from '@/lib/motion'
@@ -12,8 +13,11 @@ import { SPRING_ENTER, HIDDEN_OPACITY, HERO_PARALLAX } from '@/lib/motion'
 /**
  * Hero built as a single device mockup: a bezelled frame whose upper half is
  * the portrait — with the "Hello" badge top-left and the name overlapping the
- * lower-right of the face — and whose lower half carries the intro, quote,
- * rating and CTAs, exactly as the reference stacks them inside one frame.
+ * lower-right of the face — and whose lower half carries the positioning line,
+ * headline, proof and CTAs, exactly as the reference stacks them in one frame.
+ *
+ * The nameplate over the portrait is a <p>, not the <h1>: the headline below it
+ * is what states what this site is for, so it takes the document's one h1.
  */
 export default function Hero() {
   const reduce = useReducedMotion()
@@ -22,6 +26,13 @@ export default function Hero() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
   const smooth = useSpring(scrollYProgress, { stiffness: 90, damping: 26, restDelta: 0.001 })
   const imageY = useTransform(smooth, [0, 1], [0, HERO_PARALLAX])
+
+  /* Both hero CTAs land on sections of this same page, so they hand off to
+     Lenis exactly as the header links do rather than jumping natively. */
+  const jump = (event, id) => {
+    event.preventDefault()
+    scrollToSection(id, { reduce })
+  }
 
   return (
     <section ref={ref} id="top" className="relative overflow-hidden pb-20 pt-36 sm:pt-40">
@@ -96,7 +107,7 @@ export default function Hero() {
               {/* Name — overlapping the lower-right of the face. The two lines
                   converge on entry (first drops, second rises), matching the
                   reference's -20px / +20px pairing. */}
-              <h1 className="absolute inset-x-6 bottom-6 text-right leading-[0.92] tracking-[-0.035em] sm:inset-x-8 sm:bottom-8">
+              <p className="absolute inset-x-6 bottom-6 text-right font-display leading-[0.92] tracking-[-0.035em] sm:inset-x-8 sm:bottom-8">
                 {[profile.firstName, profile.lastName].map((word, index) => (
                   <motion.span
                     key={word}
@@ -111,7 +122,7 @@ export default function Hero() {
                     {word}
                   </motion.span>
                 ))}
-              </h1>
+              </p>
             </div>
 
             {/* ---------------------------------------------------- Intro -- */}
@@ -131,10 +142,8 @@ export default function Hero() {
                   side by side. Stacked below sm so the row cannot overflow a
                   narrow phone. */}
               <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
-                <p className="text-[1.05rem] leading-snug text-text">
-                  {hero.roleLead} <span className="font-semibold">{hero.roleBold}</span>
-                  <br />
-                  {hero.roleTail}
+                <p className="max-w-[22ch] text-[0.7rem] font-semibold uppercase leading-[1.6] tracking-[0.16em] text-accent">
+                  {hero.eyebrow}
                 </p>
                 <ul className="flex shrink-0 gap-2.5">
                   {socials.slice(0, 3).map((social) => {
@@ -156,36 +165,39 @@ export default function Hero() {
                 </ul>
               </div>
 
-              {/* Quote */}
-              <p className="text-[clamp(1.35rem,3.4vw,1.75rem)] font-medium leading-[1.25] tracking-[-0.02em] text-text">
-                {hero.quote}
-              </p>
-
-              {/* Rating */}
-              <div className="flex items-center gap-3">
-                <span className="flex gap-1 text-accent" aria-hidden="true">
-                  {Array.from({ length: hero.rating.stars }).map((_, index) => (
-                    <Star key={index} size={15} fill="currentColor" strokeWidth={0} />
-                  ))}
-                </span>
-                <span className="text-sm text-muted">
-                  <span className="sr-only">Rated {hero.rating.stars} out of 5 — </span>
-                  {hero.rating.label}
-                </span>
+              {/* Headline + supporting copy. This is the page's only h1 — the
+                  nameplate above the fold is a <p>. */}
+              <div className="flex flex-col gap-4">
+                <h1 className="text-[clamp(1.5rem,3.9vw,2rem)] font-semibold leading-[1.18] tracking-[-0.025em] text-text">
+                  {hero.headline}
+                </h1>
+                <p className="max-w-lede text-pretty text-[0.95rem] leading-[1.65] text-muted">
+                  {hero.lede}
+                </p>
               </div>
+
+              {/* Proof — a countable fact and the stack, in place of the star
+                  row that used to sit here. No rating: nobody has left one. */}
+              <p className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 text-sm">
+                <span className="font-semibold text-text">{hero.proof.lead}</span>
+                <span aria-hidden="true" className="text-muted/40">
+                  ·
+                </span>
+                <span className="text-muted">{hero.proof.stack}</span>
+              </p>
 
               {/* CTAs — full width stacked on narrow frames, inline once wide */}
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                 <ArrowButton
                   href={hero.primaryCta.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  onClick={(event) => jump(event, 'contact')}
                   className="justify-between sm:justify-start"
                 >
                   {hero.primaryCta.label}
                 </ArrowButton>
                 <a
                   href={hero.secondaryCta.href}
+                  onClick={(event) => jump(event, 'work')}
                   className="inline-flex items-center justify-center rounded-full border border-line bg-white/[0.03] px-7 py-4 font-medium text-text transition-colors duration-300 hover:bg-white/[0.08]"
                 >
                   {hero.secondaryCta.label}
@@ -195,8 +207,8 @@ export default function Hero() {
               {/* Footer row */}
               <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line pt-6 text-sm">
                 <span className="inline-flex items-center gap-2 text-muted">
-                  <Globe size={15} strokeWidth={2} aria-hidden="true" />
-                  Available <span className="font-semibold text-text">Worldwide</span>
+                  <MapPin size={15} strokeWidth={2} aria-hidden="true" />
+                  {hero.availability}
                 </span>
                 <a
                   href={hero.contactLink.href}

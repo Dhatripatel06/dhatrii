@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { ChevronLeft, ChevronRight, Briefcase } from 'lucide-react'
+import Link from 'next/link'
 import { experience } from '@/data/content'
 import { EASE } from '@/lib/motion'
 
@@ -10,6 +11,9 @@ import { EASE } from '@/lib/motion'
  * Career timeline drawn as a dotted arc with a marker at its apex. The period
  * label sits above the arc, the role inside it, and a white company pill with
  * prev/next controls sits on the baseline — as in the reference.
+ *
+ * One entry shows at a time, so the dots below the pill exist to say how many
+ * there are: without them a visitor reads the opening role as the whole career.
  */
 export default function Experience() {
   const reduce = useReducedMotion()
@@ -24,7 +28,7 @@ export default function Experience() {
     <section aria-labelledby="experience-heading" className="section overflow-hidden">
       <div className="shell">
         <h2 id="experience-heading" className="sr-only">
-          Experience timeline
+          Experience
         </h2>
 
         {/* Period */}
@@ -134,8 +138,56 @@ export default function Experience() {
           </button>
         </div>
 
+        {/* Where the role is worked from — the pill alone leaves "Remote" and
+            "Self-employed" ambiguous. */}
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.p
+            key={entry.location}
+            initial={reduce ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3, ease: EASE }}
+            className="mt-4 text-center text-sm text-muted"
+          >
+            {entry.location}
+          </motion.p>
+        </AnimatePresence>
+
+        {/* Position indicator, doubling as direct navigation */}
+        <div className="mt-6 flex justify-center gap-2">
+          {entries.map((item, dotIndex) => {
+            const isActive = dotIndex === index
+            return (
+              <button
+                key={item.title}
+                type="button"
+                onClick={() => setIndex(dotIndex)}
+                aria-label={`Show ${item.title} at ${item.company}`}
+                aria-current={isActive ? 'true' : undefined}
+                className="grid h-8 w-8 place-items-center rounded-full transition-colors duration-300 hover:bg-white/[0.04]"
+              >
+                <span
+                  className={`rounded-full transition-all duration-300 ${
+                    isActive ? 'h-2 w-2 bg-accent' : 'h-1.5 w-1.5 bg-muted/50'
+                  }`}
+                />
+              </button>
+            )
+          })}
+        </div>
+
+        {/* The home page's one contextual route into /about — the nav carries
+            the link too, but a reader who has just scanned the timeline is the
+            one most likely to want the longer version. */}
+        <p className="mt-8 text-center text-sm text-muted">
+          <Link href="/about" className="link-underline font-medium text-accent">
+            {experience.aboutLink}
+          </Link>
+        </p>
+
         <p aria-live="polite" className="sr-only">
-          {entry.period}: {entry.role} {entry.title} at {entry.company}
+          {entry.period}: {entry.role} — {entry.title} at {entry.company}, {entry.location}. Role{' '}
+          {index + 1} of {entries.length}.
         </p>
       </div>
     </section>

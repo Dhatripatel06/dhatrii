@@ -7,11 +7,11 @@ import GalaxyBackground from '@/components/ui/GalaxyBackground'
 import { profile } from '@/data/content'
 import {
   GOOGLE_SITE_VERIFICATION,
-  OG_IMAGE,
   SITE_DESCRIPTION,
   SITE_TITLE,
   SITE_URL,
 } from '@/lib/site'
+import { buildMetadata } from '@/lib/seo'
 
 import './globals.css'
 
@@ -37,47 +37,24 @@ const handjet = Handjet({
   display: 'swap',
 })
 
+/* Root metadata. Every page below builds its own with the same helper, so the
+   only things inherited from here are the ones that genuinely are site-wide:
+   metadataBase, icons, authorship and search-console verification.
+
+   No `images` key anywhere: app/opengraph-image.js supplies og:image and
+   twitter:image for this route and every route that inherits from it. */
 export const metadata = {
   metadataBase: new URL(SITE_URL),
-  title: SITE_TITLE,
-  description: SITE_DESCRIPTION,
-  keywords: [
-    'freelance Flutter developer',
-    'React developer',
-    'Firebase developer',
-    'AI app developer',
-    'mobile app freelancer',
-    'web app developer',
-  ],
+  ...buildMetadata({
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    path: '/',
+  }),
   authors: [{ name: profile.name, url: SITE_URL }],
   creator: profile.name,
-  alternates: { canonical: '/' },
+  publisher: profile.name,
   icons: { icon: '/favicon.svg' },
   verification: { google: GOOGLE_SITE_VERIFICATION },
-  openGraph: {
-    type: 'website',
-    siteName: profile.name,
-    title: SITE_TITLE,
-    description:
-      'I design and build mobile apps, websites and AI-powered products with Flutter, React and Firebase — as an independent developer, working directly with you.',
-    url: '/',
-    locale: 'en_US',
-    images: [
-      {
-        url: OG_IMAGE,
-        width: 1200,
-        height: 630,
-        alt: `${profile.name} — freelance Flutter and web developer`,
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: SITE_TITLE,
-    description:
-      'Independent product developer building Flutter apps, React web apps and AI-powered digital products.',
-    images: [OG_IMAGE],
-  },
 }
 
 export const viewport = {
@@ -85,16 +62,6 @@ export const viewport = {
   colorScheme: 'dark',
   width: 'device-width',
   initialScale: 1,
-}
-
-const PERSON_SCHEMA = {
-  '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: profile.name,
-  jobTitle: 'Freelance Flutter & Web Developer',
-  url: SITE_URL,
-  email: profile.email,
-  knowsAbout: ['Flutter', 'React', 'Firebase', 'AI product development', 'Web applications'],
 }
 
 export default function RootLayout({ children }) {
@@ -107,10 +74,6 @@ export default function RootLayout({ children }) {
       {/* No background on the wrapper below: an opaque ancestor would paint
           over the fixed -z-10 starfield. The page ground comes from `body`. */}
       <body>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(PERSON_SCHEMA) }}
-        />
         <SmoothScroll />
         <div className="min-h-screen">
           <GalaxyBackground />

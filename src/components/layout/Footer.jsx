@@ -19,6 +19,7 @@ export default function Footer() {
      home first, and "back to top" becomes a plain scroll to 0. */
   const onHome = pathname === '/'
   const sectionHref = (id) => (onHome ? `#${id}` : `/#${id}`)
+  const hrefFor = (item) => item.href ?? sectionHref(item.id)
 
   const toTop = () =>
     onHome ? scrollToSection('top', { reduce }) : window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' })
@@ -45,7 +46,7 @@ export default function Footer() {
               {[...nav, { id: 'contact', label: 'Contact' }].map((item) => (
                 <li key={item.id}>
                   <Link
-                    href={sectionHref(item.id)}
+                    href={hrefFor(item)}
                     className="link-underline text-muted transition-colors duration-300 hover:text-text"
                   >
                     {item.label}

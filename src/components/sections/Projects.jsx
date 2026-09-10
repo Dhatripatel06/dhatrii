@@ -1,4 +1,4 @@
-import { work, projects } from '@/data/content'
+import { work, publishedProjects } from '@/data/content'
 import ProjectCard from '@/components/ui/ProjectCard'
 import TwoTone from '@/components/ui/TwoTone'
 import ArrowButton from '@/components/ui/ArrowButton'
@@ -18,7 +18,7 @@ export default function Projects() {
         {/* Sticky stack: each card pins a little lower than the one before it,
             so the next card slides up and covers the previous one. */}
         <ul className="mt-14 flex flex-col gap-8 sm:mt-16">
-          {projects.map((project, index) => (
+          {publishedProjects.map((project, index) => (
             <li
               key={project.slug}
               className="sticky"

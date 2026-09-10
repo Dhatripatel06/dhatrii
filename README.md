@@ -1,7 +1,15 @@
 # Dhatri Patel — Portfolio
 
-Single-page portfolio built on the Next.js App Router, statically prerendered
-and deployed to Vercel.
+Portfolio and lead site for **Dhatri Patel**, freelance Flutter & React
+developer based in Bhavnagar, Gujarat, India — building mobile apps, websites
+and MVPs for startups, growing businesses and local businesses, and remotely
+worldwide.
+
+Live at **<https://www.dhatrii.me>** · dhatripatel67@gmail.com
+
+Built on the Next.js App Router, statically prerendered and deployed to Vercel.
+The home page carries the full pitch as one scroll; `/about`, `/services` and
+the case studies under `/projects` are separate routes.
 
 ```bash
 npm install
@@ -27,12 +35,17 @@ request to `fonts.googleapis.com` and no swap-in layout shift.
 ```
 src/
   app/
-    layout.jsx        html shell, fonts, metadata, JSON-LD, page chrome
-    page.jsx          the 13 sections in render order
+    layout.jsx        html shell, fonts, root metadata, page chrome
+    page.jsx          the 13 home sections in render order + home JSON-LD
+    about/page.jsx    /about — client-facing introduction
+    services/page.jsx /services — the four services in full
+    projects/         /projects index and /projects/[slug] case studies
+    opengraph-image.js  1200x630 social card, generated at build time
     globals.css       base layer, .shell / .section rhythm, helpers
     robots.js         generated /robots.txt
     sitemap.js        generated /sitemap.xml
   components/
+    JsonLd.jsx        renders one or more schema graphs as a script tag
     layout/           chrome rendered by layout.jsx, not by the page
       Header.jsx        centred wordmark + pill nav + accent Contact
       Footer.jsx        wordmark, nav, socials, back-to-top
@@ -47,10 +60,10 @@ src/
       Tools.jsx         capsule tool grid
       WorkProcess.jsx   four process cards
       Testimonials.jsx  awards card with pixel score + dots
-      Pricing.jsx       Basic / Premium toggle + plan card
+      Pricing.jsx       four fixed-scope package tabs + plan card
       FAQ.jsx           accordion
       Contact.jsx       validated mailto form
-      Closing.jsx       GitHub invite + "Why choose" panel
+      Closing.jsx       Instagram card + "Why choose" panel
     ui/               shared primitives
       Reveal.jsx        fade-up on scroll into view
       Stagger.jsx       sequenced reveals, 0.2s apart
@@ -63,6 +76,8 @@ src/
   data/content.js     all copy, projects, plans, FAQs, links
   lib/
     site.js           SITE_URL and everything derived from it
+    seo.js            buildMetadata() — one metadata shape per route
+    schema.js         JSON-LD builders (Person, ProfessionalService, FAQ, …)
     motion.js         easing, springs, timing constants
     lenis.js          scroll instance handle + scrollToSection
     icons.js          social icon lookup
@@ -71,7 +86,8 @@ src/
 ### Server / client split
 
 `layout.jsx`, `page.jsx` and the sections with no interactive state
-(`Brands`, `Journey`, `Tools`, `WorkProcess`) are Server Components and ship no
+(`Brands`, `Journey`, `Projects`, `Tools`, `WorkProcess`) are Server Components
+and ship no
 JS of their own. `'use client'` sits on the leaves that need it — anything
 using `useState`, a Framer Motion hook or a canvas.
 
@@ -111,22 +127,28 @@ Currently present:
 
 ```
 public/images/portrait-illustration.png   # hero portrait, 4:5
+public/images/jobzeecover.png             # project card
+public/images/agreecarecover.png          # project card
 public/images/mindheal.png                # project card
+public/images/shiftlycover.png            # project card
 ```
 
-Still referenced but **missing** — each one currently falls back to a
-placeholder tile:
+Still missing — each falls back to a labelled placeholder tile rather than a
+broken image:
 
 ```
-agreecare.jpg  shiftly.jpg  jobzee.jpg  learnnova.jpg  masjid.jpg
-github.jpg     og-cover.jpg   # 1200x630 social card
+learnnova cover   # set `image` on the learnnova entry in src/data/content.js
 ```
+
+There is no social-card file to add. The 1200x630 Open Graph image is
+generated at build time by [src/app/opengraph-image.js](src/app/opengraph-image.js)
+and served from `/opengraph-image`.
 
 ## Domain and SEO
 
 [src/lib/site.js](src/lib/site.js) is the single source of truth. `SITE_URL`
-feeds `metadataBase`, the canonical link, Open Graph, the JSON-LD block, the
-sitemap and `robots.txt` — change it in one place and everything follows.
+feeds `metadataBase`, the canonical link, Open Graph, the JSON-LD graphs in
+[src/lib/schema.js](src/lib/schema.js), the sitemap and `robots.txt` — change it in one place and everything follows.
 
 Google Search Console verification is declared through Next's metadata API
 (`verification.google`), which renders the `google-site-verification` meta tag.

@@ -2,41 +2,46 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ArrowLeft, ArrowUpRight } from 'lucide-react'
 
-import { projects, projectPage, profile } from '@/data/content'
+import { publishedProjects, projectPage, services } from '@/data/content'
 import ArrowButton from '@/components/ui/ArrowButton'
 import Reveal from '@/components/ui/Reveal'
 import SmartImage from '@/components/ui/SmartImage'
-import { SITE_URL } from '@/lib/site'
+import JsonLd from '@/components/JsonLd'
+import { buildMetadata } from '@/lib/seo'
+import { projectBreadcrumb, projectSchema } from '@/lib/schema'
 
 /* Statically generated at build time — the set of case studies only changes
    when content.js does. */
 export function generateStaticParams() {
-  return projects.map(({ slug }) => ({ slug }))
+  return publishedProjects.map(({ slug }) => ({ slug }))
 }
 
-const findProject = (slug) => projects.find((project) => project.slug === slug)
+/* Draft entries are not reachable: an unpublished slug is never pre-rendered
+   and never resolves here, so /projects/<draft> 404s like any unknown path. */
+const findProject = (slug) => publishedProjects.find((project) => project.slug === slug)
 
 export async function generateMetadata({ params }) {
   const { slug } = await params
   const project = findProject(slug)
   if (!project) return {}
 
-  const title = `${project.title} | ${profile.name}`
-  const description = project.detail.lede
+  /* "JobZee — Full-Stack Job Portal | Dhatri Patel". The descriptor is written
+     out per project rather than derived from the lowercase tag line, which
+     capitalised to "Ai mental health companion" and "Smart agriculture iot". */
+  const title = `${project.title} — ${project.seoDescriptor} | Dhatri Patel`
 
-  return {
+  /* A project without a cover file must not declare an empty og:image — that
+     is what shipped a null URL for LearnNova. Omitting the key entirely lets
+     the generated card from app/opengraph-image.js be inherited instead. */
+  const images = project.image ? [{ url: project.image, alt: `${project.title} cover` }] : undefined
+
+  return buildMetadata({
     title,
-    description,
-    alternates: { canonical: `/projects/${project.slug}` },
-    openGraph: {
-      type: 'article',
-      title,
-      description,
-      url: `/projects/${project.slug}`,
-      images: [{ url: project.image, alt: `${project.title} cover` }],
-    },
-    twitter: { card: 'summary_large_image', title, description, images: [project.image] },
-  }
+    description: project.detail.lede,
+    path: `/projects/${project.slug}`,
+    type: 'article',
+    images,
+  })
 }
 
 export default async function ProjectPage({ params }) {
@@ -45,25 +50,19 @@ export default async function ProjectPage({ params }) {
   if (!project) notFound()
 
   const { detail } = project
-  const index = projects.findIndex((item) => item.slug === project.slug)
-  const next = projects[(index + 1) % projects.length]
+  const index = publishedProjects.findIndex((item) => item.slug === project.slug)
+  const next = publishedProjects[(index + 1) % publishedProjects.length]
 
-  const schema = {
-    '@context': 'https://schema.org',
-    '@type': 'CreativeWork',
-    name: project.title,
-    description: detail.lede,
-    url: `${SITE_URL}/projects/${project.slug}`,
-    image: `${SITE_URL}${project.image}`,
-    author: { '@type': 'Person', name: profile.name, url: SITE_URL },
-  }
+  /* Two sibling case studies and the service this work belongs to — the
+     internal links every project page owes the rest of the site. */
+  const related = project.related
+    .map((slug) => publishedProjects.find((item) => item.slug === slug))
+    .filter(Boolean)
+  const service = services.items.find((item) => item.key === project.serviceKey)
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-      />
+      <JsonLd schema={[projectSchema(project), projectBreadcrumb(project)]} />
 
       {/* ------------------------------------------------------------ hero */}
       <section className="section pb-0 pt-36 sm:pt-44" aria-labelledby="project-heading">
@@ -122,11 +121,11 @@ export default async function ProjectPage({ params }) {
           >
             <SmartImage
               src={project.image}
-              alt={`${project.title} cover`}
+              alt={`${project.title} — ${project.seoDescriptor.toLowerCase()} case study cover`}
               label={project.title}
               tint={project.tint}
               eager
-              sizes="(min-width: 1024px) 1200px, 100vw"
+              sizes="(min-width: 736px) 640px, 100vw"
               className="h-full w-full object-cover"
             />
           </Reveal>
@@ -148,6 +147,24 @@ export default async function ProjectPage({ params }) {
               {detail.overview.heading}
             </h2>
             <p className="mt-5 text-pretty text-muted">{detail.overview.body}</p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------ problem + goal -- */}
+      <section className="section pt-0" aria-labelledby="problem-heading">
+        <div className="shell grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <Reveal className="rounded-card border border-line bg-surface p-7 sm:p-8">
+            <h2 id="problem-heading" className="text-xs uppercase tracking-[0.22em] text-muted">
+              {projectPage.problemLabel}
+            </h2>
+            <p className="mt-4 text-pretty leading-relaxed">{detail.problem}</p>
+          </Reveal>
+          <Reveal delay={0.06} className="rounded-card border border-accent/35 bg-accent/[0.04] p-7 sm:p-8">
+            <h2 className="text-xs uppercase tracking-[0.22em] text-muted">
+              {projectPage.goalLabel}
+            </h2>
+            <p className="mt-4 text-pretty leading-relaxed">{detail.goal}</p>
           </Reveal>
         </div>
       </section>
@@ -209,6 +226,56 @@ export default async function ProjectPage({ params }) {
         </div>
       </section>
 
+      {/* -------------------------------------------------------- features */}
+      <section className="section pt-0" aria-labelledby="features-heading">
+        <div className="shell">
+          <Reveal>
+            <h2 id="features-heading" className="text-xs uppercase tracking-[0.22em] text-muted">
+              {projectPage.featuresLabel}
+            </h2>
+          </Reveal>
+          <ul className="mt-6 flex flex-col gap-3">
+            {detail.features.map((feature, featureIndex) => (
+              <li key={feature}>
+                <Reveal delay={featureIndex * 0.04} className="flex items-start gap-3 text-pretty">
+                  <span
+                    aria-hidden="true"
+                    className="mt-[0.6em] h-1 w-1 shrink-0 rounded-full bg-accent"
+                  />
+                  {feature}
+                </Reveal>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------ challenges */}
+      <section className="section pt-0" aria-labelledby="challenges-heading">
+        <div className="shell">
+          <Reveal>
+            <h2 id="challenges-heading" className="text-xs uppercase tracking-[0.22em] text-muted">
+              {projectPage.challengesLabel}
+            </h2>
+          </Reveal>
+          <ul className="mt-6 flex flex-col gap-4">
+            {detail.challenges.map((challenge, challengeIndex) => (
+              <li key={challenge.title}>
+                <Reveal
+                  delay={challengeIndex * 0.06}
+                  className="rounded-card border border-line bg-surface p-7 sm:p-8"
+                >
+                  <h3 className="font-display text-lg font-bold tracking-[-0.02em]">
+                    {challenge.title}
+                  </h3>
+                  <p className="mt-3 text-pretty leading-relaxed text-muted">{challenge.body}</p>
+                </Reveal>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
       {/* ---------------------------------------------------------- result */}
       <section className="section pt-0" aria-labelledby="result-heading">
         <div className="shell">
@@ -222,6 +289,84 @@ export default async function ProjectPage({ params }) {
             </h2>
             <p className="mt-5 text-pretty text-muted">{detail.result.body}</p>
           </Reveal>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------- learned -- */}
+      <section className="section pt-0" aria-labelledby="learned-heading">
+        <div className="shell">
+          <Reveal className="rounded-card border border-line bg-sunken p-7 sm:p-9">
+            <h2 id="learned-heading" className="text-xs uppercase tracking-[0.22em] text-muted">
+              {projectPage.learnedLabel}
+            </h2>
+            <p className="mt-4 text-pretty leading-relaxed">{detail.learned}</p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* -------------------------------------------------- related work -- */}
+      <section className="section pt-0" aria-labelledby="related-heading">
+        <div className="shell">
+          <Reveal>
+            <h2 id="related-heading" className="text-xs uppercase tracking-[0.22em] text-muted">
+              {projectPage.relatedLabel}
+            </h2>
+          </Reveal>
+
+          <ul className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {related.map((item, relatedIndex) => (
+              <li key={item.slug}>
+                <Reveal delay={relatedIndex * 0.06}>
+                  <Link
+                    href={`/projects/${item.slug}`}
+                    className="group flex h-full flex-col justify-between gap-5 rounded-card border border-line bg-surface p-6 transition-colors duration-500 hover:border-accent/40 sm:p-7"
+                  >
+                    <span>
+                      <span className="block font-display text-xl font-bold tracking-tight">
+                        {item.title}
+                      </span>
+                      <span className="mt-2 block text-sm text-muted">{item.tags}</span>
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 text-sm font-medium text-accent">
+                      Read the case study
+                      <ArrowUpRight
+                        size={15}
+                        strokeWidth={2.2}
+                        aria-hidden="true"
+                        className="transition-transform duration-300 motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5"
+                      />
+                    </span>
+                  </Link>
+                </Reveal>
+              </li>
+            ))}
+          </ul>
+
+          {/* The service this build is an example of — the link that turns a
+              case study reader into an enquiry. */}
+          {service && (
+            <Reveal delay={0.12} className="mt-4">
+              <Link
+                href="/services"
+                className="group flex items-center justify-between gap-6 rounded-card border border-accent/35 bg-accent/[0.04] p-6 transition-colors duration-500 hover:bg-accent/[0.08] sm:p-7"
+              >
+                <span className="min-w-0">
+                  <span className="block text-xs uppercase tracking-[0.18em] text-muted">
+                    {projectPage.serviceLabel}
+                  </span>
+                  <span className="mt-2 block font-display text-xl font-bold tracking-tight">
+                    {service.title}
+                  </span>
+                </span>
+                <ArrowUpRight
+                  size={22}
+                  strokeWidth={1.8}
+                  aria-hidden="true"
+                  className="shrink-0 text-accent transition-transform duration-300 motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5"
+                />
+              </Link>
+            </Reveal>
+          )}
         </div>
       </section>
 
