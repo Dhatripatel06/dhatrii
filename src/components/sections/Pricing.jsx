@@ -33,10 +33,15 @@ export default function Pricing() {
 
         {/* Toggle */}
         <Reveal className="mt-10 flex justify-center">
+          {/* An equal-column grid rather than flex-wrap: four labels of
+              different widths wrapped 3 + 1 and left "Maintenance" stranded on
+              its own row. Two even rows on a phone, one row of four from `sm`,
+              and the active pill fills its column so every tab reads the same
+              size whatever the label length. */}
           <div
             role="tablist"
             aria-label="Pricing plans"
-            className="flex max-w-full flex-wrap items-center justify-center gap-1 rounded-[28px] border border-line bg-surface p-1.5"
+            className="grid w-full grid-cols-2 gap-1 rounded-[28px] border border-line bg-surface p-1.5 sm:grid-cols-4"
           >
             {pricing.plans.map((item) => {
               const isActive = item.key === activeKey
@@ -49,7 +54,7 @@ export default function Pricing() {
                   aria-selected={isActive}
                   aria-controls={`price-panel-${item.key}`}
                   onClick={() => setActiveKey(item.key)}
-                  className={`relative rounded-full px-4 py-2.5 text-[0.9rem] font-medium transition-colors duration-300 sm:px-6 sm:text-base ${
+                  className={`relative rounded-full px-1.5 py-2.5 text-[0.8rem] font-medium leading-tight transition-colors duration-300 sm:text-[0.9rem] ${
                     isActive ? 'text-bg' : 'text-text/80 hover:text-text'
                   }`}
                 >
