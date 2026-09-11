@@ -368,7 +368,7 @@ export const projects = [
     serviceKey: 'web',
     title: 'LearnNova',
     tags: 'elearning platform · react, tailwind, rest apis',
-    image: null, // drop learnnova.jpg into /public/images and set the path here
+    image: '/images/learnnova.png',
     tint: 'neutral',
     href: 'https://github.com/isha-gohel181/Learn_nova',
     detail: {

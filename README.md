@@ -130,14 +130,8 @@ public/images/portrait-illustration.png   # hero portrait, 4:5
 public/images/jobzeecover.png             # project card
 public/images/agreecarecover.png          # project card
 public/images/mindheal.png                # project card
+public/images/learnnova.png               # project card
 public/images/shiftlycover.png            # project card
-```
-
-Still missing — each falls back to a labelled placeholder tile rather than a
-broken image:
-
-```
-learnnova cover   # set `image` on the learnnova entry in src/data/content.js
 ```
 
 There is no social-card file to add. The 1200x630 Open Graph image is
