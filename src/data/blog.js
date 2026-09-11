@@ -27,11 +27,11 @@ export const blogIndex = {
   eyebrow: 'Writing',
   titleLight: 'Notes on',
   titleBold: 'building things',
-  lede: 'Occasional writing about what software actually costs, which tools make sense when, and how a build gets from an idea to something people can open.',
+  lede: 'Writing about what software actually costs, which tools make sense when, and the engineering behind apps that keep working when the network does not.',
   meta: {
     title: 'Blog — Notes on Building Apps & Websites | Dhatri Patel',
     description:
-      'Practical writing on what business websites cost, choosing between Flutter and React Native, and how app and web projects actually get built.',
+      'Practical writing on what websites and apps cost, choosing between Flutter and React Native, on-device AI, offline-first apps, and who owns your code when a project ends.',
   },
   empty: 'Nothing published yet.',
 }
@@ -201,7 +201,7 @@ export const posts = [
         a: 'Tell me anyway. Sometimes the honest answer is that a page builder will serve you better than I will, and I would rather say that than sell you something you do not need.',
       },
     ],
-    related: ['flutter-vs-react-native-indian-startup-mvp'],
+    related: ['mobile-app-or-website-for-your-business', 'who-owns-your-app-code-and-accounts'],
     relatedProjects: ['learnnova', 'jobzee'],
     serviceKey: 'design',
   },
@@ -390,10 +390,551 @@ export const posts = [
         a: 'Yes. If you already have a React team, or a React web product you want to share code and people with, React Native is usually the better fit and I will say so. I would rather be honest at the start than hand over a codebase your team cannot maintain.',
       },
     ],
-    related: ['business-website-cost-gujarat-2026'],
+    related: ['on-device-ai-mobile-apps', 'mobile-app-or-website-for-your-business'],
     relatedProjects: ['mindheal', 'agreecare', 'shiftly'],
     serviceKey: 'mvp',
   },
+  // =========================================================================
+  {
+    slug: 'mobile-app-or-website-for-your-business',
+    published: true,
+    title: 'Do You Need a Mobile App, or Just a Website?',
+    description:
+      'Most businesses that ask me for an app need a website. Here is how to tell which one your problem actually calls for, before you spend on the wrong thing.',
+    date: '2026-09-11',
+    dateLabel: '11 September 2026',
+    readingTime: '8 min read',
+    tag: 'Deciding',
+    standfirst:
+      'An app costs several times what a website does and is harder to get in front of people. Sometimes it is still the right answer. Often it is not.',
+    body: [
+      {
+        type: 'p',
+        text: 'A fair number of the enquiries I get open with "I want an app". When I ask what it needs to do, the honest answer is frequently something a website would do better, sooner and for a fraction of the cost.',
+      },
+      {
+        type: 'p',
+        text: 'That is not a reason to be cynical about apps. It is a reason to be specific about what an app is actually for, because the two are not interchangeable products at different price points — they solve different problems and reach people in completely different ways.',
+      },
+      { type: 'h2', text: 'Who this is for' },
+      {
+        type: 'p',
+        text: 'Business owners and early founders about to commission their first piece of software, who have been told they need an app and want to sanity-check that before spending. If you already know your users will open the thing several times a week, you can probably skip to the trade-offs.',
+      },
+      { type: 'h2', text: 'The one question that settles most cases' },
+      {
+        type: 'callout',
+        title: 'How often will one person open this?',
+        text: 'Daily or several times a week, for months — an app starts to justify itself. A few times a year, or once to make a decision and then not again — a website will serve those people better, because nobody installs an app for something they do occasionally.',
+      },
+      {
+        type: 'p',
+        text: 'Installing is friction. A person has to want your thing enough to go to a store, wait for a download, and give up storage on a phone that is probably already full. A website asks none of that — they tap a link and they are in. For anything occasional, that gap is the whole ballgame, and no amount of polish in the app closes it.',
+      },
+      { type: 'h2', text: 'What an app genuinely gives you' },
+      {
+        type: 'p',
+        text: 'These are the things a website cannot do well, or at all. If none of them describes your product, that is a strong signal.',
+      },
+      {
+        type: 'ul',
+        items: [
+          '**A place on the home screen.** Being one tap away, every day, with your icon in someone\'s pocket. For a habit product, that is the product.',
+          '**Push notifications.** Real ones that arrive reliably. This is often the actual reason a business wants an app, and it is worth naming out loud if so.',
+          '**Working properly offline.** Not "it caches a bit" — genuinely usable with no signal, which matters enormously for field work, shop floors and warehouses.',
+          '**Deep access to the device.** Continuous camera work, sensors, Bluetooth, background location, on-device processing. A browser gives you a limited, permission-gated version of some of this.',
+          '**Work that continues in the background.** Syncing, tracking or processing while the app is not open.',
+        ],
+      },
+      { type: 'h2', text: 'What a website does better' },
+      {
+        type: 'ul',
+        items: [
+          '**People can find you.** Search engines index websites. Nobody discovers your business by browsing an app store, and ranking there is its own separate battle.',
+          '**No install, no friction.** A link in a WhatsApp message opens immediately. That is the entire funnel for most local businesses.',
+          '**One build instead of two platforms plus review queues.** No store submission, no waiting for approval to ship a fix.',
+          '**Changing it is cheap and instant.** New prices, new hours, a new offer — live in minutes, with nothing to re-download.',
+          '**It costs less to build and much less to keep running.**',
+        ],
+      },
+      { type: 'h2', text: 'How this plays out in practice' },
+      {
+        type: 'p',
+        rich: [
+          'It is the same split across my own work. ',
+          { href: '/projects/shiftly', label: 'Shiftly' },
+          ' is an app because staff check their shifts every working day, often on a back-of-house network where the signal drops — daily use plus genuine offline need, which is exactly the case an app is for. ',
+          { href: '/projects/jobzee', label: 'JobZee' },
+          ' is a web platform because job hunting is bursty rather than daily, and because a job listing that cannot be found in a search engine may as well not exist.',
+        ],
+      },
+      {
+        type: 'p',
+        rich: [
+          { href: '/projects/agreecare', label: 'AgreeCare' },
+          ' sits in the first camp for a different reason: it reads live sensor data and is used standing in a field. That is device access and connectivity, not habit — but it points the same way.',
+        ],
+      },
+      { type: 'h2', text: 'The middle ground worth knowing about' },
+      {
+        type: 'p',
+        text: 'A modern website can be saved to a home screen and can work offline to a degree. On Android this gets you surprisingly close to an app for simple cases. On iPhone the experience is more limited and push notifications are far less dependable, which matters a lot in a market where your customers may be on either.',
+      },
+      {
+        type: 'p',
+        text: 'It is a genuine option for a first release — cheaper, faster, one codebase, and you find out whether people use the thing at all before committing to store builds. It is not a substitute for an app whose whole point is notifications or hardware access.',
+      },
+      { type: 'h2', text: 'A decision you can make in five minutes' },
+      {
+        type: 'ol',
+        items: [
+          '**Will one person open this weekly, for months?** No — build a website.',
+          '**Do you need reliable push notifications, real offline use, or device hardware?** No — build a website.',
+          '**Do customers need to find you through Google?** Yes, and it is your main channel — you need a website regardless, even if you also build an app.',
+          '**Are you testing whether anyone wants this at all?** Then build the cheapest thing that proves it, which is almost always a web version.',
+          '**Still pointing at an app after all four?** Then it is an app, and you have a defensible reason to give anyone who asks.',
+        ],
+      },
+      {
+        type: 'p',
+        rich: [
+          'Worth saying plainly: I build both. I am not steering you toward the cheaper one out of modesty — a website that gets used beats an app that gets installed twice and forgotten, and I would rather build the thing that works. What each option involves is on my ',
+          { href: '/services', label: 'services page' },
+          '.',
+        ],
+      },
+    ],
+    faq: [
+      {
+        q: 'Can I start with a website and add an app later?',
+        a: 'Yes, and it is often the sensible order. A web version gets you real users, real feedback and a proven backend, all of which an app can then reuse. The backend, database and design work carry across; the interface is what gets rebuilt.',
+      },
+      {
+        q: 'Will having an app make my business look more serious?',
+        a: 'To some people, briefly. But an app with almost no installs and a stale listing reads worse than a sharp website, and prospective customers are far more likely to encounter your website than your store page.',
+      },
+      {
+        q: 'My competitor has an app. Do I need one?',
+        a: 'Only if their customers actually use it. It is worth checking the reviews and the last update date before treating it as evidence of anything — plenty of small-business apps are built once and abandoned.',
+      },
+      {
+        q: 'What if I need notifications but not a full app?',
+        a: 'For many businesses WhatsApp and email already do this well, and customers are already there. It is worth exhausting those before paying for an app whose main justification is a notification you could have sent another way.',
+      },
+      {
+        q: 'How do I know which one you would recommend for me?',
+        a: 'Describe what you want people to do and how often they would do it. That usually answers it in one message, and if a website is the better call I will say so rather than sell you the larger project.',
+      },
+    ],
+    related: ['business-website-cost-gujarat-2026', 'flutter-vs-react-native-indian-startup-mvp'],
+    relatedProjects: ['shiftly', 'jobzee'],
+    serviceKey: 'design',
+  },
+
+  // =========================================================================
+  {
+    slug: 'on-device-ai-mobile-apps',
+    published: true,
+    title: 'Running AI on the Phone Instead of the Cloud',
+    description:
+      'What it means to run a model on the device itself, what it costs you in app size and engineering, and when sending data to a server is still the better call.',
+    date: '2026-09-11',
+    dateLabel: '11 September 2026',
+    readingTime: '10 min read',
+    tag: 'Engineering',
+    standfirst:
+      'On-device inference is the difference between a feature that needs a network and a promise that nothing personal ever leaves the phone. It is not free.',
+    body: [
+      {
+        type: 'p',
+        text: 'Most AI features in mobile apps work the same way: the app collects something — a photo, a recording, some text — sends it to a server, and waits. That is simple to build and it scales with whatever model you can afford to run.',
+      },
+      {
+        type: 'p',
+        text: 'It also means the thing being analysed leaves the user\'s device. For some products that is a detail. For others it is the product, and the decision has to go the other way.',
+      },
+      { type: 'h2', text: 'Who this is for' },
+      {
+        type: 'p',
+        text: 'Founders and product owners weighing an AI feature for a mobile app who want to understand the trade-off before committing. There is enough engineering detail here to be useful to a developer, but nothing that requires you to be one.',
+      },
+      { type: 'h2', text: 'What "on-device" actually means' },
+      {
+        type: 'p',
+        text: 'A trained model is a file. Runtimes like ONNX Runtime and TensorFlow Lite can load that file and run it directly on the phone\'s own processor, and platform kits like Google ML Kit ship ready-made models for common jobs such as face, text and barcode detection.',
+      },
+      {
+        type: 'p',
+        text: 'The model ships inside your app, or is downloaded once. After that, every prediction happens locally. There is no request, no queue, no server bill per call.',
+      },
+      { type: 'h2', text: 'What you get' },
+      {
+        type: 'ul',
+        items: [
+          '**Data that never leaves the device.** Not "encrypted in transit" or "deleted after processing" — never sent. That is a categorically different promise, and the only one that is easy to keep.',
+          '**No network round trip.** Responses are immediate, which is what makes anything camera-driven feel live rather than laggy.',
+          '**It works with no signal.** The feature does not quietly stop being available on a train or in a basement.',
+          '**No per-prediction cost.** Running inference a thousand times costs you nothing extra. A hosted model does not work that way.',
+          '**Nothing to keep running.** No inference server to scale, secure, patch or pay for when the app is idle.',
+        ],
+      },
+      { type: 'h2', text: 'What it costs you' },
+      {
+        type: 'p',
+        text: 'This is the half that tends to get skipped, and it is where the engineering actually lives.',
+      },
+      { type: 'h3', text: 'The app gets bigger' },
+      {
+        type: 'p',
+        text: 'A bundled model adds to your download size, and download size affects whether people finish installing. You can ship the model separately and fetch it on first run, which keeps the store listing small but adds a first-launch state you now have to design and handle when it fails.',
+      },
+      { type: 'h3', text: 'You are working inside a real budget' },
+      {
+        type: 'p',
+        text: 'A phone has far less memory and a thermal ceiling a server does not. Models usually need to be quantised — stored at lower numeric precision — to fit and run at a sensible speed. That shrinks the file and speeds up inference, and it costs some accuracy. Whether that trade is acceptable is a question about your product, not about the model.',
+      },
+      { type: 'h3', text: 'Inference must stay off the interface thread' },
+      {
+        type: 'p',
+        text: 'This is the most common way a promising on-device feature ends up feeling broken. Run a model on the same thread that draws the UI and the interface freezes for the duration of every prediction. In Flutter that means pushing the work into a separate isolate or the platform\'s own threading, so frames keep rendering while a frame of video is being processed.',
+      },
+      { type: 'h3', text: 'Devices vary enormously' },
+      {
+        type: 'p',
+        text: 'A model that runs comfortably on a recent flagship can be unusably slow on a three-year-old mid-range handset — which, in India, is a very large share of the phones your product will actually run on. Test on the hardware your users have, not the one on your desk.',
+      },
+      { type: 'h3', text: 'Updating the model means updating the app' },
+      {
+        type: 'p',
+        text: 'A hosted model can be swapped out on a Tuesday afternoon and every user gets the new one. A bundled model reaches people at the speed of app updates and store review. If you expect to iterate on the model weekly, that friction is a real argument against shipping it inside the app.',
+      },
+      { type: 'h2', text: 'How this looked on a real build' },
+      {
+        type: 'p',
+        rich: [
+          { href: '/projects/mindheal', label: 'MindHeal' },
+          ' is a mental-health companion that reads emotional signals, and it is the clearest case I have built for keeping inference local. Mental-health data is the kind you design around rather than for — so the privacy line came first: inference on the device, nothing sensitive synced, and anything that did not fit inside that constraint was simply not an option.',
+        ],
+      },
+      {
+        type: 'p',
+        text: 'In practice that meant quantised ONNX models, ML Kit handling the camera-side detection, and inference kept off the UI thread so the interface never blocks while a frame is processed. The genuinely hard part was not the model, though. It was the copy: a model output is a probability, not a fact about a person, and every string had to present a reading as something to reflect on rather than a verdict.',
+      },
+      {
+        type: 'callout',
+        title: 'The part worth stealing',
+        text: 'Drawing the privacy boundary before any architecture decisions made every later decision easier, because it removed options rather than adding them. If you are building anything with sensitive data, decide what must never leave the device first — then design inside that.',
+      },
+      { type: 'h2', text: 'When the cloud is the right answer' },
+      {
+        type: 'ul',
+        items: [
+          '**The model is too large to run on a phone.** Most large language models are, and pretending otherwise wastes months.',
+          '**You expect to improve the model frequently.** Server-side means everyone gets the improvement at once.',
+          '**Results must be identical for every user.** Device variation means on-device output can differ across handsets.',
+          '**The work is genuinely heavy** — long video, large batches, anything that would flatten a battery.',
+          '**The data is not sensitive and is going to the server anyway.** Then you are paying the on-device cost for a benefit you do not need.',
+        ],
+      },
+      { type: 'h2', text: 'How to decide' },
+      {
+        type: 'p',
+        text: 'Start from the data, not the model. If the thing being analysed is a face, a voice, a medical note or a document, on-device is worth the engineering and worth saying so plainly to your users. If it is a product photo or a search phrase, a server is simpler and you should take the simpler path.',
+      },
+      {
+        type: 'p',
+        rich: [
+          'Then check the second constraint: does the feature need to work offline, and how fast must it feel? Camera-driven features generally need to be local to feel right at all. If you want to talk through a specific feature, the ',
+          { href: '/services', label: 'Flutter app development' },
+          ' page covers how I scope this kind of work.',
+        ],
+      },
+    ],
+    faq: [
+      {
+        q: 'Does on-device AI mean my app works completely offline?',
+        a: 'The inference does. The rest of your app might still need a network for accounts, syncing or content, so "the model runs offline" and "the app works offline" are two separate pieces of work.',
+      },
+      {
+        q: 'Is on-device inference less accurate than a cloud model?',
+        a: 'Usually somewhat, because the model has to be small enough to fit and quantised enough to run quickly. Whether that gap matters depends entirely on what the feature does — for many tasks it is imperceptible, and for some it is disqualifying.',
+      },
+      {
+        q: 'Will it drain the battery?',
+        a: 'Continuous inference on a camera feed uses real power, yes. Occasional inference on a single image is negligible. If the feature runs constantly, battery use becomes a design constraint you plan around rather than discover later.',
+      },
+      {
+        q: 'Can I use an on-device model and a cloud one together?',
+        a: 'Often the best answer. Run the fast local model for the immediate response, and send the harder cases to a server when a network is available and the user has agreed to it.',
+      },
+      {
+        q: 'Do I need a data scientist to do this?',
+        a: 'Not necessarily. Plenty of production features use an existing pre-trained model or a platform kit rather than a custom-trained one. Training something genuinely new is a different project with a different team.',
+      },
+    ],
+    related: ['offline-first-mobile-apps', 'flutter-vs-react-native-indian-startup-mvp'],
+    relatedProjects: ['mindheal', 'agreecare'],
+    serviceKey: 'flutter',
+  },
+
+  // =========================================================================
+  {
+    slug: 'offline-first-mobile-apps',
+    published: true,
+    title: 'Building an App That Keeps Working When the Signal Drops',
+    description:
+      'Why "handles offline" is usually bolted on and fails, what offline-first actually changes about the architecture, and how to decide whether your app needs it.',
+    date: '2026-09-11',
+    dateLabel: '11 September 2026',
+    readingTime: '9 min read',
+    tag: 'Engineering',
+    standfirst:
+      'Most apps treat no-signal as an error state. For anything used on a shop floor, in a warehouse or out in a field, it is the normal state.',
+    body: [
+      {
+        type: 'p',
+        text: 'Open a typical app on a bad connection and you get a spinner, then an error, then a retry button. That is a reasonable design for an app used at a desk. It is the wrong design for one used in a basement stockroom, on a factory floor, in a lift, or standing in a field — and a surprising number of business apps are used in exactly those places.',
+      },
+      {
+        type: 'p',
+        text: 'The distinction is not how much offline support you add. It is which side you build from.',
+      },
+      { type: 'h2', text: 'Who this is for' },
+      {
+        type: 'p',
+        text: 'Anyone commissioning an app whose users are not sitting still on good Wi-Fi: field staff, delivery teams, retail and hospitality floors, warehouses, clinics, anything agricultural. It is also worth reading if your app already exists and people complain that it "does not work properly" without being able to say exactly when.',
+      },
+      { type: 'h2', text: 'Offline-as-a-feature versus offline-first' },
+      {
+        type: 'p',
+        text: 'The usual approach builds the app against the network and adds offline handling afterwards. The app asks the server for data, and if the request fails it shows an error and perhaps serves something stale. Offline is an exception branch, and exception branches are the least-tested code in any codebase.',
+      },
+      {
+        type: 'p',
+        text: 'Offline-first inverts it. The app reads from a local database on the device, always. That local copy is what the interface renders — never a network response. Syncing runs alongside, updating the local copy when a connection exists. The network becomes something that improves the data rather than something the screen waits for.',
+      },
+      {
+        type: 'callout',
+        title: 'The practical difference',
+        text: 'An offline-first app opens straight into content, instantly, every time — because it never had to ask anyone. The spinner disappears from the product entirely, and not just when the signal is bad.',
+      },
+      { type: 'h2', text: 'What this actually requires' },
+      { type: 'h3', text: '1. A real local database' },
+      {
+        type: 'p',
+        text: 'Not a cache you clear when convenient — a proper store that survives restarts and is treated as the source the UI reads. On Flutter that is typically Hive, Isar or SQLite. Some backends help here: Firestore ships with offline persistence and handles a good portion of this for you, which is often the fastest sensible route.',
+      },
+      { type: 'h3', text: '2. Writes that queue instead of failing' },
+      {
+        type: 'p',
+        text: 'When someone marks a job done with no signal, that action must be recorded locally, reflected in the interface immediately, and sent later. The queue has to survive the app being closed and the phone being restarted, because it will be.',
+      },
+      { type: 'h3', text: '3. A decision about conflicts' },
+      {
+        type: 'p',
+        text: 'Two people edit the same record offline. Both come back online. Something has to give, and the correct answer is a product decision rather than a technical one: last write wins, merge field by field, or surface it and ask a human. Choosing nothing means choosing last-write-wins by accident and quietly losing someone\'s work.',
+      },
+      { type: 'h3', text: '4. Honesty in the interface' },
+      {
+        type: 'p',
+        text: 'If a change has not synced yet, say so — quietly, but say it. Users tolerate a pending state without complaint. What they do not forgive is being shown a confirmation for something that silently never happened.',
+      },
+      { type: 'h2', text: 'How this looked on a real build' },
+      {
+        type: 'p',
+        rich: [
+          { href: '/projects/shiftly', label: 'Shiftly' },
+          ' is shift management for teams, and it pushed hard on exactly this. The insight that shaped it was that the rota is rarely wrong — the version someone is looking at is. Re-sending a spreadsheet creates another version rather than replacing the last one.',
+        ],
+      },
+      {
+        type: 'p',
+        text: 'So the goal became one propagating source of truth rather than a better way to send a rota around. Hive holds a local copy and Firestore reconciles it, which means the app opens into the schedule rather than a loading state, and stays readable when the signal drops mid-shift. Writes queue and settle when connectivity returns — which matters on a shop floor or a back-of-house network, which is precisely where the app is used.',
+      },
+      {
+        type: 'p',
+        rich: [
+          { href: '/projects/agreecare', label: 'AgreeCare' },
+          ' has a related constraint from the other direction: it streams live sensor readings, and the interface has to stay responsive while values arrive continuously. Keeping state out of the widget tree is what stops a steady data feed turning into a stuttering screen.',
+        ],
+      },
+      { type: 'h2', text: 'Testing it properly' },
+      {
+        type: 'ul',
+        items: [
+          '**Airplane mode is the easy case.** Fully off is simple; it is the in-between that breaks things.',
+          '**Test a bad connection, not a dead one.** Requests that hang for thirty seconds and then fail expose far more bugs than a clean disconnection.',
+          '**Kill the app mid-sync.** Force-quit with items in the queue, reopen, and check nothing was lost or sent twice.',
+          '**Go offline on one device, change the same record on another.** This is where your conflict decision either exists or does not.',
+          '**Leave it offline for a day.** Queues that work for five minutes sometimes do not work for five hours.',
+        ],
+      },
+      { type: 'h2', text: 'When not to bother' },
+      {
+        type: 'p',
+        text: 'This is real engineering and it is not free. If your app is used at a desk on reliable Wi-Fi, if the data is inherently live and stale values are useless — a payment balance, a live auction — or if it is mostly a browsing experience over a big remote catalogue, then standard caching and a decent error state are the proportionate answer.',
+      },
+      {
+        type: 'p',
+        rich: [
+          'The test I would apply: if a user cannot do their job for the next ten minutes because the signal dropped, offline-first is worth it. If they are merely inconvenienced, it probably is not. If you are not sure which describes your situation, that is worth a conversation before the architecture is chosen — it is much cheaper to decide this at the start than to retrofit it. The ',
+          { href: '/services', label: 'Flutter app development' },
+          ' page covers how I scope that.',
+        ],
+      },
+    ],
+    faq: [
+      {
+        q: 'Does offline-first make the app more expensive to build?',
+        a: 'It adds work — the local store, the sync layer, the conflict decision and the testing. Retrofitting it onto a finished app costs considerably more than designing for it at the start, which is the main reason to decide early.',
+      },
+      {
+        q: 'Does Firebase handle this for me?',
+        a: 'Firestore includes offline persistence and queues writes, which covers a good portion of the problem and is often the fastest sensible route. It does not decide your conflict strategy or design your pending states — those are still yours.',
+      },
+      {
+        q: 'How much data can the app store locally?',
+        a: 'Far more than most business apps need. The practical limit is usually what is sensible to sync and keep current, not what the device can physically hold.',
+      },
+      {
+        q: 'What happens if two people change the same thing offline?',
+        a: 'Whatever you decided would happen. That is the point of naming a conflict strategy up front — without one you get last-write-wins by default, and someone quietly loses work without ever being told.',
+      },
+      {
+        q: 'Can a website work offline too?',
+        a: 'To a degree, with service workers and local storage, and for simple cases it is genuinely useful. It is less capable and less predictable than a native app doing the same job, particularly on iPhone.',
+      },
+    ],
+    related: ['on-device-ai-mobile-apps', 'mobile-app-or-website-for-your-business'],
+    relatedProjects: ['shiftly', 'agreecare'],
+    serviceKey: 'flutter',
+  },
+
+  // =========================================================================
+  {
+    slug: 'who-owns-your-app-code-and-accounts',
+    published: true,
+    title: 'Who Owns Your App When the Project Ends?',
+    description:
+      'The five things that must be registered in your name, why they so often are not, and the handover checklist to run before you make a final payment.',
+    date: '2026-09-11',
+    dateLabel: '11 September 2026',
+    readingTime: '7 min read',
+    tag: 'Working together',
+    standfirst:
+      'The most expensive mistake in a small software project is rarely the build. It is discovering afterwards that you do not own what you paid for.',
+    body: [
+      {
+        type: 'p',
+        text: 'A business pays for a website or an app, is happy with it, and a year later wants a change. The developer has moved on, is unreachable, or wants more than the change is worth. And it turns out the domain is registered to them, the code is in their account, and the app listing sits under their developer profile.',
+      },
+      {
+        type: 'p',
+        text: 'At that point the options are bad: track down someone who does not want to be found, or pay to rebuild something that already exists. I have not seen this happen because anyone set out to trap a client. It happens because everything gets set up in whoever\'s account was convenient on day one, and nobody revisits it.',
+      },
+      { type: 'h2', text: 'Who this is for' },
+      {
+        type: 'p',
+        text: 'Anyone about to hire a developer, agency or freelancer for the first time — and anyone who already has, and has never actually checked. The second group is larger than you would think.',
+      },
+      { type: 'h2', text: 'The five things that must be yours' },
+      { type: 'h3', text: '1. The domain name' },
+      {
+        type: 'p',
+        text: 'The single most important one. Your domain is your address; if someone else holds the registration, they control where your customers land and what happens to your email. Register it yourself, with your own account and your own card, before the project starts. It takes ten minutes and it is the cheapest insurance in the whole process.',
+      },
+      { type: 'h3', text: '2. The source code' },
+      {
+        type: 'p',
+        text: 'The repository should end up in an account you control, with the full history rather than a zip file dropped into your inbox at the end. History matters more than it sounds: the next developer can see how the thing evolved instead of guessing, which is the difference between an afternoon and a fortnight when something needs changing.',
+      },
+      { type: 'h3', text: '3. Hosting' },
+      {
+        type: 'p',
+        text: 'Whatever the site or app runs on should be billed to you and logged into by you. If your developer is paying for hosting and adding it to an invoice, you have a dependency you did not agree to.',
+      },
+      { type: 'h3', text: '4. The backend and database' },
+      {
+        type: 'p',
+        text: 'This one is missed most often. A Firebase project, a database, a storage bucket — these hold your actual data, which is usually worth far more than the code. The project should be under your account with billing attached to you, and your developer added as a collaborator rather than the other way round.',
+      },
+      { type: 'h3', text: '5. The app store accounts' },
+      {
+        type: 'p',
+        text: 'For a mobile app, the Play Console and Apple Developer accounts should be registered to your business, with their own registration fees paid by you. Publishing under a developer\'s account is common and it is a serious trap — your listing, your reviews and your install base live inside someone else\'s profile, and moving an app between accounts afterwards is painful in a way that moving a website is not.',
+      },
+      {
+        type: 'callout',
+        title: 'The simple rule',
+        text: 'Anything with a login or a renewal date should be in your name, with your developer invited in as a collaborator. Not the reverse. Invitations are easy to revoke; account ownership is not.',
+      },
+      { type: 'h2', text: 'The handover checklist' },
+      {
+        type: 'p',
+        text: 'Run this before the final payment, not after. A developer who has done the job properly will find it quick to satisfy.',
+      },
+      {
+        type: 'ol',
+        items: [
+          '**Log in to every account yourself.** Not a screenshot, not a promise — you, logging in, while the project is still live.',
+          '**Confirm the domain registration shows your name** and note the renewal date in your calendar.',
+          '**Check the repository is in your account** with full history, and that you can see the commits.',
+          '**Confirm billing on hosting and backend is attached to your payment method.**',
+          '**For an app, sign in to the store consoles** and confirm the listing sits under your organisation.',
+          '**Get something written down** covering how to deploy a change, where things live, and what depends on what. It does not need to be long. It needs to exist.',
+          '**Remove access you no longer need** once the engagement genuinely ends.',
+        ],
+      },
+      { type: 'h2', text: 'What good looks like from the other side' },
+      {
+        type: 'p',
+        rich: [
+          'For what it is worth, this is how I work: repositories, hosting, Firebase projects, store listings and domains are created under your ownership or transferred at handover, and you get a walkthrough of how to run it. Nothing stays locked to me, and you are free to take the project to someone else at any point. I would rather be kept because the work is good than because leaving is expensive. More on how I run projects is on the ',
+          { href: '/about', label: 'about page' },
+          '.',
+        ],
+      },
+      {
+        type: 'p',
+        text: 'Ask any developer you are considering the same question before you pay a deposit. The answer tells you a great deal — not just about ownership, but about how the rest of the engagement is likely to go.',
+      },
+      { type: 'h2', text: 'If you are already locked in' },
+      {
+        type: 'p',
+        text: 'It is usually recoverable, and worth doing calmly rather than as an argument. Ask politely and specifically: transfer the domain, add me as owner on the repository, move billing to my card. Most developers will simply do it. If you cannot reach them at all, domain registrars and platform providers have dispute processes, and proof of payment plus business documentation goes a long way.',
+      },
+      {
+        type: 'p',
+        text: 'The one genuinely hard case is a mobile app published under someone else\'s developer account. Plan for that to be slow, and start on it before you need it urgently.',
+      },
+    ],
+    faq: [
+      {
+        q: 'Do I need a written contract for a small project?',
+        a: 'Something in writing, yes — even a clear email covering scope, price, timeline and who owns what. It protects both sides, and the act of writing it down surfaces disagreements while they are still cheap to resolve.',
+      },
+      {
+        q: 'My developer says they need to own the accounts to work on it. Is that true?',
+        a: 'No. Every major platform supports inviting a collaborator with full working access while ownership stays with you. If someone insists otherwise, ask them to explain which platform limitation they mean.',
+      },
+      {
+        q: 'What if I do not understand the technical side well enough to check?',
+        a: 'You do not need to. The checklist above is just logging in to accounts and confirming your name is on them. If you cannot log in, that is the finding — no technical knowledge required.',
+      },
+      {
+        q: 'Should I pay the full amount before handover is complete?',
+        a: 'Holding a final portion until you have confirmed access is normal and reasonable, and most developers expect it. It is not an accusation; it is how the last step gets prioritised.',
+      },
+      {
+        q: 'Does owning the code mean I can hire anyone else to change it?',
+        a: 'Yes, and that is precisely the point. Owning the repository, the accounts and some basic documentation means any competent developer can pick it up — which is what keeps you from being stuck with anyone, including me.',
+      },
+    ],
+    related: ['business-website-cost-gujarat-2026', 'mobile-app-or-website-for-your-business'],
+    relatedProjects: ['jobzee', 'shiftly'],
+    serviceKey: 'web',
+  },
+
 ]
 
 /**
