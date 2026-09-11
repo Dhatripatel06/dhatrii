@@ -21,6 +21,18 @@ const EMPTY = {
   message: '',
 }
 
+/* Windows' mailto handler quietly ignores URLs past roughly 2000 characters,
+   so a long message would open nothing while the form claimed success. Keep
+   the whole URL well short of that. */
+const MAX_MAILTO = 1800
+
+/* Plain ASCII. An em-dash percent-encodes to three bytes and some mail clients
+   mangle multi-byte sequences in a mailto subject. */
+const SUBJECT_PREFIX = 'New project enquiry - '
+
+const TRUNCATION_NOTE =
+  '\n\n[Message shortened so your email app could open it. Please paste the rest below.]'
+
 export default function Contact() {
   const reduce = useReducedMotion()
   const [form, setForm] = useState(EMPTY)
@@ -42,34 +54,60 @@ export default function Contact() {
 
   /* No backend: the form composes a pre-filled email and hands it to the
      visitor's mail client. Nothing here is ever sent over HTTP — there is no
-     fetch, and `mailto:` must never be given to one.
+     fetch, axios, XHR or sendBeacon anywhere in this app, and a `mailto:`
+     must never be given to one.
 
-     The handoff is a synthetic anchor click rather than `window.location.href
-     = 'mailto:…'`. Assigning to location starts a top-level navigation the
-     browser then abandons when it routes the URL to an external protocol
-     handler, which is what logs a failed `mailto:` row in DevTools' Network
-     panel and can leave the page in a half-navigated state when no mail
-     client is registered. Activating a link is the path browsers expect for
-     an external scheme, so the current document is left alone. */
+     The handoff is a synthetic anchor click rather than an assignment to
+     `window.location.href`, which would begin a top-level navigation the
+     browser abandons the moment it routes the URL to an external protocol
+     handler, and which can leave the page half-navigated when no mail client
+     is registered.
+
+     Chrome lists the `mailto:` in its Network panel either way and marks it
+     failed, because an external scheme returns no HTTP response. That row is
+     cosmetic and cannot be removed while a mailto is used at all; what this
+     avoids is the abandoned document navigation sitting behind it. */
   const onSubmit = (event) => {
     event.preventDefault()
     const found = validate()
     setErrors(found)
     if (Object.keys(found).length > 0) return
 
-    const body = [
+    const lines = [
       `Name: ${form.name}`,
       `Email: ${form.email}`,
       `Business: ${form.company || 'Not specified'}`,
       `Wants to build: ${form.projectType || 'Not specified'}`,
       `Timeline: ${form.timeline || 'Not specified'}`,
       '',
-      form.message,
     ].join('\n')
 
-    const href = `mailto:${profile.email}?subject=${encodeURIComponent(
-      `New project enquiry — ${form.name}`,
-    )}&body=${encodeURIComponent(body)}`
+    const subject = encodeURIComponent(`${SUBJECT_PREFIX}${form.name}`)
+    const compose = (message) =>
+      `mailto:${profile.email}?subject=${subject}&body=${encodeURIComponent(lines + message)}`
+
+    /* Trim the free text until the whole URL fits, rather than handing the OS
+       something it will quietly drop.
+
+       Measured by shrinking and re-encoding rather than by subtracting
+       character counts: percent-encoding expands unpredictably — a space
+       becomes three characters, a non-ASCII glyph up to nine — so arithmetic
+       on raw lengths overshoots. This loop cannot. */
+    let message = form.message
+    let href = compose(message)
+    if (href.length > MAX_MAILTO) {
+      /* Split into code points, not UTF-16 units. Slicing a raw string can cut
+         an emoji's surrogate pair in half, and encodeURIComponent throws
+         URIError on a lone surrogate — which would break submit outright for
+         anyone who pasted an emoji into a long message. */
+      const glyphs = Array.from(form.message)
+      let keep = glyphs.length
+      do {
+        keep = Math.floor(keep * 0.9)
+        message = `${glyphs.slice(0, keep).join('').trimEnd()}${TRUNCATION_NOTE}`
+        href = compose(message)
+      } while (href.length > MAX_MAILTO && keep > 0)
+    }
 
     const link = document.createElement('a')
     link.href = href
