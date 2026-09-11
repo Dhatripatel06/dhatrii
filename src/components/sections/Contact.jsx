@@ -41,7 +41,16 @@ export default function Contact() {
   }
 
   /* No backend: the form composes a pre-filled email and hands it to the
-     visitor's mail client. Replace with fetch() when you add an endpoint. */
+     visitor's mail client. Nothing here is ever sent over HTTP — there is no
+     fetch, and `mailto:` must never be given to one.
+
+     The handoff is a synthetic anchor click rather than `window.location.href
+     = 'mailto:…'`. Assigning to location starts a top-level navigation the
+     browser then abandons when it routes the URL to an external protocol
+     handler, which is what logs a failed `mailto:` row in DevTools' Network
+     panel and can leave the page in a half-navigated state when no mail
+     client is registered. Activating a link is the path browsers expect for
+     an external scheme, so the current document is left alone. */
   const onSubmit = (event) => {
     event.preventDefault()
     const found = validate()
@@ -58,9 +67,17 @@ export default function Contact() {
       form.message,
     ].join('\n')
 
-    window.location.href = `mailto:${profile.email}?subject=${encodeURIComponent(
+    const href = `mailto:${profile.email}?subject=${encodeURIComponent(
       `New project enquiry — ${form.name}`,
     )}&body=${encodeURIComponent(body)}`
+
+    const link = document.createElement('a')
+    link.href = href
+    link.rel = 'noopener'
+    link.style.display = 'none'
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
 
     setSent(true)
     setForm(EMPTY)

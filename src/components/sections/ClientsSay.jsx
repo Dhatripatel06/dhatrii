@@ -1,26 +1,27 @@
-import { Star } from 'lucide-react'
+'use client'
+
+import { useState } from 'react'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { ChevronLeft, ChevronRight, Star } from 'lucide-react'
 
 import { approvedTestimonials, clientTestimonials } from '@/data/content'
 import Reveal from '@/components/ui/Reveal'
 import TwoTone from '@/components/ui/TwoTone'
+import { EASE } from '@/lib/motion'
 
 /**
- * Client testimonials, sitting directly above the pricing section so someone
- * reads a real endorsement immediately before they see a number.
+ * Client testimonials, directly above the pricing section so a real
+ * endorsement is the last thing read before the numbers.
  *
- * The section renders nothing until a testimonial carries wording the person
- * actually gave — `approvedTestimonials` enforces that. An empty section is a
- * better outcome than a placeholder quote, and a placeholder quote on a live
- * site is indistinguishable from a fabricated one.
- *
- * No stat block, no star rating and no photograph unless the person approved
- * them. The reference layout carries a satisfaction percentage in the top
- * right; there is no such figure here, because there is nothing to measure it
- * from. A server component — nothing here needs state.
+ * One card at a time with prev/next and dot controls. Everything shown is
+ * something the person actually said: no star rating, no photograph, no
+ * satisfaction percentage and no review count, because none of those were
+ * given. The reference layout carries a percentage in its top right; there is
+ * deliberately no equivalent here.
  */
 
-/* "Vishrut Donda" -> "VD". Decorative only: the name is rendered as text
-   directly beneath, so identity never depends on reading the avatar. */
+/* "Vishrut Donda" -> "VD". Decorative: the name is rendered as text beside it,
+   so identity never depends on reading the avatar. */
 const initialsOf = (name) =>
   name
     .split(/\s+/)
@@ -29,62 +30,26 @@ const initialsOf = (name) =>
     .map((part) => part[0].toUpperCase())
     .join('')
 
-function TestimonialCard({ item }) {
-  /* Project and place, e.g. "Shiftly · London, UK". `role` stays in the data
-     because it records what the relationship actually was — which the projects
-     index also has to reflect — but it is not repeated in the label. */
-  const attribution = [item.project, item.location].filter(Boolean).join(' · ')
-
-  return (
-    <figure className="relative overflow-hidden rounded-card border border-line bg-surface p-8 shadow-card sm:p-11">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-accent/[0.07] blur-3xl"
-      />
-
-      {/* Attribution leads the card, as in the reference: who is speaking,
-          then what they said. */}
-      <figcaption className="relative flex items-center gap-4">
-        <span
-          aria-hidden="true"
-          className="grid h-14 w-14 shrink-0 place-items-center rounded-full border border-accent/40 bg-bg/60 font-display text-lg font-bold tracking-tight text-accent sm:h-16 sm:w-16 sm:text-xl"
-        >
-          {initialsOf(item.name)}
-        </span>
-        <span className="min-w-0">
-          <span className="block font-display text-lg font-bold tracking-[-0.02em] sm:text-xl">
-            {item.name}
-          </span>
-          <span className="mt-1 block text-sm text-muted">{attribution}</span>
-        </span>
-      </figcaption>
-
-      <blockquote className="relative mt-9 text-center">
-        <span aria-hidden="true" className="block font-display text-5xl leading-none text-muted/40">
-          &rdquo;
-        </span>
-        <p className="mt-4 text-pretty text-[clamp(1.1rem,2.6vw,1.5rem)] font-medium leading-[1.45]">
-          {item.quote}
-        </p>
-      </blockquote>
-
-      {/* Only ever rendered when the person actually gave a rating. */}
-      {typeof item.rating === 'number' && (
-        <div className="relative mt-7 flex justify-center gap-1 text-accent">
-          {Array.from({ length: item.rating }).map((_, index) => (
-            <Star key={index} size={16} fill="currentColor" strokeWidth={0} aria-hidden="true" />
-          ))}
-          <span className="sr-only">
-            {item.name} rated this {item.rating} out of 5.
-          </span>
-        </div>
-      )}
-    </figure>
-  )
-}
-
 export default function ClientsSay() {
-  if (approvedTestimonials.length === 0) return null
+  const reduce = useReducedMotion()
+  const [index, setIndex] = useState(0)
+
+  const items = approvedTestimonials
+  const count = items.length
+  const item = items[index]
+  const step = (delta) => setIndex((current) => (current + delta + count) % count)
+
+  /* Left/right anywhere in the carousel, so the control is reachable without
+     tabbing onto the arrow buttons first. */
+  const onKeyDown = (event) => {
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault()
+      step(-1)
+    } else if (event.key === 'ArrowRight') {
+      event.preventDefault()
+      step(1)
+    }
+  }
 
   return (
     <section aria-labelledby="clients-say-heading" className="section">
@@ -96,17 +61,124 @@ export default function ClientsSay() {
           lede={clientTestimonials.lede}
         />
 
-        {/* One card is one card. No dots, no arrows, nothing implying a set
-            of testimonials that does not exist yet. */}
-        <ul className="mt-14 flex flex-col gap-5">
-          {approvedTestimonials.map((item, index) => (
-            <li key={item.name}>
-              <Reveal delay={index * 0.06}>
-                <TestimonialCard item={item} />
-              </Reveal>
-            </li>
-          ))}
-        </ul>
+        <Reveal className="mt-14">
+          <div
+            role="group"
+            aria-roledescription="carousel"
+            aria-label="Client testimonials"
+            tabIndex={-1}
+            onKeyDown={onKeyDown}
+            className="relative overflow-hidden rounded-card border border-line bg-surface shadow-card"
+          >
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-accent/[0.07] blur-3xl"
+            />
+
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.figure
+                key={item.name}
+                initial={reduce ? false : { opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={reduce ? { opacity: 0 } : { opacity: 0, y: -10 }}
+                transition={{ duration: 0.35, ease: EASE }}
+                className="relative p-8 sm:p-11"
+              >
+                <figcaption className="flex items-center gap-4">
+                  <span
+                    aria-hidden="true"
+                    className="grid h-14 w-14 shrink-0 place-items-center rounded-full border border-accent/40 bg-bg/60 font-display text-lg font-bold tracking-tight text-accent sm:h-16 sm:w-16 sm:text-xl"
+                  >
+                    {initialsOf(item.name)}
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block font-display text-lg font-bold tracking-[-0.02em] sm:text-xl">
+                      {item.name}
+                    </span>
+                    <span className="mt-1 block text-sm text-muted">
+                      {[item.project, item.location].filter(Boolean).join(' · ')}
+                    </span>
+                  </span>
+                </figcaption>
+
+                <blockquote className="mt-9 text-center">
+                  <span
+                    aria-hidden="true"
+                    className="block font-display text-5xl leading-none text-muted/40"
+                  >
+                    &rdquo;
+                  </span>
+                  <p className="mt-4 text-pretty text-[clamp(1.05rem,2.4vw,1.4rem)] font-medium leading-[1.5]">
+                    {item.quote}
+                  </p>
+                </blockquote>
+
+                {/* Only ever rendered when the person actually gave a rating. */}
+                {typeof item.rating === 'number' && (
+                  <div className="mt-7 flex justify-center gap-1 text-accent">
+                    {Array.from({ length: item.rating }).map((_, starIndex) => (
+                      <Star
+                        key={starIndex}
+                        size={16}
+                        fill="currentColor"
+                        strokeWidth={0}
+                        aria-hidden="true"
+                      />
+                    ))}
+                  </div>
+                )}
+              </motion.figure>
+            </AnimatePresence>
+
+            {/* Controls only exist when there is more than one to move between. */}
+            {count > 1 && (
+              <div className="relative flex items-center justify-center gap-2 px-6 pb-8 sm:pb-10">
+                <button
+                  type="button"
+                  onClick={() => step(-1)}
+                  aria-label="Previous testimonial"
+                  className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-muted transition-colors duration-300 hover:bg-white/[0.05] hover:text-text"
+                >
+                  <ChevronLeft size={20} aria-hidden="true" />
+                </button>
+
+                {items.map((dot, dotIndex) => {
+                  const isActive = dotIndex === index
+                  return (
+                    <button
+                      key={dot.name}
+                      type="button"
+                      onClick={() => setIndex(dotIndex)}
+                      aria-label={`Show the testimonial from ${dot.name}`}
+                      aria-current={isActive ? 'true' : undefined}
+                      className="grid h-8 w-8 place-items-center rounded-full transition-colors duration-300 hover:bg-white/[0.04]"
+                    >
+                      <span
+                        className={`rounded-full transition-all duration-300 ${
+                          isActive ? 'h-2 w-2 bg-accent' : 'h-1.5 w-1.5 bg-muted/50'
+                        }`}
+                      />
+                    </button>
+                  )
+                })}
+
+                <button
+                  type="button"
+                  onClick={() => step(1)}
+                  aria-label="Next testimonial"
+                  className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-muted transition-colors duration-300 hover:bg-white/[0.05] hover:text-text"
+                >
+                  <ChevronRight size={20} aria-hidden="true" />
+                </button>
+              </div>
+            )}
+
+            {/* Announces the change to screen readers without moving focus. */}
+            <p aria-live="polite" className="sr-only">
+              Testimonial {index + 1} of {count}, from {item.name}, {item.project}, {item.location}.
+            </p>
+          </div>
+        </Reveal>
       </div>
     </section>
   )

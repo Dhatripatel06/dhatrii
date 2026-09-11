@@ -814,35 +814,49 @@ const PLANS = [
 ]
 
 /* ------------------------------------------------- client testimonials --
-   Real feedback only. A card renders solely when `quote` holds wording the
-   person actually gave and approved — `approvedTestimonials` filters on that,
-   so the section is invisible until then rather than showing a placeholder.
-
-   `rating` and `image` stay null unless the person explicitly approved a star
-   rating and a photograph. Never fill either in to make the card look fuller:
-   an invented rating is the same fabrication as an invented quote. */
+   Real feedback only, in the words the person actually gave. Nothing here is
+   paraphrased, and `rating` and `image` stay null unless someone explicitly
+   approved a star rating or a photograph — an invented rating is the same
+   fabrication as an invented quote. */
 export const clientTestimonials = {
   titleLight: 'What',
   titleBold: 'Clients Say',
-  lede: 'Feedback from a recent collaboration',
+  lede: 'Feedback from people I have worked with.',
   items: [
     {
       name: 'Vishrut Donda',
       project: 'Shiftly',
       location: 'London, UK',
       role: 'Client',
-      /* His exact approved wording, verbatim. Not paraphrased, tidied or
-         shortened — it is his statement, not copy, and editing it would make
-         it mine. */
       quote:
         'Dhatri understood what we were trying to build with Shiftly and turned the idea into a clean, practical product. Communication was smooth, and she was proactive about solving issues along the way. I really appreciated the attention to detail and the effort put into making the product feel polished.',
+      rating: null,
+      image: null,
+    },
+    {
+      name: 'Mahesh Patel',
+      project: 'Smart Macro Sales',
+      location: 'Ahmedabad, India',
+      role: 'Client',
+      quote:
+        'Smart Macro Sales has made our daily sales and billing work much easier. Orders, payments and invoices are now properly managed in one place. It is simple to use and very helpful for our FMCG business. Really good software for managing daily business work.',
+      rating: null,
+      image: null,
+    },
+    {
+      name: 'Ketan Shah',
+      project: 'Smart Macro Sales',
+      location: 'Rajkot, India',
+      role: 'Client',
+      quote:
+        'Using Smart Macro Sales has made our daily work much easier. We can easily manage orders, payments and invoices in one place. It is simple to use and saves us a lot of time. Overall, a very useful software for our business.',
       rating: null,
       image: null,
     },
   ],
 }
 
-/** Only entries carrying real, approved wording may be rendered. */
+/** Entries carrying real, approved wording. */
 export const approvedTestimonials = clientTestimonials.items.filter(
   (item) => typeof item.quote === 'string' && item.quote.trim().length > 0,
 )
