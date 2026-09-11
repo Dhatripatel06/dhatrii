@@ -410,7 +410,7 @@ export const posts = [
     body: [
       {
         type: 'p',
-        text: 'A fair number of the enquiries I get open with "I want an app". When I ask what it needs to do, the honest answer is frequently something a website would do better, sooner and for a fraction of the cost.',
+        text: 'A common way a software conversation starts is "I want an app". Once you ask what it actually needs to do, the answer is sometimes something a website would do better, sooner and for a good deal less money.',
       },
       {
         type: 'p',
@@ -425,11 +425,11 @@ export const posts = [
       {
         type: 'callout',
         title: 'How often will one person open this?',
-        text: 'Daily or several times a week, for months — an app starts to justify itself. A few times a year, or once to make a decision and then not again — a website will serve those people better, because nobody installs an app for something they do occasionally.',
+        text: 'Daily or several times a week, for months — an app starts to justify itself. A few times a year, or once to make a decision and then not again — a website will usually serve those people better, because people are reluctant to install an app for something they do occasionally.',
       },
       {
         type: 'p',
-        text: 'Installing is friction. A person has to want your thing enough to go to a store, wait for a download, and give up storage on a phone that is probably already full. A website asks none of that — they tap a link and they are in. For anything occasional, that gap is the whole ballgame, and no amount of polish in the app closes it.',
+        text: 'Installing is friction. A person has to want your thing enough to go to a store, wait for a download, and give up storage on a phone that may not have much to spare. A website asks none of that — they tap a link and they are in. For anything occasional, that gap is hard to close with polish inside the app, because the drop-off happens before anyone opens it.',
       },
       { type: 'h2', text: 'What an app genuinely gives you' },
       {
@@ -450,8 +450,8 @@ export const posts = [
       {
         type: 'ul',
         items: [
-          '**People can find you.** Search engines index websites. Nobody discovers your business by browsing an app store, and ranking there is its own separate battle.',
-          '**No install, no friction.** A link in a WhatsApp message opens immediately. That is the entire funnel for most local businesses.',
+          '**People can find you.** Search engines index websites. App store discovery works differently and ranking there is a separate problem to solve, so a listing is rarely a substitute for being findable in search.',
+          '**No install, no friction.** A link in a WhatsApp message opens immediately — which, for a lot of local businesses, is most of the journey from first contact to enquiry.',
           '**One build instead of two platforms plus review queues.** No store submission, no waiting for approval to ship a fix.',
           '**Changing it is cheap and instant.** New prices, new hours, a new offer — live in minutes, with nothing to re-download.',
           '**It costs less to build and much less to keep running.**',
@@ -478,7 +478,7 @@ export const posts = [
       { type: 'h2', text: 'The middle ground worth knowing about' },
       {
         type: 'p',
-        text: 'A modern website can be saved to a home screen and can work offline to a degree. On Android this gets you surprisingly close to an app for simple cases. On iPhone the experience is more limited and push notifications are far less dependable, which matters a lot in a market where your customers may be on either.',
+        text: 'A modern website can be saved to a home screen and can work offline to a degree. On Android this gets you reasonably close to an app for simple cases. On iPhone the support is narrower — web push, for one, only works once someone has added the site to their Home Screen — so it is worth checking the current limitations against what your feature actually needs before relying on it.',
       },
       {
         type: 'p',
@@ -491,7 +491,7 @@ export const posts = [
           '**Will one person open this weekly, for months?** No — build a website.',
           '**Do you need reliable push notifications, real offline use, or device hardware?** No — build a website.',
           '**Do customers need to find you through Google?** Yes, and it is your main channel — you need a website regardless, even if you also build an app.',
-          '**Are you testing whether anyone wants this at all?** Then build the cheapest thing that proves it, which is almost always a web version.',
+          '**Are you testing whether anyone wants this at all?** Then build the cheapest thing that proves it, which is usually a web version.',
           '**Still pointing at an app after all four?** Then it is an app, and you have a defensible reason to give anyone who asks.',
         ],
       },
@@ -515,7 +515,7 @@ export const posts = [
       },
       {
         q: 'My competitor has an app. Do I need one?',
-        a: 'Only if their customers actually use it. It is worth checking the reviews and the last update date before treating it as evidence of anything — plenty of small-business apps are built once and abandoned.',
+        a: 'Only if their customers actually use it. It is worth checking the reviews and the last update date before treating it as evidence of anything; an app that has not been updated in two years tells you something about how much it is being used.',
       },
       {
         q: 'What if I need notifications but not a full app?',
@@ -596,12 +596,12 @@ export const posts = [
       { type: 'h3', text: 'Inference must stay off the interface thread' },
       {
         type: 'p',
-        text: 'This is the most common way a promising on-device feature ends up feeling broken. Run a model on the same thread that draws the UI and the interface freezes for the duration of every prediction. In Flutter that means pushing the work into a separate isolate or the platform\'s own threading, so frames keep rendering while a frame of video is being processed.',
+        text: 'This is an easy way for a promising on-device feature to end up feeling broken. Run a model on the same thread that draws the interface and it freezes for the duration of every prediction. The work has to happen somewhere else — Flutter and the native platforms each provide ways to move it off the UI thread — so that frames keep rendering while an image is being processed.',
       },
       { type: 'h3', text: 'Devices vary enormously' },
       {
         type: 'p',
-        text: 'A model that runs comfortably on a recent flagship can be unusably slow on a three-year-old mid-range handset — which, in India, is a very large share of the phones your product will actually run on. Test on the hardware your users have, not the one on your desk.',
+        text: 'A model that runs comfortably on a recent flagship can be unusably slow on an older mid-range handset. Test on the kind of hardware your users actually have rather than the device on your desk — and if you do not know what that is, it is worth finding out before the model is chosen.',
       },
       { type: 'h3', text: 'Updating the model means updating the app' },
       {
@@ -693,7 +693,7 @@ export const posts = [
     body: [
       {
         type: 'p',
-        text: 'Open a typical app on a bad connection and you get a spinner, then an error, then a retry button. That is a reasonable design for an app used at a desk. It is the wrong design for one used in a basement stockroom, on a factory floor, in a lift, or standing in a field — and a surprising number of business apps are used in exactly those places.',
+        text: 'Open a typical app on a bad connection and you get a spinner, then an error, then a retry button. That is a reasonable design for an app used at a desk. It is the wrong design for one used in a basement stockroom, on a factory floor, in a lift, or standing in a field — and a lot of business software is used in exactly those places.',
       },
       {
         type: 'p',
@@ -707,7 +707,7 @@ export const posts = [
       { type: 'h2', text: 'Offline-as-a-feature versus offline-first' },
       {
         type: 'p',
-        text: 'The usual approach builds the app against the network and adds offline handling afterwards. The app asks the server for data, and if the request fails it shows an error and perhaps serves something stale. Offline is an exception branch, and exception branches are the least-tested code in any codebase.',
+        text: 'The usual approach builds the app against the network and adds offline handling afterwards. The app asks the server for data, and if the request fails it shows an error and perhaps serves something stale. Offline becomes an exception branch, and exception branches tend to be the least-tested code in a codebase.',
       },
       {
         type: 'p',
@@ -716,7 +716,7 @@ export const posts = [
       {
         type: 'callout',
         title: 'The practical difference',
-        text: 'An offline-first app opens straight into content, instantly, every time — because it never had to ask anyone. The spinner disappears from the product entirely, and not just when the signal is bad.',
+        text: 'An offline-first app opens straight into content because it never had to ask anyone for it. The spinner leaves the product entirely, and not only when the signal is bad.',
       },
       { type: 'h2', text: 'What this actually requires' },
       { type: 'h3', text: '1. A real local database' },
@@ -737,7 +737,7 @@ export const posts = [
       { type: 'h3', text: '4. Honesty in the interface' },
       {
         type: 'p',
-        text: 'If a change has not synced yet, say so — quietly, but say it. Users tolerate a pending state without complaint. What they do not forgive is being shown a confirmation for something that silently never happened.',
+        text: 'If a change has not synced yet, say so — quietly, but say it. A pending state is easy enough to live with. Being shown a confirmation for something that silently never happened is not.',
       },
       { type: 'h2', text: 'How this looked on a real build' },
       {
@@ -830,12 +830,12 @@ export const posts = [
       },
       {
         type: 'p',
-        text: 'At that point the options are bad: track down someone who does not want to be found, or pay to rebuild something that already exists. I have not seen this happen because anyone set out to trap a client. It happens because everything gets set up in whoever\'s account was convenient on day one, and nobody revisits it.',
+        text: 'At that point the options are bad: track down someone who does not want to be found, or pay to rebuild something that already exists. This is rarely anyone setting out to trap a client. It usually happens because everything gets set up in whichever account was convenient on day one, and it does not get revisited.',
       },
       { type: 'h2', text: 'Who this is for' },
       {
         type: 'p',
-        text: 'Anyone about to hire a developer, agency or freelancer for the first time — and anyone who already has, and has never actually checked. The second group is larger than you would think.',
+        text: 'Anyone about to hire a developer, agency or freelancer for the first time — and anyone who already has, and has never actually checked. If that is you, the checklist below is worth ten minutes.',
       },
       { type: 'h2', text: 'The five things that must be yours' },
       { type: 'h3', text: '1. The domain name' },
@@ -861,7 +861,7 @@ export const posts = [
       { type: 'h3', text: '5. The app store accounts' },
       {
         type: 'p',
-        text: 'For a mobile app, the Play Console and Apple Developer accounts should be registered to your business, with their own registration fees paid by you. Publishing under a developer\'s account is common and it is a serious trap — your listing, your reviews and your install base live inside someone else\'s profile, and moving an app between accounts afterwards is painful in a way that moving a website is not.',
+        text: 'For a mobile app, the Play Console and Apple Developer accounts should be registered to your business, with their own registration fees paid by you. Publishing under a developer\'s account happens, and it is a serious trap — your listing, your reviews and your install base end up inside someone else\'s profile, and moving an app between accounts afterwards is painful in a way that moving a website is not.',
       },
       {
         type: 'callout',
@@ -901,7 +901,7 @@ export const posts = [
       { type: 'h2', text: 'If you are already locked in' },
       {
         type: 'p',
-        text: 'It is usually recoverable, and worth doing calmly rather than as an argument. Ask politely and specifically: transfer the domain, add me as owner on the repository, move billing to my card. Most developers will simply do it. If you cannot reach them at all, domain registrars and platform providers have dispute processes, and proof of payment plus business documentation goes a long way.',
+        text: 'It is usually recoverable, and worth doing calmly rather than as an argument. Ask politely and specifically: transfer the domain, add me as owner on the repository, move billing to my card. Often that is all it takes. If you cannot reach them at all, domain registrars and platform providers have dispute processes, and proof of payment plus business documentation goes a long way.',
       },
       {
         type: 'p',
@@ -923,7 +923,7 @@ export const posts = [
       },
       {
         q: 'Should I pay the full amount before handover is complete?',
-        a: 'Holding a final portion until you have confirmed access is normal and reasonable, and most developers expect it. It is not an accusation; it is how the last step gets prioritised.',
+        a: 'Holding a final portion until you have confirmed access is normal and reasonable, and a developer who has done this before will not be surprised by it. It is not an accusation; it is how the last step gets prioritised.',
       },
       {
         q: 'Does owning the code mean I can hire anyone else to change it?',
