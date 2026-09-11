@@ -30,9 +30,10 @@ const initialsOf = (name) =>
     .join('')
 
 function TestimonialCard({ item }) {
-  const attribution = [item.role && item.project ? `${item.project} ${item.role}` : item.project, item.location]
-    .filter(Boolean)
-    .join(' · ')
+  /* Project and place, e.g. "Shiftly · London, UK". `role` stays in the data
+     because it records what the relationship actually was — which the projects
+     index also has to reflect — but it is not repeated in the label. */
+  const attribution = [item.project, item.location].filter(Boolean).join(' · ')
 
   return (
     <figure className="relative overflow-hidden rounded-card border border-line bg-surface p-8 shadow-card sm:p-11">

@@ -108,7 +108,7 @@ export const projectsIndex = {
   titleBold: 'Projects',
   lede: 'Five products, each taken from a blank repository to something people can open. Pick one to read how it was built.',
   /* States what these are, so the set is not read as a client roster. */
-  note: 'These are products I designed and built end to end — personal, academic and hackathon projects, some with collaborators. They are not client engagements.',
+  note: 'Products I designed and built end to end. Shiftly was a client collaboration; the rest are personal, academic and hackathon projects, some built with collaborators.',
   meta: {
     title: 'Projects — Flutter & React Case Studies | Dhatri Patel',
     description:
@@ -824,16 +824,18 @@ const PLANS = [
 export const clientTestimonials = {
   titleLight: 'What',
   titleBold: 'Clients Say',
-  lede: 'Real feedback from people I have worked with.',
+  lede: 'Feedback from a recent collaboration',
   items: [
     {
       name: 'Vishrut Donda',
       project: 'Shiftly',
       location: 'London, UK',
       role: 'Client',
-      /* TODO: paste Vishrut's exact approved wording here, verbatim. Do not
-         paraphrase, tidy or shorten it — it is his statement, not copy. */
-      quote: null,
+      /* His exact approved wording, verbatim. Not paraphrased, tidied or
+         shortened — it is his statement, not copy, and editing it would make
+         it mine. */
+      quote:
+        'Dhatri understood what we were trying to build with Shiftly and turned the idea into a clean, practical product. Communication was smooth, and she was proactive about solving issues along the way. I really appreciated the attention to detail and the effort put into making the product feel polished.',
       rating: null,
       image: null,
     },
