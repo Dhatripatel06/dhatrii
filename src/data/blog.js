@@ -23,6 +23,19 @@ export function resolveTokens(text) {
   })
 }
 
+/* `dateLabel` is derived, never stored. Keeping a hand-written label beside
+   the ISO date let the two drift: one post ended up tagged 2026-09-10 in
+   `datePublished` and the sitemap while the page read "11 September 2026".
+   UTC is pinned so a machine in a behind-UTC zone cannot render the day
+   before. */
+const DATE_LABEL = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC',
+})
+const labelFor = (iso) => DATE_LABEL.format(new Date(`${iso}T00:00:00Z`))
+
 export const blogIndex = {
   eyebrow: 'Writing',
   titleLight: 'Notes on',
@@ -36,7 +49,7 @@ export const blogIndex = {
   empty: 'Nothing published yet.',
 }
 
-export const posts = [
+const ARTICLES = [
   // =========================================================================
   {
     slug: 'business-website-cost-gujarat-2026',
@@ -44,8 +57,7 @@ export const posts = [
     title: 'What Does a Business Website Cost in Gujarat in 2026?',
     description:
       'Why the same website brief gets wildly different quotes, what actually drives the price, and the questions to ask before you pay anyone — including my own starting range.',
-    date: '2026-09-10',
-    dateLabel: '10 September 2026',
+    date: '2026-09-01',
     readingTime: '9 min read',
     tag: 'Pricing',
     /* One-sentence framing shown under the title and reused in the OG card. */
@@ -213,8 +225,7 @@ export const posts = [
     title: 'Flutter vs React Native for an Indian Startup MVP',
     description:
       'An honest comparison for founders choosing a cross-platform framework for a first release — what genuinely differs, what does not matter as much as you think, and how to decide.',
-    date: '2026-09-10',
-    dateLabel: '10 September 2026',
+    date: '2026-09-03',
     readingTime: '11 min read',
     tag: 'Engineering',
     standfirst:
@@ -401,8 +412,7 @@ export const posts = [
     title: 'Do You Need a Mobile App, or Just a Website?',
     description:
       'Most businesses that ask me for an app need a website. Here is how to tell which one your problem actually calls for, before you spend on the wrong thing.',
-    date: '2026-09-11',
-    dateLabel: '11 September 2026',
+    date: '2026-09-05',
     readingTime: '8 min read',
     tag: 'Deciding',
     standfirst:
@@ -538,8 +548,7 @@ export const posts = [
     title: 'Running AI on the Phone Instead of the Cloud',
     description:
       'What it means to run a model on the device itself, what it costs you in app size and engineering, and when sending data to a server is still the better call.',
-    date: '2026-09-11',
-    dateLabel: '11 September 2026',
+    date: '2026-09-07',
     readingTime: '10 min read',
     tag: 'Engineering',
     standfirst:
@@ -684,8 +693,7 @@ export const posts = [
     title: 'Building an App That Keeps Working When the Signal Drops',
     description:
       'Why "handles offline" is usually bolted on and fails, what offline-first actually changes about the architecture, and how to decide whether your app needs it.',
-    date: '2026-09-11',
-    dateLabel: '11 September 2026',
+    date: '2026-09-09',
     readingTime: '9 min read',
     tag: 'Engineering',
     standfirst:
@@ -818,7 +826,6 @@ export const posts = [
     description:
       'The five things that must be registered in your name, why they so often are not, and the handover checklist to run before you make a final payment.',
     date: '2026-09-11',
-    dateLabel: '11 September 2026',
     readingTime: '7 min read',
     tag: 'Working together',
     standfirst:
@@ -945,7 +952,7 @@ export const posts = [
  * than defaulting either way. A draft must never reach the index, a route or
  * the sitemap by being forgotten about.
  */
-const undeclared = posts.filter((post) => typeof post.published !== 'boolean')
+const undeclared = ARTICLES.filter((post) => typeof post.published !== 'boolean')
 if (undeclared.length > 0) {
   throw new Error(
     `Post(s) missing an explicit "published" boolean: ${undeclared
@@ -953,5 +960,7 @@ if (undeclared.length > 0) {
       .join(', ')}. Set published: true to publish, or published: false to keep it a draft.`,
   )
 }
+
+export const posts = ARTICLES.map((post) => ({ ...post, dateLabel: labelFor(post.date) }))
 
 export const publishedPosts = posts.filter((post) => post.published === true)
