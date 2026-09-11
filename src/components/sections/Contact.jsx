@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
-import { MessageCircle, Mail, CheckCircle2 } from 'lucide-react'
+import { MessageCircle, Mail, CheckCircle2, AlertCircle } from 'lucide-react'
 import { contact, profile, socials, whatsappHref } from '@/data/content'
 import { socialIcon } from '@/lib/icons'
 import ArrowButton from '@/components/ui/ArrowButton'
@@ -37,11 +37,14 @@ export default function Contact() {
   const reduce = useReducedMotion()
   const [form, setForm] = useState(EMPTY)
   const [errors, setErrors] = useState({})
-  const [sent, setSent] = useState(false)
-  /* Kept after submit so the confirmation panel can offer the same message
-     through a route that does not depend on the visitor's mail handler. */
+  /* idle | sending | success | error */
+  const [status, setStatus] = useState('idle')
+  /* Kept after a failed send so the panel can offer the same message through
+     routes that do not depend on this site's server being reachable. */
   const [composed, setComposed] = useState(null)
   const [copied, setCopied] = useState(false)
+  /* Filled only by something automated; a real visitor never sees the field. */
+  const [website, setWebsite] = useState('')
 
   const update = (field) => (event) => {
     setForm((previous) => ({ ...previous, [field]: event.target.value }))
@@ -56,92 +59,81 @@ export default function Contact() {
     return next
   }
 
-  /* No backend: the form composes a pre-filled email and hands it to the
-     visitor's mail client. Nothing here is ever sent over HTTP — there is no
-     fetch, axios, XHR or sendBeacon anywhere in this app, and a `mailto:`
-     must never be given to one.
+  /* Submission goes to this site's own API route, which sends the mail with
+     Nodemailer server-side. That is an ordinary same-origin fetch — a mailto:
+     is never given to one, and none is used for the primary path any more.
 
-     The handoff is a synthetic anchor click rather than an assignment to
-     `window.location.href`, which would begin a top-level navigation the
-     browser abandons the moment it routes the URL to an external protocol
-     handler, and which can leave the page half-navigated when no mail client
-     is registered.
-
-     Chrome lists the `mailto:` in its Network panel either way and marks it
-     failed, because an external scheme returns no HTTP response. That row is
-     cosmetic and cannot be removed while a mailto is used at all; what this
-     avoids is the abandoned document navigation sitting behind it. */
-  const onSubmit = (event) => {
+     The mailto and Gmail URLs below are built only so the failure panel can
+     offer them. They are never triggered automatically. */
+  const onSubmit = async (event) => {
     event.preventDefault()
+    if (status === 'sending') return // no duplicate submissions
+
     const found = validate()
     setErrors(found)
     if (Object.keys(found).length > 0) return
 
-    const lines = [
-      `Name: ${form.name}`,
-      `Email: ${form.email}`,
-      `Business: ${form.company || 'Not specified'}`,
-      `Wants to build: ${form.projectType || 'Not specified'}`,
-      `Timeline: ${form.timeline || 'Not specified'}`,
-      '',
-    ].join('\n')
-
-    const subject = encodeURIComponent(`${SUBJECT_PREFIX}${form.name}`)
-    const compose = (message) =>
-      `mailto:${profile.email}?subject=${subject}&body=${encodeURIComponent(lines + message)}`
-
-    /* Trim the free text until the whole URL fits, rather than handing the OS
-       something it will quietly drop.
-
-       Measured by shrinking and re-encoding rather than by subtracting
-       character counts: percent-encoding expands unpredictably — a space
-       becomes three characters, a non-ASCII glyph up to nine — so arithmetic
-       on raw lengths overshoots. This loop cannot. */
-    let message = form.message
-    let href = compose(message)
-    if (href.length > MAX_MAILTO) {
-      /* Split into code points, not UTF-16 units. Slicing a raw string can cut
-         an emoji's surrogate pair in half, and encodeURIComponent throws
-         URIError on a lone surrogate — which would break submit outright for
-         anyone who pasted an emoji into a long message. */
-      const glyphs = Array.from(form.message)
-      let keep = glyphs.length
-      do {
-        keep = Math.floor(keep * 0.9)
-        message = `${glyphs.slice(0, keep).join('').trimEnd()}${TRUNCATION_NOTE}`
-        href = compose(message)
-      } while (href.length > MAX_MAILTO && keep > 0)
+    const payload = {
+      name: form.name.trim(),
+      email: form.email.trim(),
+      company: form.company.trim(),
+      projectType: form.projectType,
+      timeline: form.timeline,
+      message: form.message.trim(),
+      website, // honeypot
     }
 
-    const text = lines + message
+    setStatus('sending')
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
 
-    /* Gmail's own compose URL, as a route that never touches the OS. Some
-       browsers register themselves as the mailto handler and rewrite the URL
-       into a webmail link — one such rewrite produces gmail.com/?<query>,
-       which 404s and drops the recipient. This is the correct form. */
-    const gmail =
-      'https://mail.google.com/mail/?view=cm&fs=1' +
-      `&to=${encodeURIComponent(profile.email)}` +
-      `&su=${encodeURIComponent(`${SUBJECT_PREFIX}${form.name}`)}` +
-      `&body=${encodeURIComponent(text)}`
+      if (!response.ok) throw new Error(`HTTP ${response.status}`)
 
-    setComposed({ mailto: href, gmail, text })
+      setStatus('success')
+      setForm(EMPTY)
+      setWebsite('')
+      return
+    } catch {
+      /* Never claim delivery the server did not confirm. Compose the manual
+         routes instead so the enquiry is not simply lost. */
+      const lines = [
+        `Name: ${payload.name}`,
+        `Email: ${payload.email}`,
+        `Company: ${payload.company || 'Not specified'}`,
+        `Project: ${payload.projectType || 'Not specified'}`,
+        `Timeline: ${payload.timeline || 'Not specified'}`,
+        '',
+        'Message:',
+        payload.message,
+      ].join('\n')
 
-    /* Opened in a new context on purpose. If the visitor's mailto handler is
-       missing or misconfigured, the failure lands in a throwaway tab instead
-       of navigating the portfolio itself to an error page. */
-    const link = document.createElement('a')
-    link.href = href
-    link.target = '_blank'
-    link.rel = 'noopener noreferrer'
-    link.style.display = 'none'
-    document.body.appendChild(link)
-    link.click()
-    link.remove()
+      const subject = encodeURIComponent(`${SUBJECT_PREFIX}${payload.name}`)
+      let text = lines
+      let mailto = `mailto:${profile.email}?subject=${subject}&body=${encodeURIComponent(text)}`
+      if (mailto.length > MAX_MAILTO) {
+        const glyphs = Array.from(lines)
+        let keep = glyphs.length
+        do {
+          keep = Math.floor(keep * 0.9)
+          text = `${glyphs.slice(0, keep).join('').trimEnd()}${TRUNCATION_NOTE}`
+          mailto = `mailto:${profile.email}?subject=${subject}&body=${encodeURIComponent(text)}`
+        } while (mailto.length > MAX_MAILTO && keep > 0)
+      }
 
-    setCopied(false)
-    setSent(true)
-    setForm(EMPTY)
+      const gmail =
+        'https://mail.google.com/mail/?view=cm&fs=1' +
+        `&to=${encodeURIComponent(profile.email)}` +
+        `&su=${encodeURIComponent(`${SUBJECT_PREFIX}${payload.name}`)}` +
+        `&body=${encodeURIComponent(text)}`
+
+      setComposed({ mailto, gmail, text })
+      setCopied(false)
+      setStatus('error')
+    }
   }
 
   const fieldClass = (field) =>
@@ -192,9 +184,9 @@ export default function Contact() {
             </div>
 
             <AnimatePresence mode="wait" initial={false}>
-              {sent ? (
+              {status === 'success' || status === 'error' ? (
                 <motion.div
-                  key="sent"
+                  key={status}
                   role="status"
                   initial={reduce ? false : { opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -202,69 +194,92 @@ export default function Contact() {
                   transition={{ duration: 0.45, ease: EASE }}
                   className="relative flex flex-col items-start"
                 >
-                  <CheckCircle2 size={34} strokeWidth={1.9} className="text-accent" aria-hidden="true" />
-                  <h3 className="mt-5 font-display text-2xl font-bold">Your message is ready.</h3>
-                  <p className="mt-3 text-pretty text-muted">
-                    I tried to open your email app with everything filled in. If nothing opened —
-                    plenty of machines have no mail app set up — use one of these instead.
-                  </p>
+                  {status === 'success' ? (
+                    <>
+                      <CheckCircle2
+                        size={34}
+                        strokeWidth={1.9}
+                        className="text-accent"
+                        aria-hidden="true"
+                      />
+                      <h3 className="mt-5 font-display text-2xl font-bold">
+                        Message sent successfully.
+                      </h3>
+                      <p className="mt-3 text-pretty text-muted">
+                        Your enquiry is on its way to my inbox — nothing else to do. I will read it
+                        and get back to you at the address you gave.
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <AlertCircle
+                        size={34}
+                        strokeWidth={1.9}
+                        className="text-accent"
+                        aria-hidden="true"
+                      />
+                      <h3 className="mt-5 font-display text-2xl font-bold">
+                        We couldn&rsquo;t send your message automatically.
+                      </h3>
+                      <p className="mt-3 text-pretty text-muted">
+                        Nothing was sent, so your enquiry has not reached me yet. Your message is
+                        saved below — any one of these will get it to me.
+                      </p>
 
-                  {/* Three independent routes. Between them, no visitor is left
-                      without a way to send this. */}
-                  <div className="mt-6 flex flex-wrap gap-3">
-                    <a
-                      href={composed?.gmail ?? '#'}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-bg transition-colors duration-300 hover:bg-text"
-                    >
-                      <Mail size={15} strokeWidth={2.2} aria-hidden="true" />
-                      Open in Gmail
-                    </a>
-                    <button
-                      type="button"
-                      onClick={async () => {
-                        if (!composed) return
-                        try {
-                          await navigator.clipboard.writeText(composed.text)
-                          setCopied(true)
-                        } catch {
-                          /* Clipboard is permission-gated and can refuse. Say so
-                             rather than silently appearing to have worked. */
-                          setCopied(false)
-                        }
-                      }}
-                      className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm font-medium transition-colors duration-300 hover:border-accent/40 hover:text-accent"
-                    >
-                      {copied ? 'Copied' : 'Copy message'}
-                    </button>
-                    <a
-                      href={whatsappHref}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm font-medium transition-colors duration-300 hover:border-accent/40 hover:text-accent"
-                    >
-                      <MessageCircle size={15} strokeWidth={2.1} aria-hidden="true" />
-                      WhatsApp
-                    </a>
-                  </div>
+                      <div className="mt-6 flex flex-wrap gap-3">
+                        <a
+                          href={composed?.gmail ?? '#'}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-bg transition-colors duration-300 hover:bg-text"
+                        >
+                          <Mail size={15} strokeWidth={2.2} aria-hidden="true" />
+                          Open in Gmail
+                        </a>
+                        <button
+                          type="button"
+                          onClick={async () => {
+                            if (!composed) return
+                            try {
+                              await navigator.clipboard.writeText(composed.text)
+                              setCopied(true)
+                            } catch {
+                              /* Clipboard access is permission-gated and can
+                                 refuse; do not pretend it worked. */
+                              setCopied(false)
+                            }
+                          }}
+                          className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm font-medium transition-colors duration-300 hover:border-accent/40 hover:text-accent"
+                        >
+                          {copied ? 'Copied' : 'Copy message'}
+                        </button>
+                        <a
+                          href={whatsappHref}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm font-medium transition-colors duration-300 hover:border-accent/40 hover:text-accent"
+                        >
+                          <MessageCircle size={15} strokeWidth={2.1} aria-hidden="true" />
+                          WhatsApp
+                        </a>
+                      </div>
 
-                  <p className="mt-5 text-sm text-muted" aria-live="polite">
-                    {copied
-                      ? 'Copied. Paste it into an email to '
-                      : 'Or write to me directly at '}
-                    <a
-                      href={`mailto:${profile.email}`}
-                      className="link-underline font-medium text-accent"
-                    >
-                      {profile.email}
-                    </a>
-                    .
-                  </p>
+                      <p className="mt-5 text-sm text-muted" aria-live="polite">
+                        {copied ? 'Copied. Paste it into an email to ' : 'Or write to me at '}
+                        <a
+                          href={`mailto:${profile.email}`}
+                          className="link-underline font-medium text-accent"
+                        >
+                          {profile.email}
+                        </a>
+                        .
+                      </p>
+                    </>
+                  )}
 
                   <button
                     type="button"
-                    onClick={() => setSent(false)}
+                    onClick={() => setStatus('idle')}
                     className="mt-7 rounded-full border border-line px-5 py-2.5 text-sm font-medium transition-colors duration-300 hover:border-accent/40 hover:text-accent"
                   >
                     Write another message
@@ -281,6 +296,23 @@ export default function Contact() {
                   transition={{ duration: 0.35 }}
                   className="relative flex flex-col gap-5"
                 >
+                  {/* Honeypot. Positioned off-screen rather than display:none,
+                      because some bots skip fields that are hidden outright.
+                      Unreachable by keyboard and hidden from assistive tech, so
+                      only something automated ever fills it in. */}
+                  <div aria-hidden="true" className="absolute -left-[9999px] top-0 h-0 w-0 overflow-hidden">
+                    <label htmlFor="website">Leave this field empty</label>
+                    <input
+                      id="website"
+                      type="text"
+                      name="website"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={website}
+                      onChange={(event) => setWebsite(event.target.value)}
+                    />
+                  </div>
+
                   <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                     <div>
                       <label htmlFor="name" className="mb-2 block text-sm font-medium">
@@ -406,8 +438,8 @@ export default function Contact() {
                   </div>
 
                   <div className="mt-2 flex flex-wrap items-center gap-3">
-                    <ArrowButton as="button" type="submit">
-                      Send it over
+                    <ArrowButton as="button" type="submit" disabled={status === 'sending'}>
+                      {status === 'sending' ? 'Sending…' : 'Send it over'}
                     </ArrowButton>
                     <a
                       href={whatsappHref}

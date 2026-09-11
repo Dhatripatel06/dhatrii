@@ -26,7 +26,7 @@ export default function ArrowButton({
     <Magnetic
       as={isInternal ? MotionLink : as}
       href={href}
-      className={`group inline-flex items-center gap-3 rounded-full py-2 pl-7 pr-2 font-medium transition-colors duration-300 ${
+      className={`group inline-flex items-center gap-3 rounded-full py-2 pl-7 pr-2 font-medium transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-60 ${
         isAccent
           ? 'bg-accent text-bg hover:bg-text'
           : 'border border-line bg-white/[0.03] text-text hover:bg-white/[0.08]'
