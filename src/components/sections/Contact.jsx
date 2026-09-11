@@ -38,6 +38,10 @@ export default function Contact() {
   const [form, setForm] = useState(EMPTY)
   const [errors, setErrors] = useState({})
   const [sent, setSent] = useState(false)
+  /* Kept after submit so the confirmation panel can offer the same message
+     through a route that does not depend on the visitor's mail handler. */
+  const [composed, setComposed] = useState(null)
+  const [copied, setCopied] = useState(false)
 
   const update = (field) => (event) => {
     setForm((previous) => ({ ...previous, [field]: event.target.value }))
@@ -109,14 +113,33 @@ export default function Contact() {
       } while (href.length > MAX_MAILTO && keep > 0)
     }
 
+    const text = lines + message
+
+    /* Gmail's own compose URL, as a route that never touches the OS. Some
+       browsers register themselves as the mailto handler and rewrite the URL
+       into a webmail link — one such rewrite produces gmail.com/?<query>,
+       which 404s and drops the recipient. This is the correct form. */
+    const gmail =
+      'https://mail.google.com/mail/?view=cm&fs=1' +
+      `&to=${encodeURIComponent(profile.email)}` +
+      `&su=${encodeURIComponent(`${SUBJECT_PREFIX}${form.name}`)}` +
+      `&body=${encodeURIComponent(text)}`
+
+    setComposed({ mailto: href, gmail, text })
+
+    /* Opened in a new context on purpose. If the visitor's mailto handler is
+       missing or misconfigured, the failure lands in a throwaway tab instead
+       of navigating the portfolio itself to an error page. */
     const link = document.createElement('a')
     link.href = href
-    link.rel = 'noopener'
+    link.target = '_blank'
+    link.rel = 'noopener noreferrer'
     link.style.display = 'none'
     document.body.appendChild(link)
     link.click()
     link.remove()
 
+    setCopied(false)
     setSent(true)
     setForm(EMPTY)
   }
@@ -180,15 +203,65 @@ export default function Contact() {
                   className="relative flex flex-col items-start"
                 >
                   <CheckCircle2 size={34} strokeWidth={1.9} className="text-accent" aria-hidden="true" />
-                  <h3 className="mt-5 font-display text-2xl font-bold">Your email is ready to send.</h3>
+                  <h3 className="mt-5 font-display text-2xl font-bold">Your message is ready.</h3>
                   <p className="mt-3 text-pretty text-muted">
-                    I opened your mail app with everything filled in — just hit send. If nothing
-                    opened, write to{' '}
-                    <a href={`mailto:${profile.email}`} className="link-underline font-medium text-accent">
-                      {profile.email}
-                    </a>{' '}
-                    or message me on WhatsApp.
+                    I tried to open your email app with everything filled in. If nothing opened —
+                    plenty of machines have no mail app set up — use one of these instead.
                   </p>
+
+                  {/* Three independent routes. Between them, no visitor is left
+                      without a way to send this. */}
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    <a
+                      href={composed?.gmail ?? '#'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-bg transition-colors duration-300 hover:bg-text"
+                    >
+                      <Mail size={15} strokeWidth={2.2} aria-hidden="true" />
+                      Open in Gmail
+                    </a>
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        if (!composed) return
+                        try {
+                          await navigator.clipboard.writeText(composed.text)
+                          setCopied(true)
+                        } catch {
+                          /* Clipboard is permission-gated and can refuse. Say so
+                             rather than silently appearing to have worked. */
+                          setCopied(false)
+                        }
+                      }}
+                      className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm font-medium transition-colors duration-300 hover:border-accent/40 hover:text-accent"
+                    >
+                      {copied ? 'Copied' : 'Copy message'}
+                    </button>
+                    <a
+                      href={whatsappHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm font-medium transition-colors duration-300 hover:border-accent/40 hover:text-accent"
+                    >
+                      <MessageCircle size={15} strokeWidth={2.1} aria-hidden="true" />
+                      WhatsApp
+                    </a>
+                  </div>
+
+                  <p className="mt-5 text-sm text-muted" aria-live="polite">
+                    {copied
+                      ? 'Copied. Paste it into an email to '
+                      : 'Or write to me directly at '}
+                    <a
+                      href={`mailto:${profile.email}`}
+                      className="link-underline font-medium text-accent"
+                    >
+                      {profile.email}
+                    </a>
+                    .
+                  </p>
+
                   <button
                     type="button"
                     onClick={() => setSent(false)}
