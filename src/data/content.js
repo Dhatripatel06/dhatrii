@@ -813,6 +813,38 @@ const PLANS = [
   },
 ]
 
+/* ------------------------------------------------- client testimonials --
+   Real feedback only. A card renders solely when `quote` holds wording the
+   person actually gave and approved — `approvedTestimonials` filters on that,
+   so the section is invisible until then rather than showing a placeholder.
+
+   `rating` and `image` stay null unless the person explicitly approved a star
+   rating and a photograph. Never fill either in to make the card look fuller:
+   an invented rating is the same fabrication as an invented quote. */
+export const clientTestimonials = {
+  titleLight: 'What',
+  titleBold: 'Clients Say',
+  lede: 'Real feedback from people I have worked with.',
+  items: [
+    {
+      name: 'Vishrut Donda',
+      project: 'Shiftly',
+      location: 'London, UK',
+      role: 'Client',
+      /* TODO: paste Vishrut's exact approved wording here, verbatim. Do not
+         paraphrase, tidy or shorten it — it is his statement, not copy. */
+      quote: null,
+      rating: null,
+      image: null,
+    },
+  ],
+}
+
+/** Only entries carrying real, approved wording may be rendered. */
+export const approvedTestimonials = clientTestimonials.items.filter(
+  (item) => typeof item.quote === 'string' && item.quote.trim().length > 0,
+)
+
 export const pricing = {
   titleLight: 'Pricing',
   titleBold: 'Plans',

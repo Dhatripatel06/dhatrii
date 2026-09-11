@@ -6,6 +6,7 @@ import {
   webSiteSchema,
 } from '@/lib/schema'
 import Brands from '@/components/sections/Brands'
+import ClientsSay from '@/components/sections/ClientsSay'
 import Closing from '@/components/sections/Closing'
 import Contact from '@/components/sections/Contact'
 import Experience from '@/components/sections/Experience'
@@ -39,6 +40,9 @@ export default function HomePage() {
       <Tools />
       <WorkProcess />
       <Testimonials />
+      {/* Immediately before pricing: a real endorsement is the last thing read
+          before the numbers. Renders nothing until an approved quote exists. */}
+      <ClientsSay />
       <Pricing />
       <FAQ />
       <Contact />
