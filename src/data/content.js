@@ -355,7 +355,15 @@ export const projects = [
         heading: 'The Result',
         body: 'A companion app where the AI work happens on the device it belongs to — responsive in the hand, and private without asking the user to trust a server.',
       },
-      links: [{ label: 'View on GitHub', href: 'https://github.com/Dhatripatel06/MindHeal_org' }],
+      /* The build itself, then the source. A prospective client wants to
+         open the app; a developer wants the repository. Labelled as an
+         Android download rather than a live link, because that is what it
+         is — an APK on Drive, not a running site, and nothing here should
+         send an iPhone or desktop visitor to a file they cannot use. */
+      links: [
+        { label: 'Download Android APK', href: 'https://drive.google.com/file/d/1rQqaEvDNxxFuvWvjv9LHzea5fUYvreR8/view?usp=sharing' },
+        { label: 'View on GitHub', href: 'https://github.com/Dhatripatel06/MindHeal_org' },
+      ],
     },
   },
   {
@@ -499,7 +507,15 @@ export const projects = [
         heading: 'The Result',
         body: 'A scheduling app that stays usable offline and keeps one version of the rota in front of everyone who depends on it.',
       },
-      links: [{ label: 'View on GitHub', href: 'https://github.com/Dhatripatel06/shift_manager' }],
+      /* The build itself, then the source. A prospective client wants to
+         open the app; a developer wants the repository. Labelled as an
+         Android download rather than a live link, because that is what it
+         is — an APK on Drive, not a running site, and nothing here should
+         send an iPhone or desktop visitor to a file they cannot use. */
+      links: [
+        { label: 'Download Android APK', href: 'https://drive.google.com/file/d/15le0Niig1h5oRRX2tjdDT4fhTGUwMV0C/view?usp=sharing' },
+        { label: 'View on GitHub', href: 'https://github.com/Dhatripatel06/shift_manager' },
+      ],
     },
   },
 ]
