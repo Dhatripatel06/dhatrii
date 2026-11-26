@@ -1,6 +1,7 @@
 import { SITE_URL } from '@/lib/site'
 import { publishedProjects } from '@/data/content'
 import { publishedPosts } from '@/data/blog'
+import { servicePages } from '@/data/service-pages'
 
 /**
  * Every public, indexable route — regenerated on each build.
@@ -32,6 +33,12 @@ export default function sitemap() {
       lastModified,
       changeFrequency: route.changeFrequency,
       priority: route.priority,
+    })),
+    ...servicePages.map((service) => ({
+      url: `${SITE_URL}/services/${service.slug}`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.8,
     })),
     ...publishedProjects.map((project) => ({
       url: `${SITE_URL}/projects/${project.slug}`,
