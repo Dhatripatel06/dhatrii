@@ -1060,7 +1060,7 @@ export const about = {
   eyebrow: 'About',
   titleLight: 'Work directly with',
   titleBold: 'the person building it',
-  lede: 'I am Dhatri Patel, a freelance Flutter and React developer based in Bhavnagar, Gujarat. I build mobile apps, websites and first product versions for startups, growing businesses and local businesses — and remotely for clients anywhere.',
+  lede: 'I am Dhatri Patel, the person behind Dhatrii. I lead digital projects directly for startups and businesses in India and remotely worldwide, from SEO and websites to apps, AI integrations and custom business software.',
   intro: [
     'Most of what I build starts the same way: someone has been describing an idea to people for months and needs it to exist. That might be an app their customers can book from, a website that finally works on a phone, or a first version of a product they want to put in front of real users.',
     'I take that from the first conversation through to a live build. Design, development and deployment are one job rather than three handovers, which is usually the difference between a project that ships and one that stalls between contractors.',
