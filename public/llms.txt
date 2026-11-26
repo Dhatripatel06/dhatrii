@@ -1,0 +1,49 @@
+# Dhatri Patel — Freelance Flutter, React and Web Developer
+
+> Dhatri Patel is a freelance software developer based in Bhavnagar, Gujarat, India. She builds Flutter mobile apps, React and Next.js websites, custom web platforms, admin dashboards and MVPs for startups and businesses in India and remote markets.
+
+Canonical website: https://www.dhatrii.me/
+Contact: dhatripatel67@gmail.com
+Location: Bhavnagar, Gujarat, India
+Service areas: Bhavnagar, Rajkot, Ahmedabad, Gujarat and remote worldwide.
+Languages: English, Gujarati and Hindi.
+
+## Services
+
+- Flutter app development: Android and iOS applications using Flutter and Dart, including Firebase, authentication, REST API integration, state management and app release preparation.
+- Web development: React and Next.js websites, responsive business websites, web applications, dashboards, portals and admin panels.
+- MVP development: scoped first versions of digital products, prototypes, booking workflows, internal tools and business applications.
+- Website design: responsive multi-page business websites with enquiry forms, WhatsApp contact and on-page SEO foundations.
+- Maintenance: bug fixes, dependency updates, small improvements, platform compliance and ongoing support.
+- AI application integration: practical integrations such as Gemini API-powered features and on-device machine-learning capabilities where appropriate to the project.
+
+Service details: https://www.dhatrii.me/services
+
+## Selected projects
+
+- JobZee: Full-stack hiring platform with candidate and recruiter workflows, applications and real-time messaging. Project case study: https://www.dhatrii.me/projects/jobzee
+- One Stop Solution: Product catalogue and WhatsApp ordering platform with product search, order building and an admin panel. Live website: https://one-stop-oss.vercel.app/
+- AgreeCare: Smart agriculture application using Flutter and Firebase for field readings and irrigation workflows.
+- MindHeal: Flutter mental wellness application.
+- LearnNova: Responsive eLearning platform project.
+- Shiftly: Client collaboration project.
+
+Project case studies: https://www.dhatrii.me/projects
+
+## About and contact
+
+About Dhatri: https://www.dhatrii.me/about
+Contact and project enquiries: https://www.dhatrii.me/#contact
+Email: mailto:dhatripatel67@gmail.com
+
+## Project enquiries
+
+For a useful first discussion, share the business problem, intended users, essential features, target platform (web, Android or iOS), required integrations, preferred timeline and budget range. Dhatri can then discuss scope, milestones and a delivery plan.
+
+## Discovery
+
+- Services: https://www.dhatrii.me/services
+- Projects: https://www.dhatrii.me/projects
+- Blog: https://www.dhatrii.me/blog
+- Sitemap: https://www.dhatrii.me/sitemap.xml
+- Robots: https://www.dhatrii.me/robots.txt

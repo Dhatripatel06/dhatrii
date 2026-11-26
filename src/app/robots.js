@@ -1,20 +1,30 @@
 import { SITE_URL } from '@/lib/site'
 
 /**
- * Everything public is crawlable. There is nothing to hide: draft case studies
- * are never rendered or routed at all, so they need no Disallow rule — a rule
- * would only advertise a path that returns 404.
+ * Public portfolio pages are available to search engines and AI assistants.
+ * Search crawlers are explicitly listed for clarity; the wildcard rule also
+ * permits other compliant crawlers. Training crawlers are separate agents and
+ * are explicitly allowed because this portfolio is public and the owner wants
+ * broad AI discovery and access.
  *
- * Next's own /_next/static assets are deliberately left crawlable; blocking
- * them stops Google fetching the CSS and JS it needs to render the page.
- *
- * Only standard directives here — no `Host`, which is non-standard and ignored
- * by Google. The canonical host is already declared by the canonical tags and
- * the absolute URLs in the sitemap.
+ * Next's own /_next/static assets remain crawlable so search engines can render
+ * the site. No private or authenticated routes are exposed by these rules.
  */
 export default function robots() {
   return {
-    rules: [{ userAgent: '*', allow: '/' }],
+    rules: [
+      { userAgent: '*', allow: '/' },
+      { userAgent: 'OAI-SearchBot', allow: '/' },
+      { userAgent: 'ChatGPT-User', allow: '/' },
+      { userAgent: 'GPTBot', allow: '/' },
+      { userAgent: 'Claude-SearchBot', allow: '/' },
+      { userAgent: 'ClaudeBot', allow: '/' },
+      { userAgent: 'Claude-User', allow: '/' },
+      { userAgent: 'PerplexityBot', allow: '/' },
+      { userAgent: 'Google-Extended', allow: '/' },
+      { userAgent: 'Applebot-Extended', allow: '/' },
+      { userAgent: 'Meta-ExternalAgent', allow: '/' },
+    ],
     sitemap: `${SITE_URL}/sitemap.xml`,
   }
 }
