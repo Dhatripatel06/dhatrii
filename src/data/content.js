@@ -5,7 +5,7 @@
 
 export const profile = {
   name: 'Dhatri Patel',
-  wordmark: 'Dhatri',
+  wordmark: 'Dhatrii',
   firstName: 'Dhatri',
   lastName: 'Patel',
   role: 'Founder & Digital Solutions Provider at Dhatrii',
@@ -46,7 +46,7 @@ export const hero = {
      `projects` has five entries, and the stack names come from their meta. */
   proof: {
     lead: '6 shipped products',
-    stack: 'Flutter · React · Firebase · AI · UI/UX',
+    stack: 'SEO · Web · Apps · AI · Ecommerce · CRM & ERP',
   },
   primaryCta: { label: 'Start a Project', href: '#contact' },
   secondaryCta: { label: 'View My Work', href: '#work' },
@@ -1000,10 +1000,15 @@ export const contact = {
      repository can evidence, so the copy does not claim it. */
   lede: 'Share a little about the project and timeline. I will review it and get back to you.',
   projectTypes: [
+    'SEO and website optimization',
     'Business website',
-    'Web app or MVP',
+    'Web application or portal',
     'Mobile app (Android + iOS)',
-    'Redesign of something existing',
+    'AI integration or automation',
+    'MVP or startup product',
+    'Ecommerce website or store',
+    'CRM or ERP software',
+    'Custom software or integration',
     'Ongoing maintenance',
     'Something else',
   ],
@@ -1048,9 +1053,9 @@ export const closing = {
    statement about how I work, which is mine to make. No invented biography. */
 export const about = {
   meta: {
-    title: 'About Dhatri Patel | Freelance Flutter & React Developer, Bhavnagar',
+    title: 'About Dhatri Patel | Founder of Dhatrii Digital Solutions',
     description:
-      'Freelance Flutter and React developer based in Bhavnagar, Gujarat. How I work with startups, growing businesses and local businesses — direct, fixed-scope and remote-friendly.',
+      'Meet Dhatri Patel, the person behind Dhatrii, an independent digital solutions practice for SEO, websites, apps, AI integrations and custom business software.',
   },
   eyebrow: 'About',
   titleLight: 'Work directly with',
