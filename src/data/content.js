@@ -8,7 +8,8 @@ export const profile = {
   wordmark: 'Dhatri',
   firstName: 'Dhatri',
   lastName: 'Patel',
-  role: 'Freelance Flutter & React Developer',
+  role: 'Founder & Digital Solutions Provider at Dhatrii',
+  brand: 'Dhatrii',
   email: 'dhatripatel67@gmail.com',
   whatsapp: '916355506411', // country code + number, digits only
   location: 'Bhavnagar, Gujarat, India',
@@ -38,9 +39,9 @@ export const nav = [
 export const hero = {
   hello: 'Hello',
   /* Role and base, so the first line answers "who" and "where" at a glance. */
-  eyebrow: 'Freelance Flutter & React Developer · Bhavnagar, India',
-  headline: 'I build mobile apps and websites that are ready to ship.',
-  lede: 'I help startups and growing businesses turn ideas into polished Flutter apps, React websites and Firebase-powered products — working directly with you from design to deployment.',
+  eyebrow: 'Dhatrii · Digital Solutions & Software Development · India',
+  headline: 'Digital solutions that help businesses build, launch and grow.',
+  lede: 'I am Dhatri Patel, the person behind Dhatrii. I personally lead SEO, website and app development, AI integrations, ecommerce, MVPs and custom CRM & ERP projects — collaborating with specialists when a project needs additional expertise.',
   /* Replaces the old star rating. Both halves are countable from this file:
      `projects` has five entries, and the stack names come from their meta. */
   proof: {
@@ -49,7 +50,7 @@ export const hero = {
   },
   primaryCta: { label: 'Start a Project', href: '#contact' },
   secondaryCta: { label: 'View My Work', href: '#work' },
-  availability: 'Bhavnagar, India — available worldwide',
+  availability: 'Based in Bhavnagar, India · Working remotely worldwide',
   contactLink: { label: 'WhatsApp me', href: whatsappHref },
 }
 
@@ -660,7 +661,7 @@ export const experience = {
 export const services = {
   titleLight: 'What I',
   titleBold: 'Build',
-  lede: 'Four ways I work with clients — from a single business website to a full cross-platform app.',
+  lede: 'Dhatrii helps businesses improve their online visibility, build digital products and connect the systems they rely on — from SEO and websites to apps, AI and custom business software.',
   /* Oversized wordmark that drifts across the foot of the section. */
   ghost: 'Explore my services',
   cta: { label: 'See all services', href: '/services' },
@@ -1186,9 +1187,9 @@ export const about = {
 /* --------------------------------------------------------------- /services */
 export const servicesPage = {
   meta: {
-    title: 'Services | Flutter Apps, Web Development & MVPs | Dhatri Patel',
+    title: 'Digital Services | SEO, Web, Apps, AI, Ecommerce & CRM | Dhatrii',
     description:
-      'Flutter app development, web development, website design and MVP builds for startups, growing businesses and local businesses in Gujarat — with starting prices and realistic timelines.',
+      'Explore Dhatrii services led by Dhatri Patel: SEO, website and web app development, Flutter apps, AI integration, MVPs, ecommerce and custom CRM & ERP software.',
   },
   eyebrow: 'Services',
   titleLight: 'What I can',
