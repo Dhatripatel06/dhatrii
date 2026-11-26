@@ -195,7 +195,7 @@ export default function ServicesPage() {
             <ul className="mt-8 grid gap-3 sm:grid-cols-2">
               {servicePages.map((service) => (
                 <li key={service.slug}>
-                  <Link href={\`/services/\${service.slug}\`} className="group flex h-full items-center justify-between gap-4 rounded-2xl border border-line bg-surface p-5 transition-colors hover:border-accent/40">
+                  <Link href={`/services/${service.slug}`} className="group flex h-full items-center justify-between gap-4 rounded-2xl border border-line bg-surface p-5 transition-colors hover:border-accent/40">
                     <span className="font-medium">{service.title}</span>
                     <ArrowUpRight size={18} className="shrink-0 text-muted transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" aria-hidden="true" />
                   </Link>
