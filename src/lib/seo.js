@@ -35,7 +35,7 @@ export function buildMetadata({ title, description, path, type = 'website', imag
     alternates: { canonical: path },
     openGraph: {
       type,
-      siteName: profile.name,
+      siteName: profile.brand || 'Dhatrii',
       locale: 'en_IN',
       title,
       description,
