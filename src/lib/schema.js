@@ -1,6 +1,6 @@
 import { SITE_URL } from './site'
 import { absolute } from './seo'
-import { faqs, pricing, profile, services, socials } from '@/data/content'
+import { faqs, pricing, profile, socials } from '@/data/content'
 import { resolveTokens } from '@/data/blog'
 import { servicePages } from '@/data/service-pages'
 
@@ -107,6 +107,15 @@ export function professionalServiceSchema({ includePricing = false } = {}) {
       'Dhatrii is an independent digital solutions practice operated by Dhatri Patel, providing SEO, website and web application development, mobile app development, AI integration, MVP development, ecommerce development, CRM and ERP software, and custom business automation for clients in India and remotely worldwide.',
     image: absolute('/opengraph-image'),
     email: `mailto:${profile.email}`,
+    telephone: `+${profile.whatsapp}`,
+    contactPoint: [{
+      '@type': 'ContactPoint',
+      contactType: 'project enquiries',
+      telephone: `+${profile.whatsapp}`,
+      email: profile.email,
+      availableLanguage: ['English', 'Gujarati', 'Hindi'],
+      url: SITE_URL,
+    }],
     address: POSTAL_ADDRESS,
     areaServed: AREA_SERVED,
     founder: { '@id': PERSON_ID },
@@ -202,7 +211,8 @@ export function webSiteSchema() {
     '@type': 'WebSite',
     '@id': `${SITE_URL}/#website`,
     url: SITE_URL,
-    name: profile.name,
+    name: 'Dhatrii',
+    alternateName: 'Dhatri Patel Digital Solutions',
     inLanguage: 'en',
     publisher: { '@id': PERSON_ID },
   }
@@ -305,10 +315,5 @@ export function servicePageSchema(service) {
     url,
     provider: { '@id': BUSINESS_ID },
     areaServed: AREA_SERVED,
-    availableChannel: {
-      '@type': 'ServiceChannel',
-      serviceUrl: url,
-      servicePhone: undefined,
-    },
   }
 }
