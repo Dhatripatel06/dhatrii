@@ -13,7 +13,7 @@ import Experience from '@/components/sections/Experience'
 import FAQ from '@/components/sections/FAQ'
 import Hero from '@/components/sections/Hero'
 import Journey from '@/components/sections/Journey'
-import Pricing from '@/components/sections/Pricing'
+// import Pricing from '@/components/sections/Pricing'
 import Projects from '@/components/sections/Projects'
 import Services from '@/components/sections/Services'
 import Testimonials from '@/components/sections/Testimonials'
@@ -28,7 +28,7 @@ export default function HomePage() {
           FAQPage is here and only here, because the FAQ accordion it mirrors is
           rendered on this page and nowhere else. */}
       <JsonLd
-        schema={[webSiteSchema(), personSchema(), professionalServiceSchema({ includePricing: true }), faqSchema()]}
+        schema={[webSiteSchema(), personSchema(), professionalServiceSchema({ includePricing: false }), faqSchema()]}
       />
 
       <Hero />
@@ -43,7 +43,7 @@ export default function HomePage() {
       {/* Immediately before pricing: a real endorsement is the last thing read
           before the numbers. Renders nothing until an approved quote exists. */}
       <ClientsSay />
-      <Pricing />
+      {/* <Pricing /> */}
       <FAQ />
       <Contact />
       <Closing />

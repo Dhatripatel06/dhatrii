@@ -168,9 +168,9 @@ export default function ServicesPage() {
 
                       <div className="relative mt-9 flex flex-wrap items-center gap-4">
                         <ArrowButton href="/#contact">Start a Project</ArrowButton>
-                        <Link href="/#pricing" className="link-underline text-sm text-muted">
+                        {/* <Link href="/#pricing" className="link-underline text-sm text-muted">
                           See full pricing
-                        </Link>
+                        </Link> */}
                       </div>
                     </article>
                   </Reveal>

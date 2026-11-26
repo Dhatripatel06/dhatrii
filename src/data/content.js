@@ -32,7 +32,7 @@ export const nav = [
   { id: 'services', label: 'Services', href: '/services' },
   { id: 'about', label: 'About', href: '/about' },
   { id: 'blog', label: 'Blog', href: '/blog' },
-  { id: 'pricing', label: 'Pricing' },
+  // { id: 'pricing', label: 'Pricing' },
 ]
 
 export const hero = {
@@ -44,7 +44,7 @@ export const hero = {
   /* Replaces the old star rating. Both halves are countable from this file:
      `projects` has five entries, and the stack names come from their meta. */
   proof: {
-    lead: '5 shipped products',
+    lead: '6 shipped products',
     stack: 'Flutter · React · Firebase · AI · UI/UX',
   },
   primaryCta: { label: 'Start a Project', href: '#contact' },
@@ -87,7 +87,7 @@ export const journey = {
     {
       eyebrow: 'Work',
       title: 'Projects Done',
-      value: '5',
+      value: '6',
       featured: false,
     },
   ],
@@ -106,13 +106,13 @@ export const projectsIndex = {
   eyebrow: 'Selected work',
   titleLight: 'Selected',
   titleBold: 'Projects',
-  lede: 'Five products, each taken from a blank repository to something people can open. Pick one to read how it was built.',
+  lede: 'Six products, each taken from a blank repository to something people can open. Pick one to read how it was built.',
   /* States what these are, so the set is not read as a client roster. */
-  note: 'Products I designed and built end to end. Shiftly was a client collaboration; the rest are personal, academic and hackathon projects, some built with collaborators.',
+  note: 'Products I designed and built end to end. Shiftly and One Stop Solution were client collaborations; the rest are personal, academic and hackathon projects, some built with collaborators.',
   meta: {
     title: 'Projects — Flutter & React Case Studies | Dhatri Patel',
     description:
-      'Five case studies from Dhatri Patel: Flutter apps, React web platforms and on-device AI, each taken from a blank repository to a working build.',
+      'Six case studies from Dhatri Patel: Flutter apps, React web platforms and on-device AI, each taken from a blank repository to a working build.',
   },
 }
 
@@ -212,6 +212,78 @@ export const projects = [
         body: 'A deployed portal that handles the full hiring loop — search, apply, review, respond — with live messaging rather than a mailbox in the middle of it.',
       },
       links: [{ label: 'View Live Site', href: 'https://jobzee-two.vercel.app/' }],
+    },
+  },
+  {
+    slug: 'one-stop-solution',
+    seoDescriptor: 'Product Catalogue & WhatsApp Ordering Platform',
+    published: true,
+    schemaType: 'WebApplication',
+    applicationCategory: 'BusinessApplication',
+    related: ['jobzee', 'learnnova'],
+    serviceKey: 'web',
+    title: 'One Stop Solution',
+    tags: 'product catalogue & ordering · web app, smart search, whatsapp',
+    image: '/images/One Stop Solution Laptop Showcase.png',
+    tint: 'accent',
+    href: 'https://one-stop-oss.vercel.app/',
+    detail: {
+      lede: 'An online product catalogue with smart search, order building, WhatsApp checkout and a dedicated admin panel.',
+      problem:
+        'Managing a growing product catalogue through static PDFs and scattered messages makes it hard for customers to find items by name or code, and even harder for the business to keep listings up to date.',
+      goal:
+        'Turn a multi-category catalogue into a fast, browsable web storefront where customers can search, build an order list and confirm directly on WhatsApp — backed by an admin panel to manage products.',
+      features: [
+        'Product catalogue with category filtering and featured highlights',
+        'Smart search by product name or item code',
+        'Order list builder with live summary bar and order number generation',
+        'Direct WhatsApp ordering to confirm pricing, availability and delivery',
+        'Dedicated admin panel to add, update and manage products',
+      ],
+      challenges: [
+        {
+          title: 'Fast discovery across a wide catalogue',
+          body: 'Customers often know either a product name or a specific SKU code. Pairing category quick-filters with instant search by name or code lets visitors reach the right item without scrolling through pages.',
+        },
+        {
+          title: 'Frictionless ordering without payment-gateway overhead',
+          body: 'Instead of forcing a complex checkout flow, the order builder collects quantities and customer details, generates an order number and hands off cleanly to WhatsApp where pricing and delivery are confirmed.',
+        },
+      ],
+      learned:
+        'Designing around how a business already closes orders — WhatsApp — rather than forcing a generic cart checkout made the storefront immediately practical for both the team and their customers.',
+      overview: {
+        eyebrow: 'Every problem, one solution',
+        heading: 'A product catalogue built for real-world ordering',
+        body: 'One Stop Solution (OSS) brings together a structured product catalogue, smart search by name or code, an order-review flow that hands off to WhatsApp and a dedicated admin panel so the business can manage products without touching code.',
+      },
+      phases: [
+        {
+          label: 'Discovery',
+          title: 'Mapping how customers actually order',
+          body: 'Customers needed a quick way to browse categories, look up product codes and send a clear list of quantities without back-and-forth screenshots.',
+        },
+        {
+          label: 'Development',
+          title: 'Storefront, smart search and admin panel',
+          body: 'Built a responsive catalogue with category filtering, instant search, a persistent order bar and an admin interface for keeping products and featured items current.',
+        },
+        {
+          label: 'Strategy',
+          title: 'WhatsApp confirmation as the final step',
+          body: 'Connecting the order builder straight to WhatsApp preserved the personal confirmation workflow the business relies on while eliminating manual order-taking errors.',
+        },
+      ],
+      meta: [
+        { label: 'Role', value: 'Design and full-stack development' },
+        { label: 'Type', value: 'Web application & admin panel' },
+        { label: 'Stack', value: 'HTML, CSS, JavaScript, WhatsApp' },
+      ],
+      result: {
+        heading: 'The Result',
+        body: 'A live online catalogue that makes exploring products simple for customers and managing listings effortless for the business.',
+      },
+      links: [{ label: 'View Live Site', href: 'https://one-stop-oss.vercel.app/' }],
     },
   },
   {
@@ -849,6 +921,16 @@ export const clientTestimonials = {
       role: 'Client',
       quote:
         'Dhatri understood what we were trying to build with Shiftly and turned the idea into a clean, practical product. Communication was smooth, and she was proactive about solving issues along the way. I really appreciated the attention to detail and the effort put into making the product feel polished.',
+      rating: null,
+      image: null,
+    },
+    {
+      name: 'Avinash Babariya',
+      project: 'One Stop Solution',
+      location: 'Gujarat, India',
+      role: 'Client',
+      quote:
+        'Dhatri transformed our product catalogue into a professional, easy-to-use online shopping experience. From product browsing and smart search to WhatsApp ordering and a dedicated admin panel, everything is designed to make managing and exploring products simple. The attention to detail and practical approach made the entire solution valuable for our business.',
       rating: null,
       image: null,
     },
