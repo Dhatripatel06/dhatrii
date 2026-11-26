@@ -23,7 +23,7 @@ const GENERATED_CARD = {
   url: '/opengraph-image',
   width: 1200,
   height: 630,
-  alt: `${profile.name} — freelance Flutter and React developer in Bhavnagar, India`,
+  alt: 'Dhatrii — digital solutions and software development by Dhatri Patel in India',
 }
 
 export function buildMetadata({ title, description, path, type = 'website', images }) {
