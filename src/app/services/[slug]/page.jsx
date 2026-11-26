@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ArrowLeft, ArrowUpRight, CheckCircle2, MessageCircle } from 'lucide-react'
+import { ArrowLeft, ArrowUpRight, CheckCircle2 } from 'lucide-react'
 
 import JsonLd from '@/components/JsonLd'
 import { profile, publishedProjects, whatsappHref } from '@/data/content'
