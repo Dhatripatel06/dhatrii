@@ -1,7 +1,8 @@
 import { SITE_URL } from './site'
 import { absolute } from './seo'
-import { faqs, pricing, profile, services, socials } from '@/data/content'
+import { faqs, pricing, profile, socials } from '@/data/content'
 import { resolveTokens } from '@/data/blog'
+import { servicePages } from '@/data/service-pages'
 
 /**
  * JSON-LD builders.
@@ -52,9 +53,10 @@ export function personSchema() {
     name: profile.name,
     url: SITE_URL,
     image: absolute(profile.portrait),
-    jobTitle: 'Freelance Flutter & React Developer',
+    jobTitle: 'Founder and Digital Solutions Provider',
+    worksFor: { '@id': BUSINESS_ID },
     description:
-      'Freelance Flutter and React developer in Bhavnagar, Gujarat, building mobile apps, websites and MVPs for startups, growing businesses and local businesses.',
+      'Dhatri Patel operates Dhatrii, an independent digital solutions practice providing SEO, website and app development, AI integration, ecommerce, MVP and custom business software services.',
     email: `mailto:${profile.email}`,
     address: POSTAL_ADDRESS,
     homeLocation: { '@type': 'Place', address: POSTAL_ADDRESS },
@@ -97,12 +99,23 @@ export function professionalServiceSchema({ includePricing = false } = {}) {
     '@context': 'https://schema.org',
     '@type': 'ProfessionalService',
     '@id': BUSINESS_ID,
-    name: `${profile.name} — Freelance Flutter & React Developer`,
+    name: 'Dhatrii — Digital Solutions & Software Development',
+    alternateName: ['Dhatrii', 'Dhatri Patel'],
+    brand: { '@type': 'Brand', name: 'Dhatrii' },
     url: SITE_URL,
     description:
-      'Freelance Flutter app development, web development, website design and MVP builds for startups, growing businesses and local businesses in Gujarat, and remote clients worldwide.',
+      'Dhatrii is an independent digital solutions practice operated by Dhatri Patel, providing SEO, website and web application development, mobile app development, AI integration, MVP development, ecommerce development, CRM and ERP software, and custom business automation for clients in India and remotely worldwide.',
     image: absolute('/opengraph-image'),
     email: `mailto:${profile.email}`,
+    telephone: `+${profile.whatsapp}`,
+    contactPoint: [{
+      '@type': 'ContactPoint',
+      contactType: 'project enquiries',
+      telephone: `+${profile.whatsapp}`,
+      email: profile.email,
+      availableLanguage: ['English', 'Gujarati', 'Hindi'],
+      url: SITE_URL,
+    }],
     address: POSTAL_ADDRESS,
     areaServed: AREA_SERVED,
     founder: { '@id': PERSON_ID },
@@ -112,18 +125,18 @@ export function professionalServiceSchema({ includePricing = false } = {}) {
     sameAs: SAME_AS,
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
-      name: 'Development services',
-      itemListElement: services.items.map((service) => ({
+      name: 'Digital solutions and software development services',
+      itemListElement: servicePages.map((service) => ({
         '@type': 'Offer',
         itemOffered: {
           '@type': 'Service',
           name: service.title,
-          description: service.body,
+          description: service.intro,
           serviceType: service.title,
           areaServed: AREA_SERVED,
           provider: { '@id': PERSON_ID },
         },
-        url: `${SITE_URL}/services`,
+        url: `${SITE_URL}/services/${service.slug}`,
       })),
     },
   }
@@ -198,7 +211,8 @@ export function webSiteSchema() {
     '@type': 'WebSite',
     '@id': `${SITE_URL}/#website`,
     url: SITE_URL,
-    name: profile.name,
+    name: 'Dhatrii',
+    alternateName: 'Dhatri Patel Digital Solutions',
     inLanguage: 'en',
     publisher: { '@id': PERSON_ID },
   }
@@ -284,5 +298,22 @@ export function blogListSchema(list) {
       datePublished: post.date,
       author: { '@id': PERSON_ID },
     })),
+  }
+}
+
+
+/** Service detail structured data mirrors the visible landing-page copy. */
+export function servicePageSchema(service) {
+  const url = `${SITE_URL}/services/${service.slug}`
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': `${url}#service`,
+    name: service.title,
+    description: service.intro,
+    serviceType: service.title,
+    url,
+    provider: { '@id': BUSINESS_ID },
+    areaServed: AREA_SERVED,
   }
 }

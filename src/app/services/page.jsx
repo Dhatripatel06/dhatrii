@@ -11,6 +11,7 @@ import {
 import JsonLd from '@/components/JsonLd'
 import { buildMetadata } from '@/lib/seo'
 import { professionalServiceSchema } from '@/lib/schema'
+import { servicePages } from '@/data/service-pages'
 import ArrowButton from '@/components/ui/ArrowButton'
 import Reveal from '@/components/ui/Reveal'
 import TwoTone from '@/components/ui/TwoTone'
@@ -184,6 +185,24 @@ export default function ServicesPage() {
               {servicesPage.note}
             </p>
           </Reveal>
+
+          <section className="mt-20" aria-labelledby="all-services-heading">
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="text-xs uppercase tracking-[0.2em] text-accent">More ways to work together</p>
+              <h2 id="all-services-heading" className="mt-4 font-display text-3xl font-bold tracking-tight sm:text-4xl">Explore all Dhatrii services</h2>
+              <p className="mt-4 text-muted">Dhatri leads each project directly and brings in specialist collaborators when the agreed scope needs them.</p>
+            </div>
+            <ul className="mt-8 grid gap-3 sm:grid-cols-2">
+              {servicePages.map((service) => (
+                <li key={service.slug}>
+                  <Link href={`/services/${service.slug}`} className="group flex h-full items-center justify-between gap-4 rounded-2xl border border-line bg-surface p-5 transition-colors hover:border-accent/40">
+                    <span className="font-medium">{service.title}</span>
+                    <ArrowUpRight size={18} className="shrink-0 text-muted transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" aria-hidden="true" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
         </div>
       </section>
 

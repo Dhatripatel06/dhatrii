@@ -5,10 +5,11 @@
 
 export const profile = {
   name: 'Dhatri Patel',
-  wordmark: 'Dhatri',
+  wordmark: 'Dhatrii',
   firstName: 'Dhatri',
   lastName: 'Patel',
-  role: 'Freelance Flutter & React Developer',
+  role: 'Founder & Digital Solutions Provider at Dhatrii',
+  brand: 'Dhatrii',
   email: 'dhatripatel67@gmail.com',
   whatsapp: '916355506411', // country code + number, digits only
   location: 'Bhavnagar, Gujarat, India',
@@ -38,18 +39,18 @@ export const nav = [
 export const hero = {
   hello: 'Hello',
   /* Role and base, so the first line answers "who" and "where" at a glance. */
-  eyebrow: 'Freelance Flutter & React Developer · Bhavnagar, India',
-  headline: 'I build mobile apps and websites that are ready to ship.',
-  lede: 'I help startups and growing businesses turn ideas into polished Flutter apps, React websites and Firebase-powered products — working directly with you from design to deployment.',
+  eyebrow: 'Dhatrii · Digital Solutions & Software Development · India',
+  headline: 'Digital solutions that help businesses build, launch and grow.',
+  lede: 'I am Dhatri Patel, the person behind Dhatrii. I personally lead SEO, website and app development, AI integrations, ecommerce, MVPs and custom CRM & ERP projects — collaborating with specialists when a project needs additional expertise.',
   /* Replaces the old star rating. Both halves are countable from this file:
      `projects` has five entries, and the stack names come from their meta. */
   proof: {
     lead: '6 shipped products',
-    stack: 'Flutter · React · Firebase · AI · UI/UX',
+    stack: 'SEO · Web · Apps · AI · Ecommerce · CRM & ERP',
   },
   primaryCta: { label: 'Start a Project', href: '#contact' },
   secondaryCta: { label: 'View My Work', href: '#work' },
-  availability: 'Bhavnagar, India — available worldwide',
+  availability: 'Based in Bhavnagar, India · Working remotely worldwide',
   contactLink: { label: 'WhatsApp me', href: whatsappHref },
 }
 
@@ -660,7 +661,7 @@ export const experience = {
 export const services = {
   titleLight: 'What I',
   titleBold: 'Build',
-  lede: 'Four ways I work with clients — from a single business website to a full cross-platform app.',
+  lede: 'Dhatrii helps businesses improve their online visibility, build digital products and connect the systems they rely on — from SEO and websites to apps, AI and custom business software.',
   /* Oversized wordmark that drifts across the foot of the section. */
   ghost: 'Explore my services',
   cta: { label: 'See all services', href: '/services' },
@@ -999,10 +1000,15 @@ export const contact = {
      repository can evidence, so the copy does not claim it. */
   lede: 'Share a little about the project and timeline. I will review it and get back to you.',
   projectTypes: [
+    'SEO and website optimization',
     'Business website',
-    'Web app or MVP',
+    'Web application or portal',
     'Mobile app (Android + iOS)',
-    'Redesign of something existing',
+    'AI integration or automation',
+    'MVP or startup product',
+    'Ecommerce website or store',
+    'CRM or ERP software',
+    'Custom software or integration',
     'Ongoing maintenance',
     'Something else',
   ],
@@ -1047,14 +1053,14 @@ export const closing = {
    statement about how I work, which is mine to make. No invented biography. */
 export const about = {
   meta: {
-    title: 'About Dhatri Patel | Freelance Flutter & React Developer, Bhavnagar',
+    title: 'About Dhatri Patel | Founder of Dhatrii Digital Solutions',
     description:
-      'Freelance Flutter and React developer based in Bhavnagar, Gujarat. How I work with startups, growing businesses and local businesses — direct, fixed-scope and remote-friendly.',
+      'Meet Dhatri Patel, the person behind Dhatrii, an independent digital solutions practice for SEO, websites, apps, AI integrations and custom business software.',
   },
   eyebrow: 'About',
   titleLight: 'Work directly with',
   titleBold: 'the person building it',
-  lede: 'I am Dhatri Patel, a freelance Flutter and React developer based in Bhavnagar, Gujarat. I build mobile apps, websites and first product versions for startups, growing businesses and local businesses — and remotely for clients anywhere.',
+  lede: 'I am Dhatri Patel, the person behind Dhatrii. I lead digital projects directly for startups and businesses in India and remotely worldwide, from SEO and websites to apps, AI integrations and custom business software.',
   intro: [
     'Most of what I build starts the same way: someone has been describing an idea to people for months and needs it to exist. That might be an app their customers can book from, a website that finally works on a phone, or a first version of a product they want to put in front of real users.',
     'I take that from the first conversation through to a live build. Design, development and deployment are one job rather than three handovers, which is usually the difference between a project that ships and one that stalls between contractors.',
@@ -1186,9 +1192,9 @@ export const about = {
 /* --------------------------------------------------------------- /services */
 export const servicesPage = {
   meta: {
-    title: 'Services | Flutter Apps, Web Development & MVPs | Dhatri Patel',
+    title: 'Digital Services | SEO, Web, Apps, AI, Ecommerce & CRM | Dhatrii',
     description:
-      'Flutter app development, web development, website design and MVP builds for startups, growing businesses and local businesses in Gujarat — with starting prices and realistic timelines.',
+      'Explore Dhatrii services led by Dhatri Patel: SEO, website and web app development, Flutter apps, AI integration, MVPs, ecommerce and custom CRM & ERP software.',
   },
   eyebrow: 'Services',
   titleLight: 'What I can',
